@@ -2,15 +2,15 @@ FROM golang:1.18-alpine
 
 WORKDIR /app
 
-ADD go.mod ./
-ADD go.sum ./
+COPY go.mod ./
+COPY go.sum ./
 RUN go mod download
 
-ADD *.go ./
+COPY *.go ./
 
 RUN mkdir -p /app/pkg/bot
 WORKDIR /app/pkg/bot
-ADD * ./
+COPY pkg/bot/*.go ./
 
 WORKDIR /app
 
