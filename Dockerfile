@@ -2,17 +2,17 @@ FROM golang:1.18-alpine
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
+ADD go.mod ./
+ADD go.sum ./
 RUN go mod download
 
-COPY *.go ./
+ADD *.go ./
 
 WORKDIR /app/pkg/bot
-COPY * ./
+ADD * ./
 
 WORKDIR /app/pkg/config
-COPY *.go ./
+ADD *.go ./
 
 WORKDIR /app
 
