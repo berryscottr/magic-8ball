@@ -2,42 +2,20 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
 )
 
-var (
-	Token     string
-	BotPrefix string
-
-	config *configStruct
-)
-
-type configStruct struct {
-	Token     string `json : "Token"`
-	BotPrefix string `json : "BotPrefix"`
-}
-
-func ReadConfig() error {
-	fmt.Println("Reading config file...")
-	file, err := ioutil.ReadFile("./config.json")
-
-	if err != nil {
-		fmt.Println(err.Error())
-		return err
+func (config Conf) ReadConfig() Conf {
+	config.File, config.Err = ioutil.ReadFile("./config.json")
+	if config.Err != nil {
+		log.Err(config.Err).Msg("failed to read config file")
+		return config
 	}
-
-	fmt.Println(string(file))
-
-	err = json.Unmarshal(file, &config)
-
-	if err != nil {
-		fmt.Println(err.Error())
-		return err
+	config.Err = json.Unmarshal(config.File, &config.Data)
+	if config.Err != nil {
+		log.Err(config.Err).Msg("failed to unmarshal config bytes")
+		return config
 	}
-	Token = config.Token
-	BotPrefix = config.BotPrefix
-
-	return nil
-
+	return config
 }

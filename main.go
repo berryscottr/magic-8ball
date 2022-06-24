@@ -1,21 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"github.com/berryscottr/pkg/bot"
-	"github.com/berryscottr/pkg/config"
+	"magic-8ball/pkg/bot"
 )
 
 func main() {
-	err := config.ReadConfig()
-
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-
-	bot.Start()
-
+	gobot := new(bot.Data)
+	gobot.Start()
 	<-make(chan struct{})
-	return
 }
