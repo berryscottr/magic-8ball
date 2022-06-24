@@ -23,22 +23,13 @@ jobs:
       BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
     steps:
       - uses: actions/checkout@v3
+      - name: Login to Github Package Registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${{ github.repository }} --password-stdin
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag magic-8ball
-      - name: Login to Docker Hub
-        run: docker login docker.pkg.github.com -u "${{ secrets.DOCKER_USER }}" -p "${{ secrets.DOCKER_PASSWORD }}"
-      - name: Upload the Docker image
-        run: docker push magic-8ball
+        run: docker build . --file Dockerfile --tag magic-8ball:latest
+      - name: Tag the Docker image
+        run: docker tag magic-8ball:latest docker.pkg.github.com/berryscottr/magic-8ball/magic-ball:latest
+      - name: Push the Docker image
+        run: docker push docker.pkg.github.com/berryscottr/magic-8ball/magic-ball:latest
       - name: Run the Docker image
-        run: docker run magic-8ball
-#  run:
-#    runs-on: ubuntu-latest
-#    services:
-#      magic-ball:
-#        image: magic-8ball
-#        ports:
-#          - "8080:8080"
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Run the Docker image
-#        run: docker run --rm -p 8080:8080 magic-8ball
+        run: docker run docker.pkg.github.com/berryscottr/magic-8ball/magic-ball:latest
