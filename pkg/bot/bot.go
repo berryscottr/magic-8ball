@@ -86,6 +86,9 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 	for _, teamLineup := range teamLineups {
 		message += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
 	}
+	if len(teamLineups) == 0 {
+		message = "No lineups found"
+	}
 	_, bot.Err = s.ChannelMessageSend(m.ChannelID, message)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
