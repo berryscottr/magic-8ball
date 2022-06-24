@@ -8,11 +8,9 @@ RUN go mod download
 
 ADD *.go ./
 
+RUN mkdir -p /app/pkg/bot
 WORKDIR /app/pkg/bot
 ADD * ./
-
-WORKDIR /app/pkg/config
-ADD *.go ./
 
 WORKDIR /app
 
