@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build Magic 8Ball
 on:
   push:
     branches: [ "main" ]
@@ -19,28 +19,24 @@ jobs:
         run: go test -v ./...
   build:
     runs-on: ubuntu-latest
+    env:
+      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: docker build . --file Dockerfile --tag magic-8ball
-  upload:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
       - name: Upload the Docker image
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: docker push magic-8ball
-  run:
-    runs-on: ubuntu-latest
-    services:
-      magic-ball:
-        image: magic-8ball
-        ports:
-          - "8080:8080"
-    steps:
-      - uses: actions/checkout@v3
       - name: Run the Docker image
-        run: docker run --rm -p 8080:8080 magic-8ball
+        run: docker run magic-8ball
+#  run:
+#    runs-on: ubuntu-latest
+#    services:
+#      magic-ball:
+#        image: magic-8ball
+#        ports:
+#          - "8080:8080"
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Run the Docker image
+#        run: docker run --rm -p 8080:8080 magic-8ball
