@@ -1,5 +1,7 @@
 FROM golang:1.18-alpine
 
+ENV BOT_TOKEN=$BOT_TOKEN
+
 WORKDIR /app
 
 COPY go.mod ./
