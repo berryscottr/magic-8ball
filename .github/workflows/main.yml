@@ -4,6 +4,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+env:
+  BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -25,13 +27,9 @@ jobs:
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${{ github.repository }} --password-stdin
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag magic-8ball:latest
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       - name: Tag the Docker image
         run: docker tag magic-8ball:latest docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
       - name: Push the Docker image
         run: docker push docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
       - name: Run the Docker image
         run: docker run docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
