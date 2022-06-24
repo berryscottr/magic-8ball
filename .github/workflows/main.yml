@@ -26,7 +26,7 @@ jobs:
       - name: Login to Github Package Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${{ github.repository }} --password-stdin
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag magic-8ball:latest
+        run: docker build . --file Dockerfile --tag magic-8ball:latest --build-arg BOT_TOKEN=${{ secrets.BOT_TOKEN }}
       - name: Tag the Docker image
         run: docker tag magic-8ball:latest docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
       - name: Push the Docker image

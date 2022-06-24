@@ -1,5 +1,6 @@
 FROM golang:1.18-alpine
 
+ARG BOT_TOKEN
 ENV BOT_TOKEN=$BOT_TOKEN
 
 WORKDIR /app
