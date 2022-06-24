@@ -14,7 +14,7 @@ import (
 
 // Start the Discord bot listener
 func (bot Data) Start() {
-	bot.GoBot, bot.Err = discordgo.New("Bot " + bot.Config.Data.Token)
+	bot.GoBot, bot.Err = discordgo.New("Bot " + bot.Token)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to instantiate magic-8ball bot")
 		return

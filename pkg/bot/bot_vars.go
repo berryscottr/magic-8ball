@@ -2,7 +2,6 @@ package bot
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"magic-8ball/pkg/config"
 )
 
 // UserID assigns ID to the bot
@@ -10,10 +9,10 @@ const UserID = "@me"
 
 // Data for the bot to track along a request
 type Data struct {
-	Err    error
-	User   *discordgo.User
-	GoBot  *discordgo.Session
-	Config config.Conf
+	Err   error
+	User  *discordgo.User
+	GoBot *discordgo.Session
+	Token string
 }
 
 // TeamLineup data

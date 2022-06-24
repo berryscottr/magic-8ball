@@ -7,7 +7,6 @@ COPY go.sum ./
 RUN go mod download
 
 COPY *.go ./
-COPY config.json ./
 
 WORKDIR /app/pkg/bot
 COPY * ./
@@ -18,7 +17,6 @@ COPY *.go ./
 WORKDIR /app
 
 RUN go build main.go
-RUN rm config.json
 
 EXPOSE 8080
 
