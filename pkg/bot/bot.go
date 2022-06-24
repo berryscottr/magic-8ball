@@ -12,13 +12,8 @@ import (
 	"strings"
 )
 
+// Start the Discord bot listener
 func (bot Data) Start() {
-	bot.Config = bot.Config.ReadConfig()
-	if bot.Config.Err != nil {
-		bot.Err = bot.Config.Err
-		log.Err(bot.Err).Msg("failed to read bot config")
-		return
-	}
 	bot.GoBot, bot.Err = discordgo.New("Bot " + bot.Config.Data.Token)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to instantiate magic-8ball bot")
@@ -38,6 +33,7 @@ func (bot Data) Start() {
 	log.Info().Msg("magic-ball listening")
 }
 
+// MessageHandler for interpreting which function to launch from message contents
 func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == bot.User.ID {
 		return
@@ -47,6 +43,7 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	}
 }
 
+// HandleLineups for returning eligible lineups from a provided list of players
 func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling lineups")
 	re := regexp.MustCompile("[0-9]+")

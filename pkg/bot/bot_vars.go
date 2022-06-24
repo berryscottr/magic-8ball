@@ -5,8 +5,10 @@ import (
 	"magic-8ball/pkg/config"
 )
 
+// UserID assigns ID to the bot
 const UserID = "@me"
 
+// Data for the bot to track along a request
 type Data struct {
 	Err    error
 	User   *discordgo.User
@@ -14,11 +16,13 @@ type Data struct {
 	Config config.Conf
 }
 
+// TeamLineup data
 type TeamLineup struct {
 	Lineup []int
 	Sum    int
 }
 
+// Methods for the bot to use
 type Methods interface {
 	Start()
 	MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
