@@ -12,10 +12,10 @@ jobs:
       - name: Build the Docker image
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: docker build . --file Dockerfile --tag magic-8ball:$(date +%s)
+        run: docker build . --file Dockerfile --tag magic-8ball
   run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Run the Docker image
-        run: docker run --rm -p 8080:8080 magic-8ball:$(date +%s)
+        run: docker run --rm -p 8080:8080 magic-8ball
