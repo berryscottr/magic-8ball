@@ -2,15 +2,26 @@ package bot
 
 import (
 	"fmt"
+	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/bwmarrin/discordgo"
 	"github.com/rs/zerolog/log"
 	"gonum.org/v1/gonum/stat/combin"
+	"path/filepath"
 	"reflect"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 )
+
+// SetDir for setting the directory for the bot
+func (bot Data) SetDir() Data {
+	bot.Dir, bot.Err = filepath.Abs(".")
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to set magic-8ball directory")
+	}
+	return bot
+}
 
 // Start the Discord bot listener
 func (bot Data) Start() {
@@ -38,8 +49,11 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if m.Author.ID == bot.User.ID {
 		return
 	}
-	if strings.Contains(m.Content, "!lineup") {
+	if strings.Contains(m.Content, "!line") {
 		bot.HandleLineups(s, m)
+	}
+	if strings.Contains(m.Content, "!sl") {
+		bot.HandleSLMatchups(s, m)
 	}
 }
 
@@ -97,6 +111,38 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 	log.Info().Msgf("%v possible lineups posted to Discord channel %s", len(teamLineups), m.ChannelID)
 }
 
+// HandleSLMatchups for returning chart of the best skill level match-ups
+func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling skill level match-ups")
+	bot.Excel, bot.Err = excelize.OpenFile(bot.Dir + SLMatchupFile)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msgf("failed to read excel file \"%s\"", bot.Dir+SLMatchupFile)
+		return
+	}
+	var message string
+	bot.ExcelRows = bot.Excel.GetRows(MatchupSheet)
+	for _, row := range bot.ExcelRows {
+		for _, colCell := range row {
+			colCell = strings.Replace(colCell, "X", "", 1)
+			if len(colCell) == 3 {
+				colCell += "0"
+			} else if len(colCell) < 3 {
+				colCell += strings.Repeat("  ", 4-len(colCell))
+			}
+
+			message += strings.Replace(colCell, "X", "", 1) + "\t"
+		}
+		message += "\n"
+	}
+	_, bot.Err = s.ChannelMessageSend(m.ChannelID, message)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
+}
+
+// sum returns the sum of the elements in the given int slice
 func sum(array []int) int {
 	result := 0
 	for _, v := range array {
@@ -105,6 +151,7 @@ func sum(array []int) int {
 	return result
 }
 
+// contains returns true if the given slice of int slices contains the given int slice
 func contains(slc [][]int, ele []int) bool {
 	for _, v := range slc {
 		if reflect.DeepEqual(v, ele) {

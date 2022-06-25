@@ -25,3 +25,10 @@ func TestData_HandleLineups(t *testing.T) {
 	data := new(Data)
 	assertion.NoError(data.Err, "failed to generate valid lineups")
 }
+
+// TestData_HandleSLMatchups confirms ability to read the matchups excel sheet
+func TestData_HandleSLMatchups(t *testing.T) {
+	assertion := assert.New(t)
+	data := new(Data)
+	assertion.NoError(data.Err, "failed to generate valid lineups")
+}

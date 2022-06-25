@@ -10,6 +10,7 @@ func main() {
 	if gobot.Token == "" {
 		panic("BOT_TOKEN not set")
 	}
+	gobot = gobot.SetDir()
 	gobot.Start()
 	<-make(chan struct{})
 	return
