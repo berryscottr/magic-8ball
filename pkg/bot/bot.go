@@ -30,7 +30,7 @@ func (bot Data) Start() {
 		log.Err(bot.Err).Msg("failed to start magic-8ball listener")
 		return
 	}
-	log.Info().Msg("magic-ball listening")
+	log.Info().Msg("magic-8ball listening")
 }
 
 // MessageHandler for interpreting which function to launch from message contents
@@ -46,7 +46,7 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 // HandleLineups for returning eligible lineups from a provided list of players
 func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling lineups")
-	re := regexp.MustCompile("[0-9]+")
+	re := regexp.MustCompile("\\d")
 	skillLevelsString := re.FindAllString(m.Content, 8)
 	skillLevels := make([]int, len(skillLevelsString))
 	for i, s := range skillLevelsString {
