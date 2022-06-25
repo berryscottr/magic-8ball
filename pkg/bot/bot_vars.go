@@ -9,7 +9,7 @@ const (
 	// UserID assigns ID to the bot
 	UserID = "@me"
 	// SLMatchupFile is the name of the file where the SL matchups are stored
-	SLMatchupFile = "./data/SLMatchupAverages.xlsx"
+	SLMatchupFile = "/data/SLMatchupAverages.xlsx"
 	// MatchupSheet is the name of the sheet where the matchups are stored
 	MatchupSheet = "Sheet1"
 )
