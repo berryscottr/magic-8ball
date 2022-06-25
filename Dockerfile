@@ -11,6 +11,10 @@ RUN go mod download
 
 COPY *.go ./
 
+RUN mkdir -p /app/data
+WORKDIR /app/data
+COPY data/* ./
+
 RUN mkdir -p /app/pkg/bot
 WORKDIR /app/pkg/bot
 COPY pkg/bot/*.go ./
