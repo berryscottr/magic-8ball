@@ -99,7 +99,7 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("reaction to game day announcement posted to %s", r.ChannelID)
+	log.Info().Msgf("%s reaction from %s to game day announcement posted to %s", r.MessageReaction.Emoji.Name, r.Member.Nick, r.ChannelID)
 }
 
 // HandleGameDay for posting game day message
@@ -117,40 +117,18 @@ func (bot Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) 
 				ReactionRequest, opponentTeam,
 		),
 	}
-	//availableButton := discordgo.Button{
-	//	Label: "Available",
-	//	Style: discordgo.SuccessButton,
-	//	Emoji: discordgo.ComponentEmoji{
-	//		Name: ":thumbsup:",
-	//	},
-	//}
-	//unavailableButton := discordgo.Button{
-	//	Label: "Unavailable",
-	//	Style: discordgo.DangerButton,
-	//	Emoji: discordgo.ComponentEmoji{
-	//		Name: ":thumbsdown:",
-	//	},
-	//}
-	//lateButton := discordgo.Button{
-	//	Label: "Late",
-	//	Style: discordgo.SecondaryButton,
-	//	Emoji: discordgo.ComponentEmoji{
-	//		Name: ":hourglass:",
-	//	},
-	//}
-	//message.Components = append(message.Components, availableButton, unavailableButton, lateButton)
 	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("game day announcement posted to %s", m.ChannelID)
+	log.Info().Msgf("game day vs %s posted to %s", opponentTeam, m.ChannelID)
 }
 
 // HandleLineups for returning eligible lineups from a provided list of players
 func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling lineups")
-	re := regexp.MustCompile("\\d")
+	re := regexp.MustCompile("[2-7]")
 	skillLevelsString := re.FindAllString(m.Content, 8)
 	skillLevels := make([]int, len(skillLevelsString))
 	for i, s := range skillLevelsString {
@@ -253,7 +231,7 @@ func (bot Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("bca rebuttal posted to %s", m.ChannelID)
+	log.Info().Msgf("bca rebuttal posted to %s in channel %s", m.Member.Nick, m.ChannelID)
 }
 
 // sum returns the sum of the elements in the given int slice

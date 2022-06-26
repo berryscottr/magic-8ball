@@ -4,7 +4,7 @@ APA Discord Bot for Wookie Mistakes Team
 ### Lineups
 `!line 2 3 4 5 4 5 6 7`
 
-This command returns all eligible lineups for the first 8 given numbers in the message.
+This command returns all eligible lineups for the first 8 given numbers in the message ranged between 2-7.
 ### SL Matchups
 `!sl`
 
