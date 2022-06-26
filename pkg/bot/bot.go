@@ -36,6 +36,7 @@ func (bot Data) Start() {
 		return
 	}
 	bot.GoBot.AddHandler(bot.MessageHandler)
+	bot.GoBot.AddHandler(bot.ReactionHandler)
 	bot.Err = bot.GoBot.Open()
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to start magic-8ball listener")
@@ -49,12 +50,101 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if m.Author.ID == bot.User.ID {
 		return
 	}
-	if strings.Contains(m.Content, "!line") {
+	if strings.Contains(strings.ToLower(m.Content), "!game") {
+		bot.HandleGameDay(s, m)
+	}
+	if strings.Contains(strings.ToLower(m.Content), "!line") {
 		bot.HandleLineups(s, m)
 	}
-	if strings.Contains(m.Content, "!sl") {
+	if strings.Contains(strings.ToLower(m.Content), "!sl") {
 		bot.HandleSLMatchups(s, m)
 	}
+	if strings.Contains(strings.ToLower(m.Content), "bca") {
+		bot.HandleBCA(s, m)
+	}
+}
+
+// ReactionHandler for interpreting how to respond to reactions
+func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
+	if r.Member.User.ID == bot.User.ID {
+		return
+	}
+	if strings.Contains(ReactionRequest, r.MessageReaction.Emoji.Name) {
+		bot.HandleGameDayReaction(s, r)
+	}
+}
+
+// HandleGameDayReaction for handling the reaction to the game day post
+func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
+	log.Info().Msg("handling reaction to game day post")
+	var status string
+	switch r.MessageReaction.Emoji.Name {
+	case "👍":
+		status = "available"
+	case "👎":
+		status = "unavailable"
+	case "⌛":
+		status = "late"
+	default:
+		log.Info().Msg("unknown reaction")
+		return
+	}
+	message := discordgo.MessageSend{
+		Content: fmt.Sprintf(
+			"%s will be %s tonight.", r.Member.Nick, status,
+		),
+	}
+	_, bot.Err = s.ChannelMessageSendComplex(r.ChannelID, &message)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("reaction to game day announcement posted to %s", r.ChannelID)
+}
+
+// HandleGameDay for posting game day message
+func (bot Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling game day post creation")
+	var opponentTeam string
+	for _, name := range DivisionTeamNames {
+		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
+			opponentTeam = name
+		}
+	}
+	message := discordgo.MessageSend{
+		Content: fmt.Sprintf(
+			"It's Game Day! Tonight we play %s.\n"+
+				ReactionRequest, opponentTeam,
+		),
+	}
+	//availableButton := discordgo.Button{
+	//	Label: "Available",
+	//	Style: discordgo.SuccessButton,
+	//	Emoji: discordgo.ComponentEmoji{
+	//		Name: ":thumbsup:",
+	//	},
+	//}
+	//unavailableButton := discordgo.Button{
+	//	Label: "Unavailable",
+	//	Style: discordgo.DangerButton,
+	//	Emoji: discordgo.ComponentEmoji{
+	//		Name: ":thumbsdown:",
+	//	},
+	//}
+	//lateButton := discordgo.Button{
+	//	Label: "Late",
+	//	Style: discordgo.SecondaryButton,
+	//	Emoji: discordgo.ComponentEmoji{
+	//		Name: ":hourglass:",
+	//	},
+	//}
+	//message.Components = append(message.Components, availableButton, unavailableButton, lateButton)
+	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("game day announcement posted to %s", m.ChannelID)
 }
 
 // HandleLineups for returning eligible lineups from a provided list of players
@@ -67,7 +157,9 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 		skillLevels[i], _ = strconv.Atoi(s)
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(skillLevels)))
-	var message string
+	message := discordgo.MessageSend{
+		Content: "Eligible Lineups:\n",
+	}
 	var lineups [][]int
 	log.Info().Msgf("generating possible lineups of %v", skillLevels)
 	if len(skillLevels) >= 5 {
@@ -98,12 +190,13 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 		return teamLineups[i].Sum > teamLineups[j].Sum
 	})
 	for _, teamLineup := range teamLineups {
-		message += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
+		message.Content += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
 	}
 	if len(teamLineups) == 0 {
-		message = "No lineups found"
+		message.Content = "No eligible lineups found"
 	}
-	_, bot.Err = s.ChannelMessageSend(m.ChannelID, message)
+	message.Content = "```" + message.Content + "```"
+	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
@@ -119,27 +212,48 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 		log.Err(bot.Err).Msgf("failed to read excel file \"%s\"", bot.Dir+SLMatchupFile)
 		return
 	}
-	var message string
-	bot.ExcelRows = bot.Excel.GetRows(MatchupSheet)
-	for _, row := range bot.ExcelRows {
-		for _, colCell := range row {
-			colCell = strings.Replace(colCell, "X", "", 1)
-			if len(colCell) == 3 {
-				colCell += "0"
-			} else if len(colCell) < 3 {
-				colCell += strings.Repeat("  ", 4-len(colCell))
-			}
-
-			message += strings.Replace(colCell, "X", "", 1) + "\t"
-		}
-		message += "\n"
+	message := discordgo.MessageSend{
+		Content: "Expected Points by Match-up:\n",
 	}
-	_, bot.Err = s.ChannelMessageSend(m.ChannelID, message)
+	bot.ExcelRows = bot.Excel.GetRows(MatchupSheet)
+	for irow, row := range bot.ExcelRows {
+		for icol, colCell := range row {
+			colCell = strings.Replace(colCell, "X", "", 1)
+			if icol == 0 {
+				colCell += strings.Repeat(" ", 2-len(colCell))
+			} else if irow == 0 {
+				colCell += strings.Repeat(" ", 4-len(colCell))
+			} else if len(colCell) == 3 {
+				colCell += "0"
+			} else if len(colCell) == 1 {
+				colCell += ".00"
+			}
+			message.Content += colCell + " "
+		}
+		message.Content += "\n"
+	}
+	message.Content = "```" + message.Content + "```"
+	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
 	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
+}
+
+// HandleBCA for mentions of non-APA play
+func (bot Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling mention of non-APA play")
+	message := discordgo.MessageSend{
+		Content: "BCA is for bums.",
+		TTS:     true,
+	}
+	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("bca rebuttal posted to %s", m.ChannelID)
 }
 
 // sum returns the sum of the elements in the given int slice

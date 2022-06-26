@@ -12,6 +12,23 @@ const (
 	SLMatchupFile = "/data/SLMatchupAverages.xlsx"
 	// MatchupSheet is the name of the sheet where the matchups are stored
 	MatchupSheet = "Sheet1"
+	// ReactionRequest is the reaction emoji choices for availability
+	ReactionRequest = "React to this message with a 👍 if you are coming, " +
+		"a 👎 if you can't make it, and an ⌛ if you will be late."
+)
+
+var (
+	DivisionTeamNames = [9]string{
+		"Jiffyloob",
+		"A Selected Few",
+		"Wookie Mistakes",
+		"In It 2 Win It",
+		"The Wright Stuff",
+		"G Team",
+		"The Unusual Suspects",
+		"Lil's Bunch",
+		"8-Balls of Fire",
+	}
 )
 
 // Data for the bot to track along a request
@@ -48,8 +65,16 @@ type Methods interface {
 	Start()
 	// MessageHandler for interpreting which function to launch from message contents
 	MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
+	// ReactionHandler for interpreting how to respond to reactions
+	ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd)
+	// HandleGameDayReaction for interpreting how to respond to reactions
+	HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd)
+	// HandleGameDay for posting game day message
+	HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleLineups for returning eligible lineups from a provided list of players
 	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleSLMatchups for returning eligible lineups from a provided list of players
 	HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleBCA for mentions of non-APA play
+	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate)
 }

@@ -1,7 +1,7 @@
 name: Build Magic 8Ball
 on:
   schedule:
-    - cron: "0 */5 * * *"
+    - cron: "0 */6 * * *"
   push:
     branches: [ "main" ]
   pull_request:
