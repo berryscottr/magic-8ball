@@ -110,7 +110,11 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 			"%s will be %s tonight.", r.Member.Nick, status,
 		),
 	}
-	_, bot.Err = s.ChannelMessageSendComplex(r.ChannelID, &message)
+	if r.MessageReaction.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(GameNightChannelID, &message)
+	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
@@ -205,7 +209,11 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 		message.Content = "No eligible lineups found"
 	}
 	message.Content = "```" + message.Content + "```"
-	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	if m.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(StrategyChannelID, &message)
+	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
@@ -242,7 +250,11 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 		message.Content += "\n"
 	}
 	message.Content = "```" + message.Content + "```"
-	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	if m.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(StrategyChannelID, &message)
+	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return

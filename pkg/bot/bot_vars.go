@@ -21,6 +21,8 @@ const (
 	DevChannelID = "955291440643207228"
 	// GameNightChannelID is the ID of channel #game-night
 	GameNightChannelID = "951345352030691381"
+	// StrategyChannelID is the ID of channel #strategy
+	StrategyChannelID = "951346668912136192"
 )
 
 var (
