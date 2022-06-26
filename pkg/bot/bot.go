@@ -5,6 +5,7 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/bwmarrin/discordgo"
 	"github.com/rs/zerolog/log"
+	"golang.org/x/exp/slices"
 	"gonum.org/v1/gonum/stat/combin"
 	"path/filepath"
 	"reflect"
@@ -69,7 +70,7 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 	if r.Member.User.ID == bot.User.ID {
 		return
 	}
-	if strings.Contains(ReactionRequest, r.MessageReaction.Emoji.Name) {
+	if slices.Contains(GameDayReactions, r.MessageReaction.Emoji.Name) {
 		bot.HandleGameDayReaction(s, r)
 	}
 }
@@ -84,6 +85,8 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 	case "👎":
 		status = "unavailable"
 	case "⌛":
+		status = "late"
+	case "⏳":
 		status = "late"
 	default:
 		log.Info().Msg("unknown reaction")
@@ -106,9 +109,12 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 func (bot Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling game day post creation")
 	var opponentTeam string
-	for _, name := range DivisionTeamNames {
-		if strings.Contains(strings.ToLower(m.Content), strings.Replace(strings.ToLower(name), "'", "", 1)) {
-			opponentTeam = name
+	for i, name := range DivisionTeamNames {
+		for _, junk := range []string{"'", "-", "8"} {
+			name = strings.Replace(name, junk, "", -1)
+		}
+		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
+			opponentTeam = DivisionTeamNames[i]
 		}
 	}
 	message := discordgo.MessageSend{
@@ -129,7 +135,14 @@ func (bot Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) 
 func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling lineups")
 	re := regexp.MustCompile("[2-7]")
-	skillLevelsString := re.FindAllString(m.Content, 8)
+	var content string
+	contentSlice := strings.Split(m.Content, "!")
+	for _, com := range contentSlice {
+		if strings.Contains(com, "line") {
+			content = com
+		}
+	}
+	skillLevelsString := re.FindAllString(content, 8)
 	skillLevels := make([]int, len(skillLevelsString))
 	for i, s := range skillLevelsString {
 		skillLevels[i], _ = strconv.Atoi(s)
@@ -152,7 +165,7 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
 			if sum(lineup) >= 10 &&
 				sum(lineup) <= 23 &&
-				!contains(lineups, lineup) {
+				!containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
 			i++
@@ -243,8 +256,8 @@ func sum(array []int) int {
 	return result
 }
 
-// contains returns true if the given slice of int slices contains the given int slice
-func contains(slc [][]int, ele []int) bool {
+// containsSlice returns true if the given slice of int slices contains the given int slice
+func containsSlice(slc [][]int, ele []int) bool {
 	for _, v := range slc {
 		if reflect.DeepEqual(v, ele) {
 			return true

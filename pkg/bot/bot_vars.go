@@ -23,12 +23,13 @@ var (
 		"A Selected Few",
 		"Wookie Mistakes",
 		"In It 2 Win It",
-		"The Wright Stuff",
+		"The Wright Stuff-8",
 		"G Team",
 		"The Unusual Suspects",
 		"Lil's Bunch",
-		"Balls of Fire",
+		"8-Balls of Fire",
 	}
+	GameDayReactions = []string{"👍", "👎", "⌛", "⏳"}
 )
 
 // Data for the bot to track along a request
