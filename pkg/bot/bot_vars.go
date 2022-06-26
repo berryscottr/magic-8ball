@@ -27,7 +27,7 @@ var (
 		"G Team",
 		"The Unusual Suspects",
 		"Lil's Bunch",
-		"8-Balls of Fire",
+		"Balls of Fire",
 	}
 )
 
