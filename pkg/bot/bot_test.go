@@ -60,3 +60,10 @@ func TestData_HandleBCA(t *testing.T) {
 	data := new(Data)
 	assertion.NoError(data.Err, "failed to generate a response to a BCA mention")
 }
+
+// TestData_Handle9Ball confirms ability to respond to a 9ball mention
+func TestData_Handle9Ball(t *testing.T) {
+	assertion := assert.New(t)
+	data := new(Data)
+	assertion.NoError(data.Err, "failed to generate a response to a 9ball mention")
+}

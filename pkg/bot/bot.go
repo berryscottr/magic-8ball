@@ -13,6 +13,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // SetDir for setting the directory for the bot
@@ -51,7 +52,9 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if m.Author.ID == bot.User.ID {
 		return
 	}
-	if strings.Contains(strings.ToLower(m.Content), "!game") {
+	if strings.Contains(strings.ToLower(m.Content), "!game") &&
+		(m.ChannelID == GameNightChannelID ||
+			m.ChannelID == DevChannelID) {
 		bot.HandleGameDay(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!line") {
@@ -63,6 +66,11 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if strings.Contains(strings.ToLower(m.Content), "bca") {
 		bot.HandleBCA(s, m)
 	}
+	if strings.Contains(
+		strings.Replace(strings.Replace(strings.ToLower(m.Content),
+			"-", "", -1), " ", "", -1), "9ball") {
+		bot.Handle9Ball(s, m)
+	}
 }
 
 // ReactionHandler for interpreting how to respond to reactions
@@ -70,7 +78,9 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 	if r.Member.User.ID == bot.User.ID {
 		return
 	}
-	if slices.Contains(GameDayReactions, r.MessageReaction.Emoji.Name) {
+	if slices.Contains(GameDayReactions, r.MessageReaction.Emoji.Name) &&
+		(r.MessageReaction.ChannelID == GameNightChannelID ||
+			r.MessageReaction.ChannelID == DevChannelID) {
 		bot.HandleGameDayReaction(s, r)
 	}
 }
@@ -78,6 +88,11 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 // HandleGameDayReaction for handling the reaction to the game day post
 func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	log.Info().Msg("handling reaction to game day post")
+	date := time.Now()
+	if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
+		log.Info().Msg("not Tuesday before 7pm, ignoring reaction")
+		return
+	}
 	var status string
 	switch r.MessageReaction.Emoji.Name {
 	case "👍":
@@ -102,7 +117,8 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s", r.MessageReaction.Emoji.Name, r.Member.Nick, r.ChannelID)
+	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s",
+		r.MessageReaction.Emoji.Name, r.Member.Nick, r.ChannelID)
 }
 
 // HandleGameDay for posting game day message
@@ -232,9 +248,9 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
 }
 
-// HandleBCA for mentions of non-APA play
+// HandleBCA for mentions of BCA play
 func (bot Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
-	log.Info().Msg("handling mention of non-APA play")
+	log.Info().Msg("handling mention of BCA play")
 	message := discordgo.MessageSend{
 		Content: "BCA is for bums.",
 		TTS:     true,
@@ -245,6 +261,21 @@ func (bot Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	log.Info().Msgf("bca rebuttal posted to %s in Discord channel %s", m.Member.Nick, m.ChannelID)
+}
+
+// Handle9Ball for mentions of 9-ball play
+func (bot Data) Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling mention of 9-ball play")
+	message := discordgo.MessageSend{
+		Content: "9-Ball is for bums.",
+		TTS:     true,
+	}
+	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("9-ball rebuttal posted to %s in Discord channel %s", m.Member.Nick, m.ChannelID)
 }
 
 // sum returns the sum of the elements in the given int slice

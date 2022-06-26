@@ -14,7 +14,13 @@ const (
 	MatchupSheet = "Sheet1"
 	// ReactionRequest is the reaction emoji choices for availability
 	ReactionRequest = "React to this message with a 👍 if you are coming, " +
-		"a 👎 if you can't make it, and an ⌛ if you will be late."
+		"a 👎 if you can't make it, and an ⌛ if you will be late. " +
+		"Any reaction of this type in #game-night " +
+		"until 7pm will update your tracked availability."
+	// DevChannelID is the ID of channel #bot-dev
+	DevChannelID = "955291440643207228"
+	// GameNightChannelID is the ID of channel #game-night
+	GameNightChannelID = "951345352030691381"
 )
 
 var (
@@ -76,6 +82,8 @@ type Methods interface {
 	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleSLMatchups for returning eligible lineups from a provided list of players
 	HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
-	// HandleBCA for mentions of non-APA play
+	// HandleBCA for mentions of BCA play
 	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate)
+	// Handle9Ball for mentions of 9 ball play
+	Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate)
 }
