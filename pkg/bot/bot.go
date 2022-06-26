@@ -52,9 +52,7 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if m.Author.ID == bot.User.ID {
 		return
 	}
-	if strings.Contains(strings.ToLower(m.Content), "!game") &&
-		(m.ChannelID == GameNightChannelID ||
-			m.ChannelID == DevChannelID) {
+	if strings.Contains(strings.ToLower(m.Content), "!game") {
 		bot.HandleGameDay(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!line") {
@@ -139,7 +137,11 @@ func (bot Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) 
 				ReactionRequest, opponentTeam,
 		),
 	}
-	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	if m.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(GameNightChannelID, &message)
+	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
