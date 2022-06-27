@@ -36,7 +36,7 @@ jobs:
       - name: Run the Docker image
         uses: nick-invision/retry@v2
         with:
-          timeout_minutes: 288
+          timeout_minutes: 2
           max_attempts: 300
           command: docker run docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
       - uses: gautamkrishnar/keepalive-workflow@v1
