@@ -87,9 +87,20 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	log.Info().Msg("handling reaction to game day post")
 	date := time.Now()
-	if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
-		log.Info().Msg("not Tuesday before 7pm, ignoring reaction")
-		return
+	loc, err := time.LoadLocation("America/New_York")
+	if err != nil {
+		bot.Err = err
+		log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
+		if date.Weekday() != time.Tuesday {
+			log.Info().Msg("not Tuesday UTC, ignoring reaction")
+			return
+		}
+	} else {
+		date = date.In(loc)
+		if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
+			log.Info().Msg("not Tuesday before 7pm EST, ignoring reaction")
+			return
+		}
 	}
 	var status string
 	switch r.MessageReaction.Emoji.Name {
