@@ -1,7 +1,7 @@
 name: Build Magic 8Ball
 on:
-  schedule:
-    - cron: "0 */6 * * *"
+#  schedule:
+#    - cron: "0 */6 * * *"
   push:
     branches: [ "main" ]
   pull_request:
@@ -34,5 +34,9 @@ jobs:
       - name: Push the Docker image
         run: docker push docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
       - name: Run the Docker image
-        run: docker run docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 288
+          max_attempts: 300
+          command: docker run docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
       - uses: gautamkrishnar/keepalive-workflow@v1
