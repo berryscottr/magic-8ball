@@ -88,18 +88,20 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 	log.Info().Msg("handling reaction to game day post")
 	date := time.Now()
 	loc, err := time.LoadLocation("America/New_York")
-	if err != nil {
-		bot.Err = err
-		log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
-		if date.Weekday() != time.Tuesday {
-			log.Info().Msg("not Tuesday UTC, ignoring reaction")
-			return
-		}
-	} else {
-		date = date.In(loc)
-		if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
-			log.Info().Msg("not Tuesday before 7pm EST, ignoring reaction")
-			return
+	if r.ChannelID == GameNightChannelID {
+		if err != nil {
+			bot.Err = err
+			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
+			if date.Weekday() != time.Tuesday {
+				log.Info().Msg("not Tuesday UTC, ignoring reaction")
+				return
+			}
+		} else {
+			date = date.In(loc)
+			if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
+				log.Info().Msg("not Tuesday before 7pm EST, ignoring reaction")
+				return
+			}
 		}
 	}
 	var status string
@@ -116,9 +118,13 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 		log.Info().Msg("unknown reaction")
 		return
 	}
+	name := r.Member.Nick
+	if name == "" {
+		name = r.Member.User.Username
+	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"%s will be %s tonight.", r.Member.Nick, status,
+			"%s will be %s tonight.", name, status,
 		),
 	}
 	if r.MessageReaction.ChannelID == DevChannelID {
@@ -131,7 +137,7 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 		return
 	}
 	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s",
-		r.MessageReaction.Emoji.Name, r.Member.Nick, r.ChannelID)
+		r.MessageReaction.Emoji.Name, name, r.ChannelID)
 }
 
 // HandleGameDay for posting game day message
