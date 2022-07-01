@@ -292,9 +292,9 @@ func (bot Data) HandleSLHeatMatchups(s *discordgo.Session, m *discordgo.MessageC
 	log.Info().Msg("handling skill level image match-ups")
 	message := discordgo.MessageSend{
 		Embed: &discordgo.MessageEmbed{
-			Image: &discordgo.MessageEmbedImage{
-				URL: "attachment://" + bot.Dir + SLHeatMatchupFile,
-			},
+			URL:   SLHeatMatchupUrl,
+			Type:  discordgo.EmbedTypeLink,
+			Title: "Expected Points by Match-up",
 		},
 	}
 	if m.ChannelID == DevChannelID {
