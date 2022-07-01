@@ -19,6 +19,7 @@ jobs:
         run: |
           pip install matplotlib openpyxl pandas seaborn
       - name: execute py script
+        working-directory: ./scripts
         run: |
           python ./scripts/slmatchups.py
       - name: Commit changes
