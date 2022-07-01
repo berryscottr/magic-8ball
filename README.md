@@ -2,7 +2,7 @@
 APA Discord Bot for Wookie Mistakes Team
 
 [![Go 1.18](https://img.shields.io/badge/golang-1.18-green.svg)](https://go.dev/dl/)
-[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.7](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/)
 
 ![Cat Pool](data/images/cat_pool.gif)
 

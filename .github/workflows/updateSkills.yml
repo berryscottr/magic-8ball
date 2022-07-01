@@ -21,7 +21,7 @@ jobs:
       - name: execute py script
         working-directory: ./scripts
         run: |
-          python ./scripts/slmatchups.py
+          python slmatchups.py
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
