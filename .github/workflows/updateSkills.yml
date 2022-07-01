@@ -17,7 +17,7 @@ jobs:
           python-version: "3.7"
       - name: Install dependencies
         run: |
-        pip install import matplotlib openpyxl pandas seaborn
+          pip install import matplotlib openpyxl pandas seaborn
       - name: execute py script
         run: |
           python ./scripts/slmatchups.py
