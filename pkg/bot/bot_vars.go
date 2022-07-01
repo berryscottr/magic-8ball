@@ -38,6 +38,7 @@ var (
 		"8-Balls of Fire",
 	}
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳"}
+	SeniorSkillLevel = 6
 )
 
 // Data for the bot to track along a request
@@ -64,6 +65,12 @@ type TeamLineup struct {
 	Lineup []int
 	// Sum for the team lineup
 	Sum int
+	// MatchupExpectedPoints for the team lineup
+	MatchupExpectedPointsFor float64
+	// MatchupExpectedPointsAgainst for the team lineup
+	MatchupExpectedPointsAgainst float64
+	// Matchups for the team lineup
+	Matchups []string
 }
 
 // Methods for the bot to use
@@ -84,6 +91,8 @@ type Methods interface {
 	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleSLMatchups for returning eligible lineups from a provided list of players
 	HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleOptimal for returning max expected points lineup from opponent's lineup
+	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleBCA for mentions of BCA play
 	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate)
 	// Handle9Ball for mentions of 9 ball play

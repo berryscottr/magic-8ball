@@ -54,6 +54,13 @@ func TestData_HandleSLMatchups(t *testing.T) {
 	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
 }
 
+// TestData_HandleOptimal confirms ability to generate a max expected points lineup
+func TestData_HandleOptimal(t *testing.T) {
+	assertion := assert.New(t)
+	data := new(Data)
+	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
+}
+
 // TestData_HandleBCA confirms ability to respond to a BCA mention
 func TestData_HandleBCA(t *testing.T) {
 	assertion := assert.New(t)
