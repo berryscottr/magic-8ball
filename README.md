@@ -3,6 +3,8 @@ APA Discord Bot for Wookie Mistakes Team
 
 [![Go 1.18](https://img.shields.io/badge/golang-1.18-green.svg)](https://go.dev/dl/)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/)
+[![updateSkills](https://github.com/berryscottr/magic-8ball/actions/workflows/updateSkills.yml/badge.svg)](https://github.com/berryscottr/magic-8ball/actions/workflows/updateSkills.yml)
+[![Build Magic 8Ball](https://github.com/berryscottr/magic-8ball/actions/workflows/build.yml/badge.svg?event=workflow_run)](https://github.com/berryscottr/magic-8ball/actions/workflows/build.yml)
 
 ![Cat Pool](data/images/cat_pool.gif)
 
