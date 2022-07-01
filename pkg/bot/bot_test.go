@@ -54,6 +54,13 @@ func TestData_HandleSLMatchups(t *testing.T) {
 	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
 }
 
+// TestData_HandleHandicapAvg confirms ability to return the average handicap
+func TestData_HandleHandicapAvg(t *testing.T) {
+	assertion := assert.New(t)
+	data := new(Data)
+	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
+}
+
 // TestData_HandleOptimal confirms ability to generate a max expected points lineup
 func TestData_HandleOptimal(t *testing.T) {
 	assertion := assert.New(t)

@@ -18,6 +18,10 @@ This command returns all eligible lineups for the first 8 given numbers in the m
 
 This command returns the expected points of every skill level matchup to the #strategy channel in both markdown text 
 and a link to the [heatmap](https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg).
+### Lineups
+`!inn`
+
+This command returns everyone's effective innings per game towards their handicap to the #strategy channel.
 ### Optimal Lineup
 `!opt 65543 22235567`
 

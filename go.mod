@@ -7,6 +7,7 @@ require (
 	github.com/bwmarrin/discordgo v0.25.0
 	github.com/rs/zerolog v1.27.0
 	github.com/stretchr/testify v1.7.5
+	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
 	gonum.org/v1/gonum v0.11.0
 )
 
@@ -18,7 +19,6 @@ require (
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d // indirect
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"golang.org/x/exp/slices"
 	"gonum.org/v1/gonum/stat/combin"
+	"math"
 	"path/filepath"
 	"reflect"
 	"regexp"
@@ -61,6 +62,9 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!sl") {
 		bot.HandleSLMatchups(s, m)
+	}
+	if strings.Contains(strings.ToLower(m.Content), "!inn") {
+		bot.HandleHandicapAvg(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!opt") {
 		bot.HandleOptimal(s, m)
@@ -259,7 +263,7 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 		},
 		Content: "```",
 	}
-	bot.ExcelRows = bot.Excel.GetRows(MatchupSheet)
+	bot.ExcelRows = bot.Excel.GetRows(Sheet1)
 	for irow, row := range bot.ExcelRows {
 		for icol, colCell := range row {
 			colCell = strings.Replace(colCell, "X", "", 1)
@@ -275,6 +279,67 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 			message.Content += colCell + " "
 		}
 		message.Content += "\n"
+	}
+	message.Content += "```"
+	if m.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(StrategyChannelID, &message)
+	}
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
+}
+
+// HandleHandicapAvg for returning your effective innings per game
+func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling skill level match-ups")
+	bot.Excel, bot.Err = excelize.OpenFile(bot.Dir + InningsFile)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msgf("failed to read excel file \"%s\"", bot.Dir+SLMatchupFile)
+		return
+	}
+	message := discordgo.MessageSend{Content: "```"}
+	bot.ExcelRows = bot.Excel.GetRows(Sheet1)
+	var longestName int
+	for irow, row := range bot.ExcelRows {
+		if irow > 0 {
+			if len(row[0]) > longestName {
+				longestName = len(row[0])
+			}
+			var innings []float64
+			for icol, colCell := range row {
+				if icol > 0 && colCell != "" {
+					inning, err := strconv.ParseFloat(colCell, 64)
+					if err != nil {
+						bot.Err = err
+						log.Err(bot.Err).Msg("failed to parse float")
+					}
+					innings = append(innings, inning)
+				}
+			}
+			if len(innings) > 20 {
+				innings = innings[len(innings)-20:]
+			}
+			sort.Float64s(innings)
+			if len(innings) >= 20 {
+				innings = innings[:10]
+			} else if len(innings) > 2 {
+				innings = innings[:int(math.Floor(float64(len(innings)/2))+1)]
+			}
+			var total float64
+			for _, inning := range innings {
+				if inning > 10 {
+					inning = 10
+				}
+				total += inning
+			}
+			average := total / float64(len(innings))
+			indentSpaces := strings.Repeat(" ", longestName-len(row[0])+1)
+			message.Content += fmt.Sprintf("%v%s%.2f\n", row[0], indentSpaces, average)
+		}
 	}
 	message.Content += "```"
 	if m.ChannelID == DevChannelID {
@@ -350,7 +415,7 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		log.Err(bot.Err).Msgf("failed to read excel file \"%s\"", bot.Dir+SLMatchupFile)
 		return
 	}
-	bot.ExcelRows = bot.Excel.GetRows(MatchupSheet)
+	bot.ExcelRows = bot.Excel.GetRows(Sheet1)
 	var teamLineups []TeamLineup
 	for _, lineup := range lineups {
 		var expectedPointsFor float64

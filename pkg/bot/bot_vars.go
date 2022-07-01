@@ -12,8 +12,10 @@ const (
 	SLMatchupFile = "/data/SLMatchupAverages.xlsx"
 	// SLHeatMatchupUrl is the name of the file where the SL heat matchups are stored
 	SLHeatMatchupUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg"
-	// MatchupSheet is the name of the sheet where the matchups are stored
-	MatchupSheet = "Sheet1"
+	// Sheet1 is the name of the main sheet in the Excel file
+	Sheet1 = "Sheet1"
+	// InningsFile is the name of the file where the SL innings are stored
+	InningsFile = "/data/InningCounts.xlsx"
 	// ReactionRequest is the reaction emoji choices for availability
 	ReactionRequest = "React to this message with a 👍 if you are coming, " +
 		"a 👎 if you can't make it, and an ⌛ if you will be late. " +
@@ -93,6 +95,8 @@ type Methods interface {
 	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleSLMatchups for returning chart of the best skill level match-ups
 	HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleHandicapAvg for returning your effective innings per game
+	HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleOptimal for returning max expected points lineup from opponent's lineup
 	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleBCA for mentions of BCA play
