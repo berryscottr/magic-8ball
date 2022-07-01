@@ -59,10 +59,10 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if strings.Contains(strings.ToLower(m.Content), "!line") {
 		bot.HandleLineups(s, m)
 	}
-	if strings.Contains(strings.ToLower(m.Content), "!textsl") {
+	if strings.Contains(strings.ToLower(m.Content), "!sl") {
 		bot.HandleSLTextMatchups(s, m)
 	}
-	if strings.Contains(strings.ToLower(m.Content), "!sl") {
+	if strings.Contains(strings.ToLower(m.Content), "!heatsl") {
 		bot.HandleSLHeatMatchups(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!opt") {
@@ -292,10 +292,11 @@ func (bot Data) HandleSLHeatMatchups(s *discordgo.Session, m *discordgo.MessageC
 	log.Info().Msg("handling skill level image match-ups")
 	message := discordgo.MessageSend{
 		Embed: &discordgo.MessageEmbed{
-			Image: &discordgo.MessageEmbedImage{URL: SLHeatMatchupUrl},
+			Image: &discordgo.MessageEmbedImage{
+				URL: "attachment://" + bot.Dir + SLHeatMatchupFile,
+			},
 		},
 	}
-
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {

@@ -10,8 +10,8 @@ const (
 	UserID = "@me"
 	// SLMatchupFile is the name of the file where the SL matchups are stored
 	SLMatchupFile = "/data/SLMatchupAverages.xlsx"
-	// SLHeatMatchupUrl is the name of the file where the SL heat matchups are stored
-	SLHeatMatchupUrl = "https://github.com/berryscottr/magic-8ball/blob/5e64747ff5e9e36163bec444ed195555ba7315ea/data/images/slMatchupAverages.png?raw=true"
+	// SLHeatMatchupFile is the name of the file where the SL heat matchups are stored
+	SLHeatMatchupFile = "/data/images/slMatchupAverages.svg"
 	// MatchupSheet is the name of the sheet where the matchups are stored
 	MatchupSheet = "Sheet1"
 	// ReactionRequest is the reaction emoji choices for availability
