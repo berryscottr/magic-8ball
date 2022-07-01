@@ -1,6 +1,10 @@
+import matplotlib.pyplot as plt
+import numpy as np
 import openpyxl
 import pandas as pd
+import seaborn as sns
 import warnings
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
@@ -60,8 +64,8 @@ def get_sl_matchup_stats(df, games2win):
             matchup_data.getaverage()
             if p1skill == p2skill:
                 matchup_data.average /= 2
-            if matchup_data.games < 6:
-                matchup_data.average = "X{}".format(round(matchup_data.average, 2))
+            # if matchup_data.games < 6:
+            #     matchup_data.average = "X{}".format(round(matchup_data.average, 2))
             try:
                 slmatches.loc[p1skill, p2skill] = round(matchup_data.average, 2)
             except TypeError:
@@ -75,6 +79,16 @@ def get_sl_matchup_stats(df, games2win):
     #     plt.ylabel('Average Points')
     #     plt.savefig(imgtitle)
     #     plt.show()
+    sls = pd.DataFrame(slmatches, index=slrange, columns=slrange, dtype=float)
+    sns.heatmap(sls, annot=True, cmap=sns.color_palette("coolwarm", 12), vmin=0, vmax=3, fmt=".2f",
+                linewidths=.2, cbar_kws={"label": "Average Points"})
+    plt.title("SL Matchup Average Points")
+    plt.xlabel("Opponent SL")
+    plt.ylabel("Player SL")
+    plt.tick_params(axis='both', which='major', labelsize=10, labelbottom=False, bottom=False, top=False, labeltop=True,
+                    left=False, right=False)
+    plt.savefig("../data/images/slMatchupAverages.png")
+    plt.savefig("../data/images/slMatchupAverages.svg")
     slmatches.to_excel(r'../data/SLMatchupAverages.xlsx', index=True, header=True)
     print(slmatches)
 

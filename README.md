@@ -14,7 +14,11 @@ This command returns all eligible lineups for the first 8 given numbers in the m
 ### SL Matchups
 `!sl`
 
-This command returns the expected points of every skill level matchup to the #strategy channel.
+This command returns the expected points of every skill level matchup as an image to the #strategy channel.
+
+`!textsl`
+
+This command returns the expected points of every skill level matchup as text to the #strategy channel.
 ### Optimal Lineup
 `!opt 65543 22235567`
 
