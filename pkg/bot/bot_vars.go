@@ -91,10 +91,8 @@ type Methods interface {
 	HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleLineups for returning eligible lineups from a provided list of players
 	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
-	// HandleSLTextMatchups for returning chart of the best skill level match-ups
-	HandleSLTextMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
-	// HandleSLHeatMatchups for returning heatmap of the best skill level match-ups
-	HandleSLHeatMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleSLMatchups for returning chart of the best skill level match-ups
+	HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleOptimal for returning max expected points lineup from opponent's lineup
 	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleBCA for mentions of BCA play

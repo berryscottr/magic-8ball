@@ -81,12 +81,11 @@ def get_sl_matchup_stats(df, games2win):
     sls = pd.DataFrame(slmatches, index=slrange, columns=slrange, dtype=float)
     sns.heatmap(sls, annot=True, cmap=sns.color_palette("coolwarm", 12), vmin=0, vmax=3, fmt=".2f",
                 linewidths=.2, cbar_kws={"label": "Average Points"})
-    plt.title("SL Matchup Average Points")
+    plt.title("Opponent SL", size=10)
     plt.xlabel("Opponent SL")
     plt.ylabel("Player SL")
     plt.tick_params(axis='both', which='major', labelsize=10, labelbottom=False, bottom=False, top=False, labeltop=True,
                     left=False, right=False)
-    plt.savefig("../data/images/slMatchupAverages.png")
     plt.savefig("../data/images/slMatchupAverages.svg")
     slmatches.to_excel(r'../data/SLMatchupAverages.xlsx', index=True, header=True)
     print(slmatches)

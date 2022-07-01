@@ -60,10 +60,7 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 		bot.HandleLineups(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!sl") {
-		bot.HandleSLTextMatchups(s, m)
-	}
-	if strings.Contains(strings.ToLower(m.Content), "!heatsl") {
-		bot.HandleSLHeatMatchups(s, m)
+		bot.HandleSLMatchups(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!opt") {
 		bot.HandleOptimal(s, m)
@@ -246,16 +243,21 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 	log.Info().Msgf("%v possible lineups posted to Discord channel %s", len(teamLineups), m.ChannelID)
 }
 
-// HandleSLTextMatchups for returning chart of the best skill level match-ups
-func (bot Data) HandleSLTextMatchups(s *discordgo.Session, m *discordgo.MessageCreate) {
-	log.Info().Msg("handling skill level text match-ups")
+// HandleSLMatchups for returning chart of the best skill level match-ups
+func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling skill level match-ups")
 	bot.Excel, bot.Err = excelize.OpenFile(bot.Dir + SLMatchupFile)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msgf("failed to read excel file \"%s\"", bot.Dir+SLMatchupFile)
 		return
 	}
 	message := discordgo.MessageSend{
-		Content: "Expected Points by Match-up:\n```",
+		Embed: &discordgo.MessageEmbed{
+			URL:   SLHeatMatchupUrl,
+			Type:  discordgo.EmbedTypeLink,
+			Title: "Skill Level Match-Ups Heatmap",
+		},
+		Content: "```",
 	}
 	bot.ExcelRows = bot.Excel.GetRows(MatchupSheet)
 	for irow, row := range bot.ExcelRows {
@@ -284,29 +286,7 @@ func (bot Data) HandleSLTextMatchups(s *discordgo.Session, m *discordgo.MessageC
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("skill level text match-ups posted to Discord channel %s", m.ChannelID)
-}
-
-// HandleSLHeatMatchups for returning heatmap of the best skill level match-ups
-func (bot Data) HandleSLHeatMatchups(s *discordgo.Session, m *discordgo.MessageCreate) {
-	log.Info().Msg("handling skill level image match-ups")
-	message := discordgo.MessageSend{
-		Embed: &discordgo.MessageEmbed{
-			URL:   SLHeatMatchupUrl,
-			Type:  discordgo.EmbedTypeLink,
-			Title: "Expected Points by Match-up",
-		},
-	}
-	if m.ChannelID == DevChannelID {
-		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
-	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(StrategyChannelID, &message)
-	}
-	if bot.Err != nil {
-		log.Err(bot.Err).Msg("failed to post message")
-		return
-	}
-	log.Info().Msgf("skill level image match-ups posted to Discord channel %s", m.ChannelID)
+	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
 }
 
 // HandleOptimal for returning max expected points lineup from opponent's lineup

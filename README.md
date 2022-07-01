@@ -14,13 +14,10 @@ APA Discord Bot for Wookie Mistakes Team
 
 This command returns all eligible lineups for the first 8 given numbers in the message ranged between 2-7 to the #strategy channel.
 ### SL Matchups
-`!heatsl`
-
-This command returns the expected points of every skill level matchup as an image to the #strategy channel.
-
 `!sl`
 
-This command returns the expected points of every skill level matchup as text to the #strategy channel.
+This command returns the expected points of every skill level matchup to the #strategy channel in both markdown text 
+and a link to the [heatmap](https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg).
 ### Optimal Lineup
 `!opt 65543 22235567`
 

@@ -47,18 +47,11 @@ func TestData_HandleLineups(t *testing.T) {
 	assertion.NoError(data.Err, "failed to generate valid lineups")
 }
 
-// TestData_HandleSLTextMatchups confirms ability to read the matchups Excel sheet
-func TestData_HandleSLTextMatchups(t *testing.T) {
+// TestData_HandleSLMatchups confirms ability to read the matchups Excel sheet
+func TestData_HandleSLMatchups(t *testing.T) {
 	assertion := assert.New(t)
 	data := new(Data)
 	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
-}
-
-// TestData_HandleSLMatchups confirms ability to read the matchups image
-func TestData_HandleSLHeatMatchups(t *testing.T) {
-	assertion := assert.New(t)
-	data := new(Data)
-	assertion.NoError(data.Err, "failed to read the matchups image")
 }
 
 // TestData_HandleOptimal confirms ability to generate a max expected points lineup
