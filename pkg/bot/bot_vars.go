@@ -67,14 +67,23 @@ type Data struct {
 type TeamLineup struct {
 	// Lineup for the team lineup
 	Lineup []int
+	// OpponentLineup for the team lineup
+	OpponentLineup []int
 	// Sum for the team lineup
 	Sum int
-	// MatchupExpectedPoints for the team lineup
+	// MatchupExpectedPointsFor the team lineup
 	MatchupExpectedPointsFor float64
 	// MatchupExpectedPointsAgainst for the team lineup
 	MatchupExpectedPointsAgainst float64
 	// Matchups for the team lineup
-	Matchups []string
+	Matchups []Matchup
+}
+
+type Matchup struct {
+	// SkillLevels for the match-up
+	SkillLevels [2]int
+	// ExpectedPointsFor for the match-up
+	ExpectedPointsFor float64
 }
 
 // Methods for the bot to use

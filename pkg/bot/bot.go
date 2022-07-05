@@ -210,9 +210,7 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 				lineup = append(lineup, skillLevels[permutationIndex])
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if sum(lineup) >= 10 &&
-				sum(lineup) <= 23 &&
-				!seniorSkillRule(lineup) &&
+			if validLineup(lineup) &&
 				!containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
@@ -400,8 +398,7 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 				lineup = append(lineup, teamSkillLevels[permutationIndex])
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if sum(lineup) >= 10 &&
-				sum(lineup) <= 23 &&
+			if validLineup(lineup) &&
 				!containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
@@ -418,9 +415,7 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 	bot.ExcelRows = bot.Excel.GetRows(Sheet1)
 	var teamLineups []TeamLineup
 	for _, lineup := range lineups {
-		var expectedPointsFor float64
-		var matchups []string
-		expectedPointsFor = 0.0
+		var matchups []Matchup
 		for _, opponentPlayer := range opponentSkillLevels {
 			for _, teamPlayer := range lineup {
 				points, err := strconv.ParseFloat(
@@ -431,19 +426,21 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 					log.Err(bot.Err).Msg("failed to parse float")
 					return
 				}
-				matchups = append(matchups, fmt.Sprintf("%d/%d", teamPlayer,
-					opponentPlayer))
-				expectedPointsFor += points
+				matchup := Matchup{
+					SkillLevels:       [2]int{teamPlayer, opponentPlayer},
+					ExpectedPointsFor: points,
+				}
+				matchups = append(matchups, matchup)
 			}
 		}
-		teamLineups = append(teamLineups, TeamLineup{Lineup: lineup, MatchupExpectedPointsFor: expectedPointsFor, Matchups: matchups})
+		teamLineups = append(teamLineups, TeamLineup{Lineup: lineup, Matchups: matchups})
 	}
 	// I have relevant lineups, now sort them by expected points
 	sort.Slice(teamLineups[:], func(i, j int) bool {
 		return teamLineups[i].MatchupExpectedPointsFor > teamLineups[j].MatchupExpectedPointsFor
 	})
 	for _, teamLineup := range teamLineups {
-		message.Content += fmt.Sprintf("%v %.2f\n", teamLineup.Matchups, teamLineup.MatchupExpectedPointsFor)
+		message.Content += fmt.Sprintf("%v: %.2f\n", teamLineup.Matchups, teamLineup.MatchupExpectedPointsFor)
 	}
 	if len(teamLineups) == 0 {
 		message.Content = "No eligible lineups found"
@@ -522,4 +519,20 @@ func containsSlice(slc [][]int, ele []int) bool {
 		}
 	}
 	return false
+}
+
+// validLineup returns true if the given lineup is valid
+func validLineup(lineup []int) bool {
+	if len(lineup) != 5 {
+		return false
+	}
+	for _, v := range lineup {
+		if v < 10 || v > 23 {
+			return false
+		}
+	}
+	if seniorSkillRule(lineup) {
+		return false
+	}
+	return true
 }
