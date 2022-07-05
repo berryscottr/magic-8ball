@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"github.com/bwmarrin/discordgo"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -65,7 +66,15 @@ func TestData_HandleHandicapAvg(t *testing.T) {
 func TestData_HandleOptimal(t *testing.T) {
 	assertion := assert.New(t)
 	data := new(Data)
-	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
+	data.Dir = "../../"
+	var s *discordgo.Session
+	m := discordgo.MessageCreate{
+		Message: &discordgo.Message{
+			Content: "!optimal 66533 22335567",
+		},
+	}
+	data.HandleOptimal(s, &m)
+	assertion.NoError(data.Err, "failed to return the optimal matchup")
 }
 
 // TestData_HandleBCA confirms ability to respond to a BCA mention

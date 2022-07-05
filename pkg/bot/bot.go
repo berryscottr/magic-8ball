@@ -412,8 +412,6 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 	}
 	bot.ExcelRows = bot.Excel.GetRows(Sheet1)
 	var teamLineups []TeamLineup
-	var bestMatchups []Matchup
-	var bestMatchupTotal float64
 	for _, lineup := range lineups {
 		var matchups []Matchup
 		for _, opponentPlayer := range opponentSkillLevels {
@@ -433,59 +431,53 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 				matchups = append(matchups, matchup)
 			}
 		}
-		gen := combin.NewPermutationGenerator(len(matchups), 5)
+		teamLineups = append(teamLineups, TeamLineup{
+			Lineup:         lineup,
+			OpponentLineup: opponentSkillLevels,
+			Matchups:       matchups,
+		})
+	}
+	var t TeamLineup
+	for _, tl := range teamLineups {
+		gen := combin.NewCombinationGenerator(len(tl.Matchups), 5)
 		var i int
 		for gen.Next() {
-			permutationIndices := gen.Permutation(nil)
-			var goodmatchup []Matchup
-			for _, permutationIndex := range permutationIndices {
-				goodmatchup = append(goodmatchup, matchups[permutationIndex])
+			combinationIndices := gen.Combination(nil)
+			var tp []int
+			var op []int
+			var total float64
+			for _, combinationIndex := range combinationIndices {
+				tp = append(tp, tl.Matchups[combinationIndex].SkillLevels[0])
+				op = append(op, tl.Matchups[combinationIndex].SkillLevels[1])
+				total += tl.Matchups[combinationIndex].ExpectedPointsFor
 			}
-			var teamGoodLineup []int
-			var opponentGoodLineup []int
-			for _, matchup := range goodmatchup {
-				teamGoodLineup = append(teamGoodLineup, matchup.SkillLevels[0])
-				opponentGoodLineup = append(opponentGoodLineup, matchup.SkillLevels[1])
-			}
-			var goodMatchupTotal float64
-			for _, m := range goodmatchup {
-				goodMatchupTotal += m.ExpectedPointsFor
-			}
-			for _, b := range bestMatchups {
-				bestMatchupTotal += b.ExpectedPointsFor
-			}
-			if validLineup(teamGoodLineup) && validLineup(opponentGoodLineup) &&
-				goodMatchupTotal > bestMatchupTotal &&
-				NewUniverse(teamSkillLevels).CountainSet(teamGoodLineup) &&
-				NewUniverse(opponentSkillLevels).CountainSet(opponentGoodLineup) {
-				var tl TeamLineup
-				for _, m := range goodmatchup {
-					tl.Matchups = append(tl.Matchups, m)
-					tl.MatchupExpectedPointsFor += m.ExpectedPointsFor
+			sort.Sort(sort.Reverse(sort.IntSlice(tp)))
+			sort.Sort(sort.Reverse(sort.IntSlice(op)))
+			if total > t.MatchupExpectedPointsFor &&
+				reflect.DeepEqual(tp, tl.Lineup) &&
+				reflect.DeepEqual(op, tl.OpponentLineup) {
+				t.MatchupExpectedPointsFor = total
+				var ms []Matchup
+				for _, combinationIndex := range combinationIndices {
+					m := Matchup{
+						SkillLevels:       tl.Matchups[combinationIndex].SkillLevels,
+						ExpectedPointsFor: tl.Matchups[combinationIndex].ExpectedPointsFor,
+					}
+					ms = append(ms, m)
 				}
-				tl.Lineup = teamGoodLineup
-				tl.OpponentLineup = opponentGoodLineup
-				teamLineups = append(teamLineups, tl)
-				sort.Slice(teamLineups, func(i, j int) bool {
-					return teamLineups[i].MatchupExpectedPointsFor > teamLineups[j].MatchupExpectedPointsFor
-				})
-				if len(teamLineups) > 5 {
-					teamLineups = teamLineups[:5]
-				}
+				t.Matchups = ms
+				t.MatchupExpectedPointsFor = total
 			}
 			i++
 		}
 	}
-	log.Info().Msgf("found %v team lineups", len(teamLineups))
-	for _, tl := range teamLineups {
-		for _, m := range tl.Matchups {
-			message.Content += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
-		}
-		message.Content += fmt.Sprintf("\t%v", tl.MatchupExpectedPointsFor)
+	for _, m := range t.Matchups {
+		message.Content += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
 	}
-	//if len(teamLineups) == 0 {
-	//	message.Content = "No eligible lineups found"
-	//}
+	message.Content += fmt.Sprintf("\t%.2f\n", t.MatchupExpectedPointsFor)
+	if len(teamLineups) == 0 {
+		message.Content = "No eligible lineups found"
+	}
 	message.Content = "```" + message.Content + "```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
@@ -572,25 +564,6 @@ func validLineup(lineup []int) bool {
 	}
 	if seniorSkillRule(lineup) {
 		return false
-	}
-	return true
-}
-
-type Universe map[int]bool
-
-func NewUniverse(s []int) Universe {
-	u := make(Universe)
-	for _, i := range s {
-		u[i] = true
-	}
-	return u
-}
-
-func (u Universe) CountainSet(s []int) bool {
-	for _, i := range s {
-		if !u[i] {
-			return false
-		}
 	}
 	return true
 }
