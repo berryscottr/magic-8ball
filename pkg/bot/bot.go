@@ -382,9 +382,12 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		teamSkillLevels[i], _ = strconv.Atoi(s)
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(teamSkillLevels)))
-	message := discordgo.MessageSend{
-		Content: "Expected Points by Matchups:\n",
+	if len(teamSkillLevels) == 0 || len(opponentSkillLevels) == 0 {
+		bot.Err = errors.New("invalid command")
+		log.Err(bot.Err).Msg("not enough arguments")
+		return
 	}
+	var message discordgo.MessageSend
 	var lineups [][]int
 	log.Info().Msgf("generating possible lineups and expected points of %v vs %v", teamSkillLevels, opponentSkillLevels)
 	if len(teamSkillLevels) >= 5 {
@@ -498,15 +501,18 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		tli = tli[:10]
 	}
 	for _, l := range tli {
+		var sls string
 		for _, m := range l.Matchups {
-			message.Content += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
+			sls += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
 		}
-		message.Content += fmt.Sprintf("\t%.2f\n", l.MatchupExpectedPointsFor)
+		if !strings.Contains(message.Content, sls) {
+			message.Content += fmt.Sprintf("%s\t%.2f\n", sls, l.MatchupExpectedPointsFor)
+		}
 	}
 	if len(teamLineups) == 0 {
 		message.Content = "No eligible lineups found"
 	}
-	message.Content = "```" + message.Content + "```"
+	message.Content = "Expected Points by Matchups:\n```" + message.Content + "```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {
