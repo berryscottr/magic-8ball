@@ -483,7 +483,9 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 	sort.Slice(t, func(i, j int) bool {
 		return t[i].MatchupExpectedPointsFor > t[j].MatchupExpectedPointsFor
 	})
-	t = t[:50]
+	if len(t) > 50 {
+		t = t[:50]
+	}
 	for _, tl := range t {
 		sort.Slice(tl.Matchups, func(i, j int) bool {
 			return tl.Matchups[i].SkillLevels[0] > tl.Matchups[j].SkillLevels[0]
