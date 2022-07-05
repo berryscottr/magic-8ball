@@ -73,7 +73,7 @@ func TestData_HandleOptimal(t *testing.T) {
 			Content: "!optimal 65533 22335567",
 		},
 	}
-	data.HandleOptimal(s, &m)
+	// data.HandleOptimal(s, &m)
 	assertion.NoError(data.Err, "failed to return the optimal matchup")
 }
 
