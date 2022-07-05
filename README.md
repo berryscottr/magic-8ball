@@ -27,6 +27,7 @@ This command returns everyone's effective innings per game towards their handica
 
 This command returns the highest expected points lineups for that the second array (first 8) of numbers can 
 respond to the first array (first 5) of numbers in the message. For this command to work, the arrays must be space separated.
+There is also about 15 seconds of delay until a response.
 ### Game Day
 `!game Wookie Mistakes`
 

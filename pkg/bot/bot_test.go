@@ -70,7 +70,7 @@ func TestData_HandleOptimal(t *testing.T) {
 	var s *discordgo.Session
 	m := discordgo.MessageCreate{
 		Message: &discordgo.Message{
-			Content: "!optimal 66533 22335567",
+			Content: "!optimal 65533 22335567",
 		},
 	}
 	data.HandleOptimal(s, &m)

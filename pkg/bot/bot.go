@@ -437,7 +437,7 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 			Matchups:       matchups,
 		})
 	}
-	var t TeamLineup
+	var t []TeamLineup
 	for _, tl := range teamLineups {
 		gen := combin.NewCombinationGenerator(len(tl.Matchups), 5)
 		var i int
@@ -453,28 +453,56 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(tp)))
 			sort.Sort(sort.Reverse(sort.IntSlice(op)))
-			if total > t.MatchupExpectedPointsFor &&
-				reflect.DeepEqual(tp, tl.Lineup) &&
+			if reflect.DeepEqual(tp, tl.Lineup) &&
 				reflect.DeepEqual(op, tl.OpponentLineup) {
-				t.MatchupExpectedPointsFor = total
-				var ms []Matchup
+				var tls TeamLineup
+				tls.MatchupExpectedPointsFor = total
 				for _, combinationIndex := range combinationIndices {
 					m := Matchup{
 						SkillLevels:       tl.Matchups[combinationIndex].SkillLevels,
 						ExpectedPointsFor: tl.Matchups[combinationIndex].ExpectedPointsFor,
 					}
-					ms = append(ms, m)
+					tls.Matchups = append(tls.Matchups, m)
 				}
-				t.Matchups = ms
-				t.MatchupExpectedPointsFor = total
+				toadd := true
+				for _, v := range t {
+					if reflect.DeepEqual(v, tls) {
+						toadd = false
+					}
+				}
+				if toadd {
+					t = append(t, tls)
+				}
 			}
 			i++
 		}
 	}
-	for _, m := range t.Matchups {
-		message.Content += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
+	sort.Slice(t, func(i, j int) bool {
+		return t[i].MatchupExpectedPointsFor > t[j].MatchupExpectedPointsFor
+	})
+	t = t[:50]
+	for _, tl := range t {
+		sort.Slice(tl.Matchups, func(i, j int) bool {
+			return tl.Matchups[i].SkillLevels[0] > tl.Matchups[j].SkillLevels[0]
+		})
 	}
-	message.Content += fmt.Sprintf("\t%.2f\n", t.MatchupExpectedPointsFor)
+	var tli []TeamLineup
+	var prevm []Matchup
+	for _, v := range t {
+		if !reflect.DeepEqual(v.Matchups, prevm) {
+			tli = append(tli, v)
+			prevm = v.Matchups
+		}
+	}
+	if len(tli) > 10 {
+		tli = tli[:10]
+	}
+	for _, l := range tli {
+		for _, m := range l.Matchups {
+			message.Content += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
+		}
+		message.Content += fmt.Sprintf("\t%.2f\n", l.MatchupExpectedPointsFor)
+	}
 	if len(teamLineups) == 0 {
 		message.Content = "No eligible lineups found"
 	}
