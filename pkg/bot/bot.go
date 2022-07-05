@@ -210,8 +210,7 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 				lineup = append(lineup, skillLevels[permutationIndex])
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if validLineup(lineup) &&
-				!containsSlice(lineups, lineup) {
+			if validLineup(lineup) && !containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
 			i++
@@ -398,8 +397,7 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 				lineup = append(lineup, teamSkillLevels[permutationIndex])
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if validLineup(lineup) &&
-				!containsSlice(lineups, lineup) {
+			if validLineup(lineup) && !containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
 			i++
@@ -414,6 +412,8 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 	}
 	bot.ExcelRows = bot.Excel.GetRows(Sheet1)
 	var teamLineups []TeamLineup
+	var bestMatchups []Matchup
+	var bestMatchupTotal float64
 	for _, lineup := range lineups {
 		var matchups []Matchup
 		for _, opponentPlayer := range opponentSkillLevels {
@@ -433,18 +433,59 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 				matchups = append(matchups, matchup)
 			}
 		}
-		teamLineups = append(teamLineups, TeamLineup{Lineup: lineup, Matchups: matchups})
+		gen := combin.NewPermutationGenerator(len(matchups), 5)
+		var i int
+		for gen.Next() {
+			permutationIndices := gen.Permutation(nil)
+			var goodmatchup []Matchup
+			for _, permutationIndex := range permutationIndices {
+				goodmatchup = append(goodmatchup, matchups[permutationIndex])
+			}
+			var teamGoodLineup []int
+			var opponentGoodLineup []int
+			for _, matchup := range goodmatchup {
+				teamGoodLineup = append(teamGoodLineup, matchup.SkillLevels[0])
+				opponentGoodLineup = append(opponentGoodLineup, matchup.SkillLevels[1])
+			}
+			var goodMatchupTotal float64
+			for _, m := range goodmatchup {
+				goodMatchupTotal += m.ExpectedPointsFor
+			}
+			for _, b := range bestMatchups {
+				bestMatchupTotal += b.ExpectedPointsFor
+			}
+			if validLineup(teamGoodLineup) && validLineup(opponentGoodLineup) &&
+				goodMatchupTotal > bestMatchupTotal &&
+				NewUniverse(teamSkillLevels).CountainSet(teamGoodLineup) &&
+				NewUniverse(opponentSkillLevels).CountainSet(opponentGoodLineup) {
+				var tl TeamLineup
+				for _, m := range goodmatchup {
+					tl.Matchups = append(tl.Matchups, m)
+					tl.MatchupExpectedPointsFor += m.ExpectedPointsFor
+				}
+				tl.Lineup = teamGoodLineup
+				tl.OpponentLineup = opponentGoodLineup
+				teamLineups = append(teamLineups, tl)
+				sort.Slice(teamLineups, func(i, j int) bool {
+					return teamLineups[i].MatchupExpectedPointsFor > teamLineups[j].MatchupExpectedPointsFor
+				})
+				if len(teamLineups) > 5 {
+					teamLineups = teamLineups[:5]
+				}
+			}
+			i++
+		}
 	}
-	// I have relevant lineups, now sort them by expected points
-	sort.Slice(teamLineups[:], func(i, j int) bool {
-		return teamLineups[i].MatchupExpectedPointsFor > teamLineups[j].MatchupExpectedPointsFor
-	})
-	for _, teamLineup := range teamLineups {
-		message.Content += fmt.Sprintf("%v: %.2f\n", teamLineup.Matchups, teamLineup.MatchupExpectedPointsFor)
+	log.Info().Msgf("found %v team lineups", len(teamLineups))
+	for _, tl := range teamLineups {
+		for _, m := range tl.Matchups {
+			message.Content += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
+		}
+		message.Content += fmt.Sprintf("\t%v", tl.MatchupExpectedPointsFor)
 	}
-	if len(teamLineups) == 0 {
-		message.Content = "No eligible lineups found"
-	}
+	//if len(teamLineups) == 0 {
+	//	message.Content = "No eligible lineups found"
+	//}
 	message.Content = "```" + message.Content + "```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
@@ -455,7 +496,7 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("%v possible lineups and expected points posted to Discord channel %s", len(teamLineups), m.ChannelID)
+	log.Info().Msgf("top possible lineup and expected points posted to Discord channel %s", m.ChannelID)
 }
 
 // HandleBCA for mentions of BCA play
@@ -526,13 +567,30 @@ func validLineup(lineup []int) bool {
 	if len(lineup) != 5 {
 		return false
 	}
-	for _, v := range lineup {
-		if v < 10 || v > 23 {
-			return false
-		}
+	if sum(lineup) < 10 || sum(lineup) > 23 {
+		return false
 	}
 	if seniorSkillRule(lineup) {
 		return false
+	}
+	return true
+}
+
+type Universe map[int]bool
+
+func NewUniverse(s []int) Universe {
+	u := make(Universe)
+	for _, i := range s {
+		u[i] = true
+	}
+	return u
+}
+
+func (u Universe) CountainSet(s []int) bool {
+	for _, i := range s {
+		if !u[i] {
+			return false
+		}
 	}
 	return true
 }
