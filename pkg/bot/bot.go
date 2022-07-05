@@ -382,9 +382,9 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		teamSkillLevels[i], _ = strconv.Atoi(s)
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(teamSkillLevels)))
-	if len(teamSkillLevels) == 0 || len(opponentSkillLevels) == 0 {
+	if len(teamSkillLevels) == 0 || len(opponentSkillLevels) != 5 {
 		bot.Err = errors.New("invalid command")
-		log.Err(bot.Err).Msg("not enough arguments")
+		log.Err(bot.Err).Msg("not enough arguments or invalid lineup")
 		return
 	}
 	var message discordgo.MessageSend
