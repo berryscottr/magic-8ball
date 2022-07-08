@@ -74,7 +74,9 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	}
 	if strings.Contains(
 		strings.Replace(strings.Replace(strings.ToLower(m.Content),
-			"-", "", -1), " ", "", -1), "9ball") {
+			"-", "", -1), " ", "", -1), "9ball") ||
+		strings.Contains(strings.Replace(strings.ToLower(m.Content),
+			" ", "", -1), "nineball") {
 		bot.Handle9Ball(s, m)
 	}
 }
