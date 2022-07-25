@@ -72,11 +72,7 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if strings.Contains(strings.ToLower(m.Content), "bca") {
 		bot.HandleBCA(s, m)
 	}
-	if strings.Contains(
-		strings.Replace(strings.Replace(strings.ToLower(m.Content),
-			"-", "", -1), " ", "", -1), "9ball") ||
-		strings.Contains(strings.Replace(strings.ToLower(m.Content),
-			" ", "", -1), "nineball") {
+	if containsNineBall(strings.ToLower(m.Content)) {
 		bot.Handle9Ball(s, m)
 	}
 }
@@ -604,4 +600,11 @@ func validLineup(lineup []int) bool {
 		return false
 	}
 	return true
+}
+
+// containsNineBall returns true if the message mentions 9-ball
+func containsNineBall(text string) bool {
+	return strings.Contains(strings.Replace(strings.Replace(
+		strings.ToLower(text), "-", "", -1), " ", "", -1), "9ball") ||
+		strings.Contains(strings.Replace(strings.ToLower(text), " ", "", -1), "nineball")
 }
