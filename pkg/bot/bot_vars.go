@@ -91,25 +91,25 @@ type Methods interface {
 	// SetDir for the bot to use
 	SetDir() Data
 	// Start the Discord bot listener
-	Start() Data
+	Start()
 	// MessageHandler for interpreting which function to launch from message contents
-	MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) Data
+	MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	// ReactionHandler for interpreting how to respond to reactions
-	ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd) Data
+	ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd)
 	// HandleGameDayReaction for interpreting how to respond to reactions
-	HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd) Data
+	HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd)
 	// HandleGameDay for posting game day message
-	HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) Data
+	HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleLineups for returning eligible lineups from a provided list of players
-	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) Data
+	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleSLMatchups for returning chart of the best skill level match-ups
-	HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate) Data
+	HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleHandicapAvg for returning your effective innings per game
-	HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate) Data
+	HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleOptimal for returning max expected points lineup from opponent's lineup
-	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) Data
+	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleBCA for mentions of BCA play
-	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) Data
+	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate)
 	// Handle9Ball for mentions of 9 ball play
-	Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate) Data
+	Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate)
 }
