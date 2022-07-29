@@ -47,6 +47,7 @@ func (bot Data) Start() {
 		return
 	}
 	log.Info().Msg("magic-8ball listening")
+	return
 }
 
 // MessageHandler for interpreting which function to launch from message contents
@@ -72,11 +73,10 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if strings.Contains(strings.ToLower(m.Content), "bca") {
 		bot.HandleBCA(s, m)
 	}
-	if strings.Contains(
-		strings.Replace(strings.Replace(strings.ToLower(m.Content),
-			"-", "", -1), " ", "", -1), "9ball") {
+	if containsNineBall(strings.ToLower(m.Content)) {
 		bot.Handle9Ball(s, m)
 	}
+	return
 }
 
 // ReactionHandler for interpreting how to respond to reactions
@@ -89,6 +89,7 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 			r.MessageReaction.ChannelID == DevChannelID) {
 		bot.HandleGameDayReaction(s, r)
 	}
+	return
 }
 
 // HandleGameDayReaction for handling the reaction to the game day post
@@ -146,6 +147,7 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 	}
 	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s",
 		r.MessageReaction.Emoji.Name, name, r.ChannelID)
+	return
 }
 
 // HandleGameDay for posting game day message
@@ -176,6 +178,7 @@ func (bot Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 	log.Info().Msgf("game day vs %s posted to Discord channel %s", opponentTeam, m.ChannelID)
+	return
 }
 
 // HandleLineups for returning eligible lineups from a provided list of players
@@ -242,6 +245,7 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 	log.Info().Msgf("%v possible lineups posted to Discord channel %s", len(teamLineups), m.ChannelID)
+	return
 }
 
 // HandleSLMatchups for returning chart of the best skill level match-ups
@@ -288,6 +292,7 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 		return
 	}
 	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
+	return
 }
 
 // HandleHandicapAvg for returning your effective innings per game
@@ -349,6 +354,7 @@ func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCrea
 		return
 	}
 	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
+	return
 }
 
 // HandleOptimal for returning max expected points lineup from opponent's lineup
@@ -382,9 +388,12 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		teamSkillLevels[i], _ = strconv.Atoi(s)
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(teamSkillLevels)))
-	message := discordgo.MessageSend{
-		Content: "Expected Points by Matchups:\n",
+	if len(teamSkillLevels) == 0 || len(opponentSkillLevels) != 5 {
+		bot.Err = errors.New("invalid command")
+		log.Err(bot.Err).Msg("not enough arguments or invalid lineup")
+		return
 	}
+	var message discordgo.MessageSend
 	var lineups [][]int
 	log.Info().Msgf("generating possible lineups and expected points of %v vs %v", teamSkillLevels, opponentSkillLevels)
 	if len(teamSkillLevels) >= 5 {
@@ -480,7 +489,9 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 	sort.Slice(t, func(i, j int) bool {
 		return t[i].MatchupExpectedPointsFor > t[j].MatchupExpectedPointsFor
 	})
-	t = t[:50]
+	if len(t) > 50 {
+		t = t[:50]
+	}
 	for _, tl := range t {
 		sort.Slice(tl.Matchups, func(i, j int) bool {
 			return tl.Matchups[i].SkillLevels[0] > tl.Matchups[j].SkillLevels[0]
@@ -498,15 +509,18 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		tli = tli[:10]
 	}
 	for _, l := range tli {
+		var sls string
 		for _, m := range l.Matchups {
-			message.Content += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
+			sls += fmt.Sprintf("%d/%d ", m.SkillLevels[0], m.SkillLevels[1])
 		}
-		message.Content += fmt.Sprintf("\t%.2f\n", l.MatchupExpectedPointsFor)
+		if !strings.Contains(message.Content, sls) {
+			message.Content += fmt.Sprintf("%s\t%.2f\n", sls, l.MatchupExpectedPointsFor)
+		}
 	}
 	if len(teamLineups) == 0 {
 		message.Content = "No eligible lineups found"
 	}
-	message.Content = "```" + message.Content + "```"
+	message.Content = "Expected Points by Matchups:\n```" + message.Content + "```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {
@@ -517,6 +531,7 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 	log.Info().Msgf("top possible lineup and expected points posted to Discord channel %s", m.ChannelID)
+	return
 }
 
 // HandleBCA for mentions of BCA play
@@ -532,6 +547,7 @@ func (bot Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	log.Info().Msgf("bca rebuttal posted to %s in Discord channel %s", m.Member.Nick, m.ChannelID)
+	return
 }
 
 // Handle9Ball for mentions of 9-ball play
@@ -547,6 +563,7 @@ func (bot Data) Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	log.Info().Msgf("9-ball rebuttal posted to %s in Discord channel %s", m.Member.Nick, m.ChannelID)
+	return
 }
 
 // seniorSkillRule returns a bool indicating if a lineup violates this rule
@@ -594,4 +611,11 @@ func validLineup(lineup []int) bool {
 		return false
 	}
 	return true
+}
+
+// containsNineBall returns true if the message mentions 9-ball
+func containsNineBall(text string) bool {
+	return strings.Contains(strings.Replace(strings.Replace(
+		strings.ToLower(text), "-", "", -1), " ", "", -1), "9ball") ||
+		strings.Contains(strings.Replace(strings.ToLower(text), " ", "", -1), "nineball")
 }
