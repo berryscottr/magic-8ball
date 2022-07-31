@@ -75,6 +75,8 @@ type TeamLineup struct {
 	MatchupExpectedPointsFor float64
 	// MatchupExpectedPointsAgainst for the team lineup
 	MatchupExpectedPointsAgainst float64
+	// MatchupExpectedPointsDifference ExpectedPointsFor - ExpectedPointsAgainst
+	MatchupExpectedPointsDifference float64
 	// Matchups for the team lineup
 	Matchups []Matchup
 }
@@ -84,6 +86,10 @@ type Matchup struct {
 	SkillLevels [2]int
 	// ExpectedPointsFor for the match-up
 	ExpectedPointsFor float64
+	// ExpectedPointsAgainst for the match-up
+	ExpectedPointsAgainst float64
+	// ExpectedPointsDifference ExpectedPointsFor - ExpectedPointsAgainst
+	ExpectedPointsDifference float64
 }
 
 // Methods for the bot to use
@@ -108,6 +114,8 @@ type Methods interface {
 	HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleOptimal for returning max expected points lineup from opponent's lineup
 	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandlePlayoff for returning max differential expected points lineup from opponent's lineup
+	HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleBCA for mentions of BCA play
 	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate)
 	// Handle9Ball for mentions of 9 ball play
