@@ -330,7 +330,13 @@ func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCrea
 			if len(innings) >= 20 {
 				innings = innings[:10]
 			} else if len(innings) > 2 {
-				innings = innings[:int(math.Floor(float64(len(innings)/2))+1)]
+				var numInnings int
+				if len(innings)%2 == 0 {
+					numInnings = int(math.Floor(float64(len(innings) / 2)))
+				} else {
+					numInnings = int(math.Floor(float64(len(innings)/2)) + 1)
+				}
+				innings = innings[:numInnings]
 			}
 			var total float64
 			for _, inning := range innings {
