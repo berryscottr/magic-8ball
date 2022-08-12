@@ -73,12 +73,13 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if strings.Contains(strings.ToLower(m.Content), "!play") {
 		bot.HandlePlayoff(s, m)
 	}
-	if strings.Contains(strings.ToLower(m.Content), "bca") {
-		bot.HandleBCA(s, m)
-	}
-	if containsNineBall(strings.ToLower(m.Content)) {
-		bot.Handle9Ball(s, m)
-	}
+	// inactive functions
+	//if strings.Contains(strings.ToLower(m.Content), "bca") {
+	//	bot.HandleBCA(s, m)
+	//}
+	//if containsNineBall(strings.ToLower(m.Content)) {
+	//	bot.Handle9Ball(s, m)
+	//}
 	return
 }
 
