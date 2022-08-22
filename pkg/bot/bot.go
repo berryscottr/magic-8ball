@@ -268,12 +268,12 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 			{
 				URL:   SLMatchupMediansUrl,
 				Type:  discordgo.EmbedTypeLink,
-				Title: "Skill Level Match-Ups Medians Heatmap",
+				Title: "Skill Level Match-Ups Medians",
 			},
 			{
 				URL:   SLMatchupModesUrl,
 				Type:  discordgo.EmbedTypeLink,
-				Title: "Skill Level Match-Ups Modes Heatmap",
+				Title: "Skill Level Match-Ups Modes",
 			},
 		},
 		Content: "```",
