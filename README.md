@@ -1,4 +1,4 @@
-# Magic 8Ball
+# Magic 8-Ball
 APA Discord Bot for Wookie Mistakes Team
 
 [![Go 1.18](https://img.shields.io/badge/golang-1.18-green.svg)](https://go.dev/dl/)
@@ -12,7 +12,7 @@ APA Discord Bot for Wookie Mistakes Team
 ### Lineups
 `!line 23454567`
 
-This command returns all eligible lineups for the first 8 given numbers in the message ranged between 2-7 to the #strategy channel.
+This command returns all eligible lineups for the first 8 given numbers in the message ranged between 1-9 to the #strategy channel.
 ### SL Matchups
 `!sl`
 
@@ -36,10 +36,15 @@ There is also about 15 seconds of delay until a response.
 This command returns the highest differential expected points lineups for that the second array (first 8) of numbers can
 respond to the first array (first 5) of numbers in the message. For this command to work, the arrays must be space separated.
 There is also about 15 seconds of delay until a response.
-### Game Day
-`!game Wookie Mistakes`
+### Game Day 8-Ball
+`!8game Wookie Mistakes`
 
-This command returns a game day announcement to the #game-night channel that tracks incoming reactions for attendance.
+This command returns a game day announcement to the #game-night-8 channel that tracks incoming reactions for attendance.
+
+### Game Day 9-Ball
+`!9game Wookie Mistakes`
+
+This command returns a game day announcement to the #game-night-8 channel that tracks incoming reactions for attendance.
 
 ## Dev Notes
 - This bot is hard-coded to restart every 6th hour of the day in UTC time to enable full-time Github Workflow Action hosting.

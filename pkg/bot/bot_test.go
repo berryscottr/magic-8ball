@@ -39,16 +39,32 @@ func TestData_ReactionHandler(t *testing.T) {
 	assertion.NoError(data.Err, "failed to handle reaction")
 }
 
-// TestData_HandleGameDayReaction confirms ability to handle the reaction to the game day post
-func TestData_HandleGameDayReaction(t *testing.T) {
+// TestData_HandleGameDay8Reaction confirms ability to handle the reaction to the game day post
+func TestData_HandleGameDay8Reaction(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
 	data = data.SetDir()
 	assertion.NoError(data.Err, "failed to read a game day reaction")
 }
 
-// TestData_HandleGameDay confirms ability to generate a game day post
-func TestData_HandleGameDay(t *testing.T) {
+// TestData_HandleGameDay9Reaction confirms ability to handle the reaction to the game day post
+func TestData_HandleGameDay9Reaction(t *testing.T) {
+	assertion := assert.New(t)
+	data := Data{Token: os.Getenv("BOT_TOKEN")}
+	data = data.SetDir()
+	assertion.NoError(data.Err, "failed to read a game day reaction")
+}
+
+// TestData_HandleGameDay8 confirms ability to generate a game day post
+func TestData_HandleGameDay8(t *testing.T) {
+	assertion := assert.New(t)
+	data := Data{Token: os.Getenv("BOT_TOKEN")}
+	data = data.SetDir()
+	assertion.NoError(data.Err, "failed to generate a response to a game day post")
+}
+
+// TestData_HandleGameDay9 confirms ability to generate a game day post
+func TestData_HandleGameDay9(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
 	data = data.SetDir()

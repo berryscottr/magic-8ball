@@ -20,21 +20,28 @@ const (
 	Sheet1 = "Sheet1"
 	// InningsFile is the name of the file where the SL innings are stored
 	InningsFile = "/data/InningCounts.xlsx"
-	// ReactionRequest is the reaction emoji choices for availability
-	ReactionRequest = "React to this message with a 👍 if you are coming, " +
+	// ReactionRequest8 is the reaction emoji choices for availability
+	ReactionRequest8 = "React to this message with a 👍 if you are coming, " +
 		"a 👎 if you can't make it, and an ⌛ if you will be late. " +
-		"Any reaction of this type in #game-night " +
+		"Any reaction of this type in #game-night-8 " +
+		"until 7pm will update your tracked availability."
+	// ReactionRequest9 is the reaction emoji choices for availability
+	ReactionRequest9 = "React to this message with a 👍 if you are coming, " +
+		"a 👎 if you can't make it, and an ⌛ if you will be late. " +
+		"Any reaction of this type in #game-night-9 " +
 		"until 7pm will update your tracked availability."
 	// DevChannelID is the ID of channel #bot-dev
 	DevChannelID = "955291440643207228"
-	// GameNightChannelID is the ID of channel #game-night
-	GameNightChannelID = "951345352030691381"
+	// GameNight8ChannelID is the ID of channel #game-night
+	GameNight8ChannelID = "951345352030691381"
+	// GameNight9ChannelID is the ID of channel #game-night
+	GameNight9ChannelID = "1013889839101399111"
 	// StrategyChannelID is the ID of channel #strategy
 	StrategyChannelID = "951346668912136192"
 )
 
 var (
-	DivisionTeamNames = [9]string{
+	Division8TeamNames = [11]string{
 		"Jiffyloob",
 		"A Selected Few",
 		"Wookie Mistakes",
@@ -44,6 +51,22 @@ var (
 		"The Unusual Suspects",
 		"Lil's Bunch",
 		"8-Balls of Fire",
+		"Ninety Nine Problems-8",
+		"Believe it or Not",
+	}
+	Division9TeamNames = [12]string{
+		"Shark Mode",
+		"Sticks and Stones",
+		"9 Rocks Away",
+		"9 on the Vine",
+		"Found It",
+		"Ninety Nine Problems",
+		"M Team",
+		"The Wright Stuff-9",
+		"Believe It or Not 2",
+		"Captainless-9",
+		"Fields of Gold 9",
+		"Safety Dance",
 	}
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳"}
 	SeniorSkillLevel = 6
@@ -106,10 +129,14 @@ type Methods interface {
 	MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	// ReactionHandler for interpreting how to respond to reactions
 	ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd)
-	// HandleGameDayReaction for interpreting how to respond to reactions
-	HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd)
-	// HandleGameDay for posting game day message
-	HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleGameDayReaction8 for interpreting how to respond to reactions
+	HandleGameDayReaction8(s *discordgo.Session, r *discordgo.MessageReactionAdd)
+	// HandleGameDay8 for posting game day message
+	HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleGameDayReaction9 for interpreting how to respond to reactions
+	HandleGameDayReaction9(s *discordgo.Session, r *discordgo.MessageReactionAdd)
+	// HandleGameDay9 for posting game day message
+	HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleLineups for returning eligible lineups from a provided list of players
 	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleSLMatchups for returning chart of the best skill level match-ups

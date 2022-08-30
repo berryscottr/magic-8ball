@@ -55,8 +55,11 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if m.Author.ID == bot.User.ID {
 		return
 	}
-	if strings.Contains(strings.ToLower(m.Content), "!game") {
-		bot.HandleGameDay(s, m)
+	if strings.Contains(strings.ToLower(m.Content), "!8game") {
+		bot.HandleGameDay8(s, m)
+	}
+	if strings.Contains(strings.ToLower(m.Content), "!9game") {
+		bot.HandleGameDay9(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!line") {
 		bot.HandleLineups(s, m)
@@ -89,19 +92,19 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 		return
 	}
 	if slices.Contains(GameDayReactions, r.MessageReaction.Emoji.Name) &&
-		(r.MessageReaction.ChannelID == GameNightChannelID ||
+		(r.MessageReaction.ChannelID == GameNight8ChannelID ||
 			r.MessageReaction.ChannelID == DevChannelID) {
-		bot.HandleGameDayReaction(s, r)
+		bot.HandleGameDayReaction8(s, r)
 	}
 	return
 }
 
-// HandleGameDayReaction for handling the reaction to the game day post
-func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
+// HandleGameDayReaction8 for handling the reaction to the game day post
+func (bot Data) HandleGameDayReaction8(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	log.Info().Msg("handling reaction to game day post")
 	date := time.Now()
 	loc, err := time.LoadLocation("America/New_York")
-	if r.ChannelID == GameNightChannelID {
+	if r.ChannelID == GameNight8ChannelID {
 		if err != nil {
 			bot.Err = err
 			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
@@ -143,7 +146,7 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 	if r.MessageReaction.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(GameNightChannelID, &message)
+		_, bot.Err = s.ChannelMessageSendComplex(GameNight8ChannelID, &message)
 	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
@@ -154,28 +157,117 @@ func (bot Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Message
 	return
 }
 
-// HandleGameDay for posting game day message
-func (bot Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) {
+// HandleGameDay8 for posting game day message
+func (bot Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling game day post creation")
 	var opponentTeam string
-	for i, name := range DivisionTeamNames {
+	for i, name := range Division8TeamNames {
 		for _, junk := range []string{"'", "-", "8"} {
 			name = strings.Replace(name, junk, "", -1)
 		}
 		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
-			opponentTeam = DivisionTeamNames[i]
+			opponentTeam = Division8TeamNames[i]
 		}
 	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
 			"@everyone It's Game Day! Tonight we play %s.\n"+
-				ReactionRequest, opponentTeam,
+				ReactionRequest8, opponentTeam,
 		),
 	}
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(GameNightChannelID, &message)
+		_, bot.Err = s.ChannelMessageSendComplex(GameNight8ChannelID, &message)
+	}
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("game day vs %s posted to Discord channel %s", opponentTeam, m.ChannelID)
+	return
+}
+
+// HandleGameDayReaction9 for handling the reaction to the game day post
+func (bot Data) HandleGameDayReaction9(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
+	log.Info().Msg("handling reaction to game day post")
+	date := time.Now()
+	loc, err := time.LoadLocation("America/New_York")
+	if r.ChannelID == GameNight9ChannelID {
+		if err != nil {
+			bot.Err = err
+			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
+			if date.Weekday() != time.Tuesday {
+				log.Info().Msg("not Tuesday UTC, ignoring reaction")
+				return
+			}
+		} else {
+			date = date.In(loc)
+			if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
+				log.Info().Msg("not Tuesday before 7pm EST, ignoring reaction")
+				return
+			}
+		}
+	}
+	var status string
+	switch r.MessageReaction.Emoji.Name {
+	case "👍":
+		status = "available"
+	case "👎":
+		status = "unavailable"
+	case "⌛":
+		status = "late"
+	case "⏳":
+		status = "late"
+	default:
+		log.Info().Msg("unknown reaction")
+		return
+	}
+	name := r.Member.Nick
+	if name == "" {
+		name = r.Member.User.Username
+	}
+	message := discordgo.MessageSend{
+		Content: fmt.Sprintf(
+			"%s will be %s tonight.", name, status,
+		),
+	}
+	if r.MessageReaction.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(GameNight9ChannelID, &message)
+	}
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s",
+		r.MessageReaction.Emoji.Name, name, r.ChannelID)
+	return
+}
+
+// HandleGameDay9 for posting game day message
+func (bot Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling game day post creation")
+	var opponentTeam string
+	for i, name := range Division9TeamNames {
+		for _, junk := range []string{"'", "-", "9"} {
+			name = strings.Replace(name, junk, "", -1)
+		}
+		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
+			opponentTeam = Division9TeamNames[i]
+		}
+	}
+	message := discordgo.MessageSend{
+		Content: fmt.Sprintf(
+			"@everyone It's Game Day! Tonight we play %s.\n"+
+				ReactionRequest9, opponentTeam,
+		),
+	}
+	if m.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(GameNight9ChannelID, &message)
 	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
@@ -188,7 +280,7 @@ func (bot Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate) 
 // HandleLineups for returning eligible lineups from a provided list of players
 func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling lineups")
-	re := regexp.MustCompile("[2-7]")
+	re := regexp.MustCompile("[1-9]")
 	var content string
 	contentSlice := strings.Split(m.Content, "!")
 	for _, com := range contentSlice {
