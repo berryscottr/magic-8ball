@@ -94,6 +94,14 @@ func TestData_HandleOptimal(t *testing.T) {
 	assertion.NoError(data.Err, "failed to return the optimal matchup")
 }
 
+// TestData_HandlePlayoff confirms ability to generate a max differential expected points lineup
+func TestData_HandlePlayoff(t *testing.T) {
+	assertion := assert.New(t)
+	data := Data{Token: os.Getenv("BOT_TOKEN")}
+	data = data.SetDir()
+	assertion.NoError(data.Err, "failed to return the optimal playoff matchup")
+}
+
 // TestData_HandleBCA confirms ability to respond to a BCA mention
 func TestData_HandleBCA(t *testing.T) {
 	assertion := assert.New(t)

@@ -70,12 +70,16 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if strings.Contains(strings.ToLower(m.Content), "!opt") {
 		bot.HandleOptimal(s, m)
 	}
-	if strings.Contains(strings.ToLower(m.Content), "bca") {
-		bot.HandleBCA(s, m)
+	if strings.Contains(strings.ToLower(m.Content), "!play") {
+		bot.HandlePlayoff(s, m)
 	}
-	if containsNineBall(strings.ToLower(m.Content)) {
-		bot.Handle9Ball(s, m)
-	}
+	// inactive functions
+	//if strings.Contains(strings.ToLower(m.Content), "bca") {
+	//	bot.HandleBCA(s, m)
+	//}
+	//if containsNineBall(strings.ToLower(m.Content)) {
+	//	bot.Handle9Ball(s, m)
+	//}
 	return
 }
 
@@ -198,9 +202,7 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 		skillLevels[i], _ = strconv.Atoi(s)
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(skillLevels)))
-	message := discordgo.MessageSend{
-		Content: "Eligible Lineups:\n",
-	}
+	message := discordgo.MessageSend{}
 	var lineups [][]int
 	log.Info().Msgf("generating possible lineups of %v", skillLevels)
 	if len(skillLevels) >= 5 {
@@ -234,7 +236,7 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 	if len(teamLineups) == 0 {
 		message.Content = "No eligible lineups found"
 	}
-	message.Content = "```" + message.Content + "```"
+	message.Content = "Eligible Lineups:\n```" + message.Content + "```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {
@@ -257,10 +259,22 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 		return
 	}
 	message := discordgo.MessageSend{
-		Embed: &discordgo.MessageEmbed{
-			URL:   SLHeatMatchupUrl,
-			Type:  discordgo.EmbedTypeLink,
-			Title: "Skill Level Match-Ups Heatmap",
+		Embeds: []*discordgo.MessageEmbed{
+			{
+				URL:   SLHeatMatchupAveragesUrl,
+				Type:  discordgo.EmbedTypeLink,
+				Title: "Skill Level Match-Ups Averages Heatmap",
+			},
+			{
+				URL:   SLMatchupMediansUrl,
+				Type:  discordgo.EmbedTypeLink,
+				Title: "Skill Level Match-Ups Medians",
+			},
+			{
+				URL:   SLMatchupModesUrl,
+				Type:  discordgo.EmbedTypeLink,
+				Title: "Skill Level Match-Ups Modes",
+			},
 		},
 		Content: "```",
 	}
@@ -329,7 +343,13 @@ func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCrea
 			if len(innings) >= 20 {
 				innings = innings[:10]
 			} else if len(innings) > 2 {
-				innings = innings[:int(math.Floor(float64(len(innings)/2))+1)]
+				var numInnings int
+				if len(innings)%2 == 0 {
+					numInnings = int(math.Floor(float64(len(innings) / 2)))
+				} else {
+					numInnings = int(math.Floor(float64(len(innings)/2)) + 1)
+				}
+				innings = innings[:numInnings]
 			}
 			var total float64
 			for _, inning := range innings {
@@ -521,6 +541,203 @@ func (bot Data) HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate) 
 		message.Content = "No eligible lineups found"
 	}
 	message.Content = "Expected Points by Matchups:\n```" + message.Content + "```"
+	if m.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(StrategyChannelID, &message)
+	}
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("top possible lineup and expected points posted to Discord channel %s", m.ChannelID)
+	return
+}
+
+// HandlePlayoff for returning max differential expected points lineup from opponent's lineup
+func (bot Data) HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling optimal playoff lineups")
+	re := regexp.MustCompile("[2-7]")
+	var content string
+	contentSlice := strings.Split(m.Content, "!")
+	for _, com := range contentSlice {
+		if strings.Contains(com, "play") {
+			content = com
+		}
+	}
+	comSlice := strings.Split(content, " ")
+	if len(comSlice) < 3 {
+		bot.Err = errors.New("invalid command")
+		log.Err(bot.Err).Msg("not enough arguments")
+		return
+	}
+	opponentArrString := comSlice[1]
+	opponentSkillLevelsString := re.FindAllString(opponentArrString, 5)
+	opponentSkillLevels := make([]int, len(opponentSkillLevelsString))
+	for i, s := range opponentSkillLevelsString {
+		opponentSkillLevels[i], _ = strconv.Atoi(s)
+	}
+	sort.Sort(sort.Reverse(sort.IntSlice(opponentSkillLevels)))
+	teamArrString := comSlice[2]
+	teamSkillLevelsString := re.FindAllString(teamArrString, 8)
+	teamSkillLevels := make([]int, len(teamSkillLevelsString))
+	for i, s := range teamSkillLevelsString {
+		teamSkillLevels[i], _ = strconv.Atoi(s)
+	}
+	sort.Sort(sort.Reverse(sort.IntSlice(teamSkillLevels)))
+	if len(teamSkillLevels) == 0 || len(opponentSkillLevels) != 5 {
+		bot.Err = errors.New("invalid command")
+		log.Err(bot.Err).Msg("not enough arguments or invalid lineup")
+		return
+	}
+	var message discordgo.MessageSend
+	var lineups [][]int
+	log.Info().Msgf("generating possible lineups and expected points of %v vs %v", teamSkillLevels, opponentSkillLevels)
+	if len(teamSkillLevels) >= 5 {
+		gen := combin.NewPermutationGenerator(len(teamSkillLevels), 5)
+		var i int
+		for gen.Next() {
+			permutationIndices := gen.Permutation(nil)
+			var lineup []int
+			for _, permutationIndex := range permutationIndices {
+				lineup = append(lineup, teamSkillLevels[permutationIndex])
+			}
+			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
+			if validLineup(lineup) && !containsSlice(lineups, lineup) {
+				lineups = append(lineups, lineup)
+			}
+			i++
+		}
+	} else {
+		lineups = append(lineups, teamSkillLevels)
+	}
+	bot.Excel, bot.Err = excelize.OpenFile(bot.Dir + SLMatchupFile)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msgf("failed to read excel file \"%s\"", bot.Dir+SLMatchupFile)
+		return
+	}
+	bot.ExcelRows = bot.Excel.GetRows(Sheet1)
+	var teamLineups []TeamLineup
+	for _, lineup := range lineups {
+		var matchups []Matchup
+		for _, opponentPlayer := range opponentSkillLevels {
+			for _, teamPlayer := range lineup {
+				teamPoints, err := strconv.ParseFloat(
+					strings.Replace(bot.ExcelRows[teamPlayer-1][opponentPlayer-1],
+						"X", "", 1), 64)
+				if err != nil {
+					bot.Err = err
+					log.Err(bot.Err).Msg("failed to parse float")
+					return
+				}
+				opponentPoints, err := strconv.ParseFloat(
+					strings.Replace(bot.ExcelRows[opponentPlayer-1][teamPlayer-1],
+						"X", "", 1), 64)
+				if err != nil {
+					bot.Err = err
+					log.Err(bot.Err).Msg("failed to parse float")
+					return
+				}
+				matchup := Matchup{
+					SkillLevels:           [2]int{teamPlayer, opponentPlayer},
+					ExpectedPointsFor:     teamPoints,
+					ExpectedPointsAgainst: opponentPoints,
+				}
+				matchups = append(matchups, matchup)
+			}
+		}
+		teamLineups = append(teamLineups, TeamLineup{
+			Lineup:         lineup,
+			OpponentLineup: opponentSkillLevels,
+			Matchups:       matchups,
+		})
+	}
+	var t []TeamLineup
+	for _, tl := range teamLineups {
+		gen := combin.NewCombinationGenerator(len(tl.Matchups), 5)
+		var i int
+		for gen.Next() {
+			combinationIndices := gen.Combination(nil)
+			var tp []int
+			var op []int
+			var teamTotal float64
+			var opponentTotal float64
+			var diffTotal float64
+			for _, combinationIndex := range combinationIndices {
+				tp = append(tp, tl.Matchups[combinationIndex].SkillLevels[0])
+				op = append(op, tl.Matchups[combinationIndex].SkillLevels[1])
+				teamTotal += tl.Matchups[combinationIndex].ExpectedPointsFor
+				opponentTotal += tl.Matchups[combinationIndex].ExpectedPointsAgainst
+				diffTotal += tl.Matchups[combinationIndex].ExpectedPointsFor - tl.Matchups[combinationIndex].ExpectedPointsAgainst
+			}
+			sort.Sort(sort.Reverse(sort.IntSlice(tp)))
+			sort.Sort(sort.Reverse(sort.IntSlice(op)))
+			if reflect.DeepEqual(tp, tl.Lineup) &&
+				reflect.DeepEqual(op, tl.OpponentLineup) {
+				var tls TeamLineup
+				tls.MatchupExpectedPointsFor = teamTotal
+				tls.MatchupExpectedPointsAgainst = opponentTotal
+				tls.MatchupExpectedPointsDifference = diffTotal
+				for _, combinationIndex := range combinationIndices {
+					m := Matchup{
+						SkillLevels:              tl.Matchups[combinationIndex].SkillLevels,
+						ExpectedPointsFor:        tl.Matchups[combinationIndex].ExpectedPointsFor,
+						ExpectedPointsAgainst:    tl.Matchups[combinationIndex].ExpectedPointsAgainst,
+						ExpectedPointsDifference: tl.Matchups[combinationIndex].ExpectedPointsFor - tl.Matchups[combinationIndex].ExpectedPointsAgainst,
+					}
+					tls.Matchups = append(tls.Matchups, m)
+				}
+				toadd := true
+				for _, v := range t {
+					if reflect.DeepEqual(v, tls) {
+						toadd = false
+					}
+				}
+				if toadd {
+					t = append(t, tls)
+				}
+			}
+			i++
+		}
+	}
+	sort.Slice(t, func(i, j int) bool {
+		return t[i].MatchupExpectedPointsDifference > t[j].MatchupExpectedPointsDifference
+	})
+	if len(t) > 50 {
+		t = t[:50]
+	}
+	for _, tl := range t {
+		sort.Slice(tl.Matchups, func(i, j int) bool {
+			return tl.Matchups[i].SkillLevels[0] > tl.Matchups[j].SkillLevels[0]
+		})
+	}
+	var tli []TeamLineup
+	var prevm []Matchup
+	for _, v := range t {
+		if !reflect.DeepEqual(v.Matchups, prevm) {
+			tli = append(tli, v)
+			prevm = v.Matchups
+		}
+	}
+	if len(tli) > 10 {
+		tli = tli[:10]
+	}
+	for _, l := range tli {
+		var sls string
+		for i, m := range l.Matchups {
+			sls += fmt.Sprintf("%d/%d", m.SkillLevels[0], m.SkillLevels[1])
+			if i != len(l.Matchups)-1 {
+				sls += "|"
+			}
+		}
+		if !strings.Contains(message.Content, sls) {
+			message.Content += fmt.Sprintf("%s|%.2f/%.2f|%.2f\n", sls, l.MatchupExpectedPointsFor, l.MatchupExpectedPointsAgainst, l.MatchupExpectedPointsDifference)
+		}
+	}
+	if len(teamLineups) == 0 {
+		message.Content = "No eligible lineups found"
+	}
+	message.Content = "Expected Points Favored by Matchups:\n```M1  M2  M3  M4  M5  ExpPoints Diff\n" + message.Content + "```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {

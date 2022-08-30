@@ -10,8 +10,12 @@ const (
 	UserID = "@me"
 	// SLMatchupFile is the name of the file where the SL matchups are stored
 	SLMatchupFile = "/data/SLMatchupAverages.xlsx"
-	// SLHeatMatchupUrl is the name of the file where the SL heat matchups are stored
-	SLHeatMatchupUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg"
+	// SLHeatMatchupAveragesUrl is the name of the file where the SL heat matchups are stored
+	SLHeatMatchupAveragesUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg"
+	// SLMatchupMediansUrl is the name of the file where the SL matchup medians are stored
+	SLMatchupMediansUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupMedians.png"
+	// SLMatchupModesUrl is the name of the file where the SL matchup medians are stored
+	SLMatchupModesUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupModes.png"
 	// Sheet1 is the name of the main sheet in the Excel file
 	Sheet1 = "Sheet1"
 	// InningsFile is the name of the file where the SL innings are stored
@@ -75,6 +79,8 @@ type TeamLineup struct {
 	MatchupExpectedPointsFor float64
 	// MatchupExpectedPointsAgainst for the team lineup
 	MatchupExpectedPointsAgainst float64
+	// MatchupExpectedPointsDifference ExpectedPointsFor - ExpectedPointsAgainst
+	MatchupExpectedPointsDifference float64
 	// Matchups for the team lineup
 	Matchups []Matchup
 }
@@ -84,6 +90,10 @@ type Matchup struct {
 	SkillLevels [2]int
 	// ExpectedPointsFor for the match-up
 	ExpectedPointsFor float64
+	// ExpectedPointsAgainst for the match-up
+	ExpectedPointsAgainst float64
+	// ExpectedPointsDifference ExpectedPointsFor - ExpectedPointsAgainst
+	ExpectedPointsDifference float64
 }
 
 // Methods for the bot to use
@@ -108,6 +118,8 @@ type Methods interface {
 	HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleOptimal for returning max expected points lineup from opponent's lineup
 	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandlePlayoff for returning max differential expected points lineup from opponent's lineup
+	HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleBCA for mentions of BCA play
 	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate)
 	// Handle9Ball for mentions of 9 ball play
