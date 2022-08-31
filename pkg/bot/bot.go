@@ -95,6 +95,10 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 		(r.MessageReaction.ChannelID == GameNight8ChannelID ||
 			r.MessageReaction.ChannelID == DevChannelID) {
 		bot.HandleGameDayReaction8(s, r)
+	} else if slices.Contains(GameDayReactions, r.MessageReaction.Emoji.Name) &&
+		(r.MessageReaction.ChannelID == GameNight9ChannelID ||
+			r.MessageReaction.ChannelID == DevChannelID) {
+		bot.HandleGameDayReaction9(s, r)
 	}
 	return
 }
