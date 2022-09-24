@@ -38,6 +38,8 @@ const (
 	GameNight9ChannelID = "1013889839101399111"
 	// StrategyChannelID is the ID of channel #strategy
 	StrategyChannelID = "951346668912136192"
+	// CalendarUrl is the URL of the calendar
+	CalendarUrl = "https://atlanta.apaleagues.com/Uploads/atlanta/Calendars/2022-23%20APA%20Calendar%20rev%2001-01-2022%20%20pdf.pdf"
 )
 
 var (
@@ -147,6 +149,8 @@ type Methods interface {
 	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandlePlayoff for returning max differential expected points lineup from opponent's lineup
 	HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleCalendar for returning the current calendar
+	HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleBCA for mentions of BCA play
 	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate)
 	// Handle9Ball for mentions of 9 ball play

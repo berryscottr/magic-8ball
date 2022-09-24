@@ -76,6 +76,9 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	if strings.Contains(strings.ToLower(m.Content), "!play") {
 		bot.HandlePlayoff(s, m)
 	}
+	if strings.Contains(strings.ToLower(m.Content), "!cal") {
+		bot.HandleCalendar(s, m)
+	}
 	// inactive functions
 	//if strings.Contains(strings.ToLower(m.Content), "bca") {
 	//	bot.HandleBCA(s, m)
@@ -173,10 +176,14 @@ func (bot Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate)
 			opponentTeam = Division8TeamNames[i]
 		}
 	}
+	var customMessage string
+	if strings.Count(m.Content, "\"") == 2 {
+		customMessage = fmt.Sprintf("\n\n\"%s\" - %s", strings.Split(m.Content, "\"")[1], m.Author.Username)
+	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
 			"@everyone It's Game Day! Tonight we play %s.\n"+
-				ReactionRequest8, opponentTeam,
+				ReactionRequest8+customMessage, opponentTeam,
 		),
 	}
 	if m.ChannelID == DevChannelID {
@@ -262,10 +269,14 @@ func (bot Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate)
 			opponentTeam = Division9TeamNames[i]
 		}
 	}
+	var customMessage string
+	if strings.Count(m.Content, "\"") == 2 {
+		customMessage = fmt.Sprintf("\n\n\"%s\" - %s", strings.Split(m.Content, "\"")[1], m.Author.Username)
+	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
 			"@everyone It's Game Day! Tonight we play %s.\n"+
-				ReactionRequest9, opponentTeam,
+				ReactionRequest9+customMessage, opponentTeam,
 		),
 	}
 	if m.ChannelID == DevChannelID {
@@ -844,6 +855,29 @@ func (bot Data) HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 	log.Info().Msgf("top possible lineup and expected points posted to Discord channel %s", m.ChannelID)
+	return
+}
+
+// HandleCalendar handles the calendar command
+func (bot Data) HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate) {
+	log.Info().Msg("handling calendar call")
+	message := discordgo.MessageSend{
+		Embed: &discordgo.MessageEmbed{
+			URL:   CalendarUrl,
+			Type:  discordgo.EmbedTypeLink,
+			Title: "APA Calendar",
+		},
+	}
+	if m.ChannelID == DevChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+	} else {
+		_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
+	}
+	if bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to post message")
+		return
+	}
+	log.Info().Msgf("calendar posted in Discord channel %s", m.ChannelID)
 	return
 }
 

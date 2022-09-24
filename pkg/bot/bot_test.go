@@ -118,6 +118,14 @@ func TestData_HandlePlayoff(t *testing.T) {
 	assertion.NoError(data.Err, "failed to return the optimal playoff matchup")
 }
 
+// TestData_HandleCalendar confirms ability to respond to a calendar mention
+func TestData_HandleCalendar(t *testing.T) {
+	assertion := assert.New(t)
+	data := Data{Token: os.Getenv("BOT_TOKEN")}
+	data = data.SetDir()
+	assertion.NoError(data.Err, "failed to return the calendar link")
+}
+
 // TestData_HandleBCA confirms ability to respond to a BCA mention
 func TestData_HandleBCA(t *testing.T) {
 	assertion := assert.New(t)
