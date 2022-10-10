@@ -57,7 +57,7 @@ var (
 		"Believe it or Not",
 	}
 	Division9TeamNames = [12]string{
-		"Shark Mode",
+		"Shark Shooters - 9",
 		"Sticks and Stones",
 		"9 Rocks Away",
 		"9 on the Vine",
