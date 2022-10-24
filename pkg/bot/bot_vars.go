@@ -38,8 +38,10 @@ const (
 	GameNight9ChannelID = "1013889839101399111"
 	// StrategyChannelID is the ID of channel #strategy
 	StrategyChannelID = "951346668912136192"
-	// CalendarUrl is the URL of the calendar
-	CalendarUrl = "https://atlanta.apaleagues.com/Uploads/atlanta/Calendars/2022-23%20APA%20Calendar%20rev%2001-01-2022%20%20pdf.pdf"
+	// APACalendarUrl is the URL of the APA calendar
+	APACalendarUrl = "https://atlanta.apaleagues.com/Uploads/atlanta/Calendars/2022-23%20APA%20Calendar%20rev%2001-01-2022%20%20pdf.pdf"
+	// TeamCalendarUrl is the URL of the team calendar
+	TeamCalendarUrl = "https://github.com/berryscottr/magic-8ball/blob/main/data/Fall2022Schedule.csv"
 )
 
 var (

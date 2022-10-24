@@ -862,10 +862,17 @@ func (bot Data) HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate) 
 func (bot Data) HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling calendar call")
 	message := discordgo.MessageSend{
-		Embed: &discordgo.MessageEmbed{
-			URL:   CalendarUrl,
-			Type:  discordgo.EmbedTypeLink,
-			Title: "APA Calendar",
+		Embeds: []*discordgo.MessageEmbed{
+			{
+				URL:   APACalendarUrl,
+				Type:  discordgo.EmbedTypeLink,
+				Title: "APA Calendar",
+			},
+			{
+				URL:   TeamCalendarUrl,
+				Type:  discordgo.EmbedTypeLink,
+				Title: "Team Calendar",
+			},
 		},
 	}
 	if m.ChannelID == DevChannelID {
