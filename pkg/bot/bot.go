@@ -421,7 +421,7 @@ func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCrea
 	log.Info().Msg("handling skill level match-ups")
 	bot.Excel, bot.Err = excelize.OpenFile(bot.Dir + InningsFile)
 	if bot.Err != nil {
-		log.Err(bot.Err).Msgf("failed to read excel file \"%s\"", bot.Dir+SLMatchupFile)
+		log.Err(bot.Err).Msgf("failed to read excel file \"%s\"", bot.Dir+InningsFile)
 		return
 	}
 	message := discordgo.MessageSend{Content: "```"}
