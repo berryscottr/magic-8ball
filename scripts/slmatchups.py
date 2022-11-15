@@ -214,10 +214,13 @@ def get_sl_matchup_stats_nine(df, games2win):
                             matchup_data.addpoints(row['Points_2'])
                             matchup_data.addgame(index)
                 matchup_data.getaverage()
-                try:
-                    slmatches_average.loc[p1skill, p2skill] = round(matchup_data.average, 2)
-                except TypeError:
-                    slmatches_average.loc[p1skill, p2skill] = matchup_data.average
+                if matchup_data.average is None:
+                    slmatches_average.loc[p1skill, p2skill] = 10.00
+                else:
+                    try:
+                        slmatches_average.loc[p1skill, p2skill] = round(matchup_data.average, 2)
+                    except TypeError:
+                        slmatches_average.loc[p1skill, p2skill] = matchup_data.average
     sls = pd.DataFrame(slmatches_average, index=slrange, columns=slrange, dtype=float)
     sns.heatmap(sls, annot=True, cmap=sns.color_palette("coolwarm", 12), vmin=0, vmax=20, fmt=".2f",
                 linewidths=.2, cbar_kws={"label": "Average Points"})
