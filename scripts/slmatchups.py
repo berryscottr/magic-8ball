@@ -236,7 +236,7 @@ def main():
     sl_matchup_data_eight = workbook2df("../data/SLMatchups.xlsx", True, False)
     # player_data = workbook2df("data/wookieMistakesPlayerData.xlsx", True, False)
     # game_data = workbook2df("data/wookieMistakesSpring2022Games.xlsx", True, False)
-    # get_sl_matchup_stats_eight(sl_matchup_data_eight, games_to_win)
+    get_sl_matchup_stats_eight(sl_matchup_data_eight, games_to_win)
     games_to_win_nine = workbook2df("../data/GamesToWinNine.xlsx", True, True)
     sl_matchup_data_nine = workbook2df("../data/SLMatchupsNine.xlsx", True, False)
     get_sl_matchup_stats_nine(sl_matchup_data_nine, games_to_win_nine)
