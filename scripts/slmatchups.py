@@ -200,7 +200,7 @@ def get_sl_matchup_stats_nine(df, games2win):
         for p2skill in slrange:
             matchup_data = SLMatchesNine(p1skill, p2skill)
             if p1skill == p2skill:
-                slmatches_average.loc[p1skill, p2skill] = 10.00
+                slmatches_average.loc[p1skill, p2skill] = 10.0
             else:
                 for index, row in df.iterrows():
                     if row['Player_1'] == p1skill and row['Player_2'] == p2skill:
@@ -215,14 +215,14 @@ def get_sl_matchup_stats_nine(df, games2win):
                             matchup_data.addgame(index)
                 matchup_data.getaverage()
                 if matchup_data.average is None:
-                    slmatches_average.loc[p1skill, p2skill] = 10.00
+                    slmatches_average.loc[p1skill, p2skill] = 10.0
                 else:
                     try:
-                        slmatches_average.loc[p1skill, p2skill] = round(matchup_data.average, 2)
+                        slmatches_average.loc[p1skill, p2skill] = round(matchup_data.average, 1)
                     except TypeError:
                         slmatches_average.loc[p1skill, p2skill] = matchup_data.average
     sls = pd.DataFrame(slmatches_average, index=slrange, columns=slrange, dtype=float)
-    sns.heatmap(sls, annot=True, cmap=sns.color_palette("coolwarm", 12), vmin=0, vmax=20, fmt=".2f",
+    sns.heatmap(sls, annot=True, cmap=sns.color_palette("coolwarm", 12), vmin=0, vmax=20, fmt=".1f",
                 linewidths=.2, cbar_kws={"label": "Average Points"})
     plt.title("Opponent SL", size=10)
     plt.xlabel("Opponent SL")
