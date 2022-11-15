@@ -10,8 +10,10 @@ const (
 	UserID = "@me"
 	// SLMatchupFile is the name of the file where the SL matchups are stored
 	SLMatchupFile = "/data/SLMatchupAverages.xlsx"
-	// SLHeatMatchupAveragesUrl is the name of the file where the SL heat matchups are stored
-	SLHeatMatchupAveragesUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg"
+	// EightSLHeatMatchupAveragesUrl is the name of the file where the SL heat matchups are stored
+	EightSLHeatMatchupAveragesUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg"
+	// NineSLHeatMatchupAveragesUrl is the name of the file where the SL heat matchups are stored
+	NineSLHeatMatchupAveragesUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAveragesNine.svg"
 	// SLMatchupMediansUrl is the name of the file where the SL matchup medians are stored
 	SLMatchupMediansUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupMedians.png"
 	// SLMatchupModesUrl is the name of the file where the SL matchup medians are stored
