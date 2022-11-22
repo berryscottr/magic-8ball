@@ -22,7 +22,10 @@ jobs:
       - name: execute py script
         working-directory: ./data
         run: |
-          python xlsx2csv.py Fall2022Schedule.xlsx Fall2022Schedule.csv
+          python -c '\n
+          from xlsx2csv import Xlsx2csv\n
+          Xlsx2csv("Fall2022Schedule.xlsx", outputencoding="utf-8").convert("Fall2022Schedule.csv")\n
+          '
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
