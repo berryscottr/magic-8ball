@@ -1,8 +1,8 @@
 # Magic 8-Ball
-APA Discord Bot for Wookie Mistakes Team
+APA Discord Bot for Wookie Mistakes and Safety Dance Teams
 
 [![Go 1.19](https://img.shields.io/badge/golang-1.19-green.svg)](https://go.dev/dl/)
-[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10.8](https://img.shields.io/badge/python-3.10.8-blue.svg)](https://www.python.org/downloads/)
 [![updateSkills](https://github.com/berryscottr/magic-8ball/actions/workflows/updateSkills.yml/badge.svg)](https://github.com/berryscottr/magic-8ball/actions/workflows/updateSkills.yml)
 [![Build Magic 8Ball](https://github.com/berryscottr/magic-8ball/actions/workflows/build.yml/badge.svg?event=workflow_run)](https://github.com/berryscottr/magic-8ball/actions/workflows/build.yml)
 
@@ -19,7 +19,7 @@ This command returns all eligible lineups for the first 8 given numbers in the m
 This command returns the expected points of every skill level matchup for 8-ball and 9-ball to the #strategy channel in both markdown text and links.
 
 The embedded links have averages, medians, and modes for each skill level matchup.
-and a link to the [heatmap](https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg).
+and a link to the [8-ball heatmap](https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg) and [9-ball heatmap](https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAveragesNine.svg).
 ### Lineups
 `!inn`
 
@@ -42,7 +42,7 @@ There is also about 15 seconds of delay until a response.
 This command returns a game day announcement to the #game-night-8 channel that tracks incoming reactions for attendance.
 
 ### Game Day 9-Ball
-`!9game Wookie Mistakes "custom message"`
+`!9game Safety Dance "custom message"`
 
 This command returns a game day announcement to the #game-night-8 channel that tracks incoming reactions for attendance.
 
@@ -51,5 +51,8 @@ This command returns a game day announcement to the #game-night-8 channel that t
 
 This command returns an embedded link to the calendar for the current season.
 
+Further, the current session's team calendar with match results is located [here](data/Fall2022Schedule.csv).
+
 ## Dev Notes
 - This bot is hard-coded to restart every 6th hour of the day in UTC time to enable full-time Github Workflow Action hosting.
+- I've used this bot to benefit my own teams, but I encourage whoever may come across this to use this template for their own teams as well.

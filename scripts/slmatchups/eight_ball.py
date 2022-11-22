@@ -1,24 +1,7 @@
 import dataframe_image as dfi
 import matplotlib.pyplot as plt
-import openpyxl
 import pandas as pd
 import seaborn as sns
-import warnings
-
-warnings.simplefilter(action='ignore', category=FutureWarning)
-
-
-def workbook2df(path, first_row_header, first_column_index):
-    workbook = openpyxl.load_workbook(path).active
-    rows = list(workbook.iter_rows(values_only=True))
-    df = pd.DataFrame(rows)
-    if first_row_header:
-        new_header = df.iloc[0]
-        df = df[1:]
-        df.columns = new_header
-    if first_column_index:
-        df = df.set_index("SL")
-    return df
 
 
 class SLMatchesEight:
@@ -65,29 +48,6 @@ class SLMatchesEight:
         self.mode = max(self.resultcounts, key=self.resultcounts.get)
 
 
-class SLMatchesNine:
-    def __init__(self, SL, opponentSL):
-        self.SL = SL
-        self.opponentSL = opponentSL
-        self.points = 0
-        self.games = 0
-        self.indices_checked = []
-        self.average = None
-
-    def addpoints(self, points):
-        self.points += points
-
-    def addgame(self, index):
-        self.games += 1
-        self.indices_checked.append(index)
-
-    def getaverage(self):
-        try:
-            self.average = self.points / self.games
-        except ZeroDivisionError:
-            self.average = None
-
-
 def get_sl_matchup_stats_eight(df, games2win):
     slrange = range(2, 8)
     # get average
@@ -123,8 +83,8 @@ def get_sl_matchup_stats_eight(df, games2win):
     plt.ylabel("Player SL")
     plt.tick_params(axis='both', which='major', labelsize=10, labelbottom=False, bottom=False, top=False, labeltop=True,
                     left=False, right=False)
-    plt.savefig("../data/images/slMatchupAverages.svg")
-    slmatches_average.to_excel(r'../data/SLMatchupAverages.xlsx', index=True, header=True)
+    plt.savefig("../../data/images/slMatchupAverages.svg")
+    slmatches_average.to_excel(r'../../data/SLMatchupAverages.xlsx', index=True, header=True)
     print(slmatches_average)
     # get median and mode
     slmatches_median = games2win
@@ -174,12 +134,12 @@ def get_sl_matchup_stats_eight(df, games2win):
             except TypeError:
                 slmatches_mode.loc[p1skill, p2skill] = matchup_data.mode
     sls = pd.DataFrame(slmatches_median, index=slrange, columns=slrange, dtype=str)
-    dfi.export(sls, "../data/images/slMatchupMedians.png")
-    slmatches_median.to_excel(r'../data/SLMatchupMedians.xlsx', index=True, header=True)
+    dfi.export(sls, "../../data/images/slMatchupMedians.png")
+    slmatches_median.to_excel(r'../../data/SLMatchupMedians.xlsx', index=True, header=True)
     print(slmatches_median)
     sls = pd.DataFrame(slmatches_mode, index=slrange, columns=slrange, dtype=str)
-    dfi.export(sls, "../data/images/slMatchupModes.png")
-    slmatches_mode.to_excel(r'../data/SLMatchupModes.xlsx', index=True, header=True)
+    dfi.export(sls, "../../data/images/slMatchupModes.png")
+    slmatches_mode.to_excel(r'../../data/SLMatchupModes.xlsx', index=True, header=True)
     print(slmatches_mode)
 
     # for sl in slrange:
@@ -191,59 +151,3 @@ def get_sl_matchup_stats_eight(df, games2win):
     #     plt.ylabel('Average Points')
     #     plt.savefig(imgtitle)
     #     plt.show()
-
-
-def get_sl_matchup_stats_nine(df, games2win):
-    slrange = range(1, 10)
-    slmatches_average = games2win
-    for p1skill in slrange:
-        for p2skill in slrange:
-            matchup_data = SLMatchesNine(p1skill, p2skill)
-            if p1skill == p2skill:
-                slmatches_average.loc[p1skill, p2skill] = 10.00
-            else:
-                for index, row in df.iterrows():
-                    if row['Player_1'] == p1skill and row['Player_2'] == p2skill:
-                        matchup_data.addpoints(row['Points_1'])
-                        matchup_data.addgame(index)
-                        if p1skill == p2skill:
-                            matchup_data.addpoints(row['Points_2'])
-                for index, row in df.iterrows():
-                    if index not in matchup_data.indices_checked:
-                        if row['Player_2'] == p1skill and row['Player_1'] == p2skill:
-                            matchup_data.addpoints(row['Points_2'])
-                            matchup_data.addgame(index)
-                matchup_data.getaverage()
-                if matchup_data.average is None:
-                    slmatches_average.loc[p1skill, p2skill] = 10.00
-                else:
-                    try:
-                        slmatches_average.loc[p1skill, p2skill] = round(matchup_data.average, 2)
-                    except TypeError:
-                        slmatches_average.loc[p1skill, p2skill] = matchup_data.average
-    sls = pd.DataFrame(slmatches_average, index=slrange, columns=slrange, dtype=float)
-    sns.heatmap(sls, annot=True, cmap=sns.color_palette("coolwarm", 12), vmin=0, vmax=20, fmt=".2f",
-                linewidths=.2, cbar_kws={"label": "Average Points"})
-    plt.title("Opponent SL", size=10)
-    plt.xlabel("Opponent SL")
-    plt.ylabel("Player SL")
-    plt.tick_params(axis='both', which='major', labelsize=10, labelbottom=False, bottom=False, top=False, labeltop=True,
-                    left=False, right=False)
-    plt.savefig("../data/images/slMatchupAveragesNine.svg")
-    slmatches_average.to_excel(r'../data/SLMatchupAveragesNine.xlsx', index=True, header=True)
-    print(slmatches_average)
-
-
-def main():
-    games_to_win = workbook2df("../data/GamesToWin.xlsx", True, True)
-    sl_matchup_data_eight = workbook2df("../data/SLMatchups.xlsx", True, False)
-    # player_data = workbook2df("data/wookieMistakesPlayerData.xlsx", True, False)
-    # game_data = workbook2df("data/wookieMistakesSpring2022Games.xlsx", True, False)
-    get_sl_matchup_stats_eight(sl_matchup_data_eight, games_to_win)
-    games_to_win_nine = workbook2df("../data/GamesToWinNine.xlsx", True, True)
-    sl_matchup_data_nine = workbook2df("../data/SLMatchupsNine.xlsx", True, False)
-    get_sl_matchup_stats_nine(sl_matchup_data_nine, games_to_win_nine)
-
-
-if __name__ == '__main__':
-    main()

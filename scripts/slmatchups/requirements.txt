@@ -1,0 +1,5 @@
+dataframe_image~=0.1.1
+matplotlib~=3.5.2
+openpyxl~=3.0.10
+pandas~=1.4.3
+seaborn~=0.11.2
