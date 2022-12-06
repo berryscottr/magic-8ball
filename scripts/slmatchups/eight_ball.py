@@ -141,6 +141,7 @@ def get_sl_matchup_stats_eight(df, games2win):
     dfi.export(sls, "../../data/images/slMatchupModes.png")
     slmatches_mode.to_excel(r'../../data/SLMatchupModes.xlsx', index=True, header=True)
     print(slmatches_mode)
+    plt.clf()
 
     # for sl in slrange:
     #     plt.plot(np.array(slrange), np.array([float(str(x).replace("X", "", 1)) for x in slmatches.values[sl-2]]))

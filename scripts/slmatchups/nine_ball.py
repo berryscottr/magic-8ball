@@ -48,7 +48,7 @@ def get_sl_matchup_stats_nine(df, games2win):
                             matchup_data.addgame(index)
                 matchup_data.getaverage()
                 if matchup_data.average is None:
-                    slmatches_average.loc[p1skill, p2skill] = 10.00
+                    slmatches_average.loc[p1skill, p2skill] = None  # alternatively could set to 10.00
                 else:
                     try:
                         slmatches_average.loc[p1skill, p2skill] = round(matchup_data.average, 2)
@@ -65,3 +65,4 @@ def get_sl_matchup_stats_nine(df, games2win):
     plt.savefig("../../data/images/slMatchupAveragesNine.svg")
     slmatches_average.to_excel(r'../../data/SLMatchupAveragesNine.xlsx', index=True, header=True)
     print(slmatches_average)
+    plt.clf()
