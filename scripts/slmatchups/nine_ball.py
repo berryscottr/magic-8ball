@@ -63,6 +63,6 @@ def get_sl_matchup_stats_nine(df, games2win):
     plt.tick_params(axis='both', which='major', labelsize=10, labelbottom=False, bottom=False, top=False, labeltop=True,
                     left=False, right=False)
     plt.savefig("../../data/images/slMatchupAveragesNine.svg")
-    slmatches_average.to_excel(r'../../data/SLMatchupAveragesNine.xlsx', index=True, header=True)
+    slmatches_average.to_excel(r'../../data/SLMatchupAveragesNine.xlsx', index=True, header=True, sheet_name="Nine")
     print(slmatches_average)
     plt.clf()

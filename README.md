@@ -24,13 +24,19 @@ and a link to the [8-ball heatmap](https://raw.githubusercontent.com/berryscottr
 `!inn`
 
 This command returns everyone's effective innings per game towards their handicap to the #strategy channel.
-### Optimal Lineup
-`!opt 65543 22235567`
+### Optimal Lineup Eight-Ball
+`!opt8 65543 23445567`
 
 This command returns the highest expected points lineups for that the second array (first 8) of numbers can 
 respond to the first array (first 5) of numbers in the message. For this command to work, the arrays must be space separated.
 There is also about 15 seconds of delay until a response.
-### Optimal Playoff Lineup
+### Optimal Lineup Nine-Ball
+`!opt9 65543 12346789`
+
+This command returns the highest expected points lineups for that the second array (first 8) of numbers can
+respond to the first array (first 5) of numbers in the message. For this command to work, the arrays must be space separated.
+There is also about 15 seconds of delay until a response.
+### Optimal Playoff Lineup Eight-Ball
 `!play 65543 22235567`
 
 This command returns the highest differential expected points lineups for that the second array (first 8) of numbers can

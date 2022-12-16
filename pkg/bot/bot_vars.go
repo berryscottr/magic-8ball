@@ -10,6 +10,8 @@ const (
 	UserID = "@me"
 	// SLMatchupFile is the name of the file where the SL matchups are stored
 	SLMatchupFile = "/data/SLMatchupAverages.xlsx"
+	// SLMatchupFileNine is the name of the file where the SL matchups are stored
+	SLMatchupFileNine = "/data/SLMatchupAveragesNine.xlsx"
 	// EightSLHeatMatchupAveragesUrl is the name of the file where the SL heat matchups are stored
 	EightSLHeatMatchupAveragesUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupAverages.svg"
 	// NineSLHeatMatchupAveragesUrl is the name of the file where the SL heat matchups are stored
@@ -18,8 +20,6 @@ const (
 	SLMatchupMediansUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupMedians.png"
 	// SLMatchupModesUrl is the name of the file where the SL matchup medians are stored
 	SLMatchupModesUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupModes.png"
-	// Sheet1 is the name of the main sheet in the Excel file
-	Sheet1 = "Sheet1"
 	// InningsFile is the name of the file where the SL innings are stored
 	InningsFile = "/data/InningCounts.xlsx"
 	// ReactionRequest8 is the reaction emoji choices for availability
@@ -41,7 +41,7 @@ const (
 	// StrategyChannelID is the ID of channel #strategy
 	StrategyChannelID = "951346668912136192"
 	// APACalendarUrl is the URL of the APA calendar
-	APACalendarUrl = "https://atlanta.apaleagues.com/Uploads/atlanta/Calendars/2022-23%20APA%20Calendar%20rev%2001-01-2022%20%20pdf.pdf"
+	APACalendarUrl = "https://atlanta.apaleagues.com/Uploads/atlanta/APA%20Atlanta%202023.pdf"
 	// TeamCalendarUrl is the URL of the team calendar
 	TeamCalendarUrl = "https://github.com/berryscottr/magic-8ball/blob/main/data/Fall2022Schedule.csv"
 )
@@ -149,8 +149,10 @@ type Methods interface {
 	HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleHandicapAvg for returning your effective innings per game
 	HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate)
-	// HandleOptimal for returning max expected points lineup from opponent's lineup
-	HandleOptimal(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleOptimal8 for returning max expected points lineup from opponent's lineup for eight-ball
+	HandleOptimal8(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleOptimal9 for returning max expected points lineup from opponent's lineup for nine-ball
+	HandleOptimal9(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandlePlayoff for returning max differential expected points lineup from opponent's lineup
 	HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleCalendar for returning the current calendar

@@ -95,8 +95,8 @@ func TestData_HandleHandicapAvg(t *testing.T) {
 	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
 }
 
-// TestData_HandleOptimal confirms ability to generate a max expected points lineup
-func TestData_HandleOptimal(t *testing.T) {
+// TestData_HandleOptimal8 confirms ability to generate a max expected points lineup for eight-ball
+func TestData_HandleOptimal8(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
 	data = data.SetDir()
@@ -106,7 +106,22 @@ func TestData_HandleOptimal(t *testing.T) {
 	//		Content: "!optimal 65533 22335567",
 	//	},
 	//}
-	//data.HandleOptimal(s, &m)
+	//data.HandleOptimal8(s, &m)
+	assertion.NoError(data.Err, "failed to return the optimal matchup")
+}
+
+// TestData_HandleOptimal9 confirms ability to generate a max expected points lineup for nine-ball
+func TestData_HandleOptimal9(t *testing.T) {
+	assertion := assert.New(t)
+	data := Data{Token: os.Getenv("BOT_TOKEN")}
+	data = data.SetDir()
+	//var s *discordgo.Session
+	//m := discordgo.MessageCreate{
+	//	Message: &discordgo.Message{
+	//		Content: "!optimal 65533 22335567",
+	//	},
+	//}
+	//data.HandleOptimal9(s, &m)
 	assertion.NoError(data.Err, "failed to return the optimal matchup")
 }
 
