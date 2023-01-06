@@ -57,7 +57,7 @@ This command returns a game day announcement to the #game-night-8 channel that t
 
 This command returns an embedded link to the calendar for the current season.
 
-Further, the current session's team calendar with match results is located [here](data/Fall2022Schedule.csv).
+Further, the current session's team calendar with match results is located [here](data/schedules/Spring2023Schedule.csv).
 
 ## Dev Notes
 - This bot is hard-coded to restart every 6th hour of the day in UTC time to enable full-time Github Workflow Action hosting.

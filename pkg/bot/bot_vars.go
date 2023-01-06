@@ -43,7 +43,7 @@ const (
 	// APACalendarUrl is the URL of the APA calendar
 	APACalendarUrl = "https://atlanta.apaleagues.com/Uploads/atlanta/APA%20Atlanta%202023.pdf"
 	// TeamCalendarUrl is the URL of the team calendar
-	TeamCalendarUrl = "https://github.com/berryscottr/magic-8ball/blob/main/data/Fall2022Schedule.csv"
+	TeamCalendarUrl = "https://github.com/berryscottr/magic-8ball/blob/main/data/schedules/Spring2023Schedule.csv"
 )
 
 var (
