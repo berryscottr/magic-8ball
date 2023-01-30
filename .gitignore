@@ -17,3 +17,5 @@
 /venv/
 **/.pytest_cache/
 **/__pycache__/
+magic-8ball
+scripts/scrape_apa/geckodriver.log
