@@ -455,7 +455,7 @@ func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCrea
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
+	log.Info().Msgf("effective innings posted to Discord channel %s", m.ChannelID)
 	return
 }
 
