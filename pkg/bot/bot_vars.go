@@ -47,7 +47,7 @@ const (
 )
 
 var (
-	Division8TeamNames = [11]string{
+	Division8TeamNames = [10]string{
 		"Jiffyloob",
 		"A Selected Few",
 		"Wookie Mistakes",
@@ -57,16 +57,14 @@ var (
 		"The Unusual Suspects",
 		"Lil's Bunch",
 		"8-Balls of Fire",
-		"Ninety Nine Problems-8",
 		"Believe it or Not",
 	}
-	Division9TeamNames = [12]string{
+	Division9TeamNames = [11]string{
 		"Shark Shooters - 9",
 		"Sticks and Stones",
 		"9 Rocks Away",
 		"9 on the Vine",
 		"Found It",
-		"Ninety Nine Problems",
 		"M Team",
 		"The Wright Stuff-9",
 		"Believe It or Not 2",
