@@ -8,7 +8,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"golang.org/x/exp/slices"
 	"gonum.org/v1/gonum/stat/combin"
-	"math"
 	"reflect"
 	"regexp"
 	"sort"
@@ -56,7 +55,6 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	//if containsNineBall(strings.ToLower(m.Content)) {
 	//	bot.Handle9Ball(s, m)
 	//}
-	return
 }
 
 // ReactionHandler for interpreting how to respond to reactions
@@ -73,7 +71,6 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 			r.MessageReaction.ChannelID == DevChannelID) {
 		bot.HandleGameDayReaction9(s, r)
 	}
-	return
 }
 
 // HandleGameDayReaction8 for handling the reaction to the game day post
@@ -131,7 +128,6 @@ func (bot Data) HandleGameDayReaction8(s *discordgo.Session, r *discordgo.Messag
 	}
 	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s",
 		r.MessageReaction.Emoji.Name, name, r.ChannelID)
-	return
 }
 
 // HandleGameDay8 for posting game day message
@@ -166,7 +162,6 @@ func (bot Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate)
 		return
 	}
 	log.Info().Msgf("game day vs %s posted to Discord channel %s", opponentTeam, m.ChannelID)
-	return
 }
 
 // HandleGameDayReaction9 for handling the reaction to the game day post
@@ -224,7 +219,6 @@ func (bot Data) HandleGameDayReaction9(s *discordgo.Session, r *discordgo.Messag
 	}
 	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s",
 		r.MessageReaction.Emoji.Name, name, r.ChannelID)
-	return
 }
 
 // HandleGameDay9 for posting game day message
@@ -259,7 +253,6 @@ func (bot Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate)
 		return
 	}
 	log.Info().Msgf("game day vs %s posted to Discord channel %s", opponentTeam, m.ChannelID)
-	return
 }
 
 // HandleLineups for returning eligible lineups from a provided list of players
@@ -324,7 +317,6 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 	log.Info().Msgf("%v possible lineups posted to Discord channel %s", len(teamLineups), m.ChannelID)
-	return
 }
 
 // HandleSLMatchups for returning chart of the best skill level match-ups
@@ -388,7 +380,6 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 		return
 	}
 	log.Info().Msgf("skill level match-ups posted to Discord channel %s", m.ChannelID)
-	return
 }
 
 // HandleHandicapAvg for returning your effective innings per game
@@ -427,9 +418,9 @@ func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCrea
 			} else if len(innings) > 2 {
 				var numInnings int
 				if len(innings)%2 == 0 {
-					numInnings = int(math.Floor(float64(len(innings) / 2)))
+					numInnings = int(float64(len(innings) / 2))
 				} else {
-					numInnings = int(math.Floor(float64(len(innings)/2)) + 1)
+					numInnings = int(float64(len(innings)/2)) + 1
 				}
 				innings = innings[:numInnings]
 			}
@@ -456,7 +447,6 @@ func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCrea
 		return
 	}
 	log.Info().Msgf("effective innings posted to Discord channel %s", m.ChannelID)
-	return
 }
 
 // HandleOptimal8 for returning max expected points lineup from opponent's lineup for eight-ball
@@ -633,7 +623,6 @@ func (bot Data) HandleOptimal8(s *discordgo.Session, m *discordgo.MessageCreate)
 		return
 	}
 	log.Info().Msgf("top possible lineup and expected points posted to Discord channel %s", m.ChannelID)
-	return
 }
 
 // HandleOptimal9 for returning max expected points lineup from opponent's lineup for nine-ball
@@ -813,7 +802,6 @@ func (bot Data) HandleOptimal9(s *discordgo.Session, m *discordgo.MessageCreate)
 		return
 	}
 	log.Info().Msgf("top possible lineup and expected points posted to Discord channel %s", m.ChannelID)
-	return
 }
 
 // HandlePlayoff for returning max differential expected points lineup from opponent's lineup
@@ -1010,7 +998,6 @@ func (bot Data) HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate) 
 		return
 	}
 	log.Info().Msgf("top possible lineup and expected points posted to Discord channel %s", m.ChannelID)
-	return
 }
 
 // HandleCalendar handles the calendar command
@@ -1040,7 +1027,6 @@ func (bot Data) HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate)
 		return
 	}
 	log.Info().Msgf("calendar posted in Discord channel %s", m.ChannelID)
-	return
 }
 
 // HandleBCA for mentions of BCA play
@@ -1056,7 +1042,6 @@ func (bot Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	log.Info().Msgf("bca rebuttal posted to %s in Discord channel %s", m.Member.Nick, m.ChannelID)
-	return
 }
 
 // Handle9Ball for mentions of 9-ball play
@@ -1072,5 +1057,4 @@ func (bot Data) Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	log.Info().Msgf("9-ball rebuttal posted to %s in Discord channel %s", m.Member.Nick, m.ChannelID)
-	return
 }

@@ -35,5 +35,4 @@ func (bot Data) Start() {
 		return
 	}
 	log.Info().Msg("magic-8ball listening")
-	return
 }

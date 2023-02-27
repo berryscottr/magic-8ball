@@ -2,7 +2,6 @@ package bot
 
 import (
 	"reflect"
-	"strings"
 )
 
 // seniorSkillRule returns a bool indicating if a lineup violates this rule
@@ -13,10 +12,7 @@ func seniorSkillRule(array []int) bool {
 			numSeniors++
 		}
 	}
-	if numSeniors > 2 {
-		return true
-	}
-	return false
+	return numSeniors > 2
 }
 
 // sum returns the sum of the elements in the given int slice
@@ -50,11 +46,4 @@ func validLineup(lineup []int) bool {
 		return false
 	}
 	return true
-}
-
-// containsNineBall returns true if the message mentions 9-ball
-func containsNineBall(text string) bool {
-	return strings.Contains(strings.Replace(strings.Replace(
-		strings.ToLower(text), "-", "", -1), " ", "", -1), "9ball") ||
-		strings.Contains(strings.Replace(strings.ToLower(text), " ", "", -1), "nineball")
 }
