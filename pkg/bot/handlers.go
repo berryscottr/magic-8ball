@@ -712,8 +712,8 @@ func (bot Data) HandleOptimal9(s *discordgo.Session, m *discordgo.MessageCreate)
 					log.Err(bot.Err).Msg("failed to parse float")
 					continue
 				}
-				if points == 0 {
-					points = 10.00
+				if points == 0.00 {
+					points = 0.01
 				}
 				matchup := Matchup{
 					SkillLevels:       [2]int{teamPlayer, opponentPlayer},
