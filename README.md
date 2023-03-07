@@ -78,5 +78,5 @@ Further, the current session's team calendar with match results is located [here
 
 ## Dev Notes
 
-- This bot is hosted on Railway
+- This bot is hosted on Railway App
 - I've used this bot to benefit my own teams, but I encourage whoever may come across this to use this template for their own teams as well.
