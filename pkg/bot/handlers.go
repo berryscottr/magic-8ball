@@ -17,7 +17,7 @@ import (
 )
 
 // MessageHandler for interpreting which function to launch from message contents
-func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == bot.User.ID {
 		return
 	}
@@ -58,7 +58,7 @@ func (bot Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 }
 
 // ReactionHandler for interpreting how to respond to reactions
-func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
+func (bot *Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	if r.Member.User.ID == bot.User.ID {
 		return
 	}
@@ -74,7 +74,7 @@ func (bot Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReacti
 }
 
 // HandleGameDayReaction8 for handling the reaction to the game day post
-func (bot Data) HandleGameDayReaction8(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
+func (bot *Data) HandleGameDayReaction8(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	log.Info().Msg("handling reaction to game day post")
 	date := time.Now()
 	loc, err := time.LoadLocation("America/New_York")
@@ -131,7 +131,7 @@ func (bot Data) HandleGameDayReaction8(s *discordgo.Session, r *discordgo.Messag
 }
 
 // HandleGameDay8 for posting game day message
-func (bot Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling game day post creation")
 	var opponentTeam string
 	for i, name := range Division8TeamNames {
@@ -165,7 +165,7 @@ func (bot Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate)
 }
 
 // HandleGameDayReaction9 for handling the reaction to the game day post
-func (bot Data) HandleGameDayReaction9(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
+func (bot *Data) HandleGameDayReaction9(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	log.Info().Msg("handling reaction to game day post")
 	date := time.Now()
 	loc, err := time.LoadLocation("America/New_York")
@@ -222,7 +222,7 @@ func (bot Data) HandleGameDayReaction9(s *discordgo.Session, r *discordgo.Messag
 }
 
 // HandleGameDay9 for posting game day message
-func (bot Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling game day post creation")
 	var opponentTeam string
 	for i, name := range Division9TeamNames {
@@ -256,7 +256,7 @@ func (bot Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate)
 }
 
 // HandleLineups for returning eligible lineups from a provided list of players
-func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling lineups")
 	re := regexp.MustCompile("[1-9]")
 	var content string
@@ -320,7 +320,7 @@ func (bot Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate) 
 }
 
 // HandleSLMatchups for returning chart of the best skill level match-ups
-func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling skill level match-ups")
 	bot.Excel, bot.Err = excelize.OpenFile(bot.Dir + SLMatchupFile)
 	if bot.Err != nil {
@@ -383,7 +383,7 @@ func (bot Data) HandleSLMatchups(s *discordgo.Session, m *discordgo.MessageCreat
 }
 
 // HandleHandicapAvg for returning your effective innings per game
-func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling skill level match-ups")
 	bot.Excel, bot.Err = excelize.OpenFile(bot.Dir + InningsFile)
 	if bot.Err != nil {
@@ -450,7 +450,7 @@ func (bot Data) HandleHandicapAvg(s *discordgo.Session, m *discordgo.MessageCrea
 }
 
 // HandleOptimal8 for returning max expected points lineup from opponent's lineup for eight-ball
-func (bot Data) HandleOptimal8(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleOptimal8(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling optimal lineups")
 	re := regexp.MustCompile("[2-7]")
 	var content string
@@ -626,7 +626,7 @@ func (bot Data) HandleOptimal8(s *discordgo.Session, m *discordgo.MessageCreate)
 }
 
 // HandleOptimal9 for returning max expected points lineup from opponent's lineup for nine-ball
-func (bot Data) HandleOptimal9(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleOptimal9(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling optimal lineups")
 	re := regexp.MustCompile("[1-9]")
 	var content string
@@ -805,7 +805,7 @@ func (bot Data) HandleOptimal9(s *discordgo.Session, m *discordgo.MessageCreate)
 }
 
 // HandlePlayoff for returning max differential expected points lineup from opponent's lineup
-func (bot Data) HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling optimal playoff lineups")
 	re := regexp.MustCompile("[2-7]")
 	var content string
@@ -1001,7 +1001,7 @@ func (bot Data) HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate) 
 }
 
 // HandleCalendar handles the calendar command
-func (bot Data) HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling calendar call")
 	message := discordgo.MessageSend{
 		Embeds: []*discordgo.MessageEmbed{
@@ -1030,7 +1030,7 @@ func (bot Data) HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate)
 }
 
 // HandleBCA for mentions of BCA play
-func (bot Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling mention of BCA play")
 	message := discordgo.MessageSend{
 		Content: "BCA is for bums.",
@@ -1045,7 +1045,7 @@ func (bot Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 // Handle9Ball for mentions of 9-ball play
-func (bot Data) Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate) {
+func (bot *Data) Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling mention of 9-ball play")
 	message := discordgo.MessageSend{
 		Content: "9-Ball is for bums.",

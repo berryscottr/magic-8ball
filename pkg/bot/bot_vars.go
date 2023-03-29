@@ -126,7 +126,7 @@ type Matchup struct {
 // Methods for the bot to use
 type Methods interface {
 	// SetDir for the bot to use
-	SetDir() Data
+	SetDir()
 	// Start the Discord bot listener
 	Start()
 	// MessageHandler for interpreting which function to launch from message contents

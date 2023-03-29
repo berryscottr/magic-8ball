@@ -10,7 +10,7 @@ import (
 func TestData_SetDir(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to set the bot directory")
 }
 
@@ -18,7 +18,7 @@ func TestData_SetDir(t *testing.T) {
 func TestData_Start(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	data.Start()
 	assertion.NoError(data.Err, "failed to start discord listener")
 }
@@ -27,7 +27,7 @@ func TestData_Start(t *testing.T) {
 func TestData_MessageHandler(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to handle message contents")
 }
 
@@ -35,7 +35,7 @@ func TestData_MessageHandler(t *testing.T) {
 func TestData_ReactionHandler(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to handle reaction")
 }
 
@@ -43,7 +43,7 @@ func TestData_ReactionHandler(t *testing.T) {
 func TestData_HandleGameDay8Reaction(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to read a game day reaction")
 }
 
@@ -51,7 +51,7 @@ func TestData_HandleGameDay8Reaction(t *testing.T) {
 func TestData_HandleGameDay9Reaction(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to read a game day reaction")
 }
 
@@ -59,7 +59,7 @@ func TestData_HandleGameDay9Reaction(t *testing.T) {
 func TestData_HandleGameDay8(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to generate a response to a game day post")
 }
 
@@ -67,7 +67,7 @@ func TestData_HandleGameDay8(t *testing.T) {
 func TestData_HandleGameDay9(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to generate a response to a game day post")
 }
 
@@ -75,7 +75,7 @@ func TestData_HandleGameDay9(t *testing.T) {
 func TestData_HandleLineups(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to generate valid lineups")
 }
 
@@ -83,7 +83,7 @@ func TestData_HandleLineups(t *testing.T) {
 func TestData_HandleSLMatchups(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
 }
 
@@ -91,7 +91,7 @@ func TestData_HandleSLMatchups(t *testing.T) {
 func TestData_HandleHandicapAvg(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to read the matchups excel sheet")
 }
 
@@ -99,7 +99,7 @@ func TestData_HandleHandicapAvg(t *testing.T) {
 func TestData_HandleOptimal8(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	//var s *discordgo.Session
 	//m := discordgo.MessageCreate{
 	//	Message: &discordgo.Message{
@@ -114,7 +114,7 @@ func TestData_HandleOptimal8(t *testing.T) {
 func TestData_HandleOptimal9(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	//var s *discordgo.Session
 	//m := discordgo.MessageCreate{
 	//	Message: &discordgo.Message{
@@ -129,7 +129,7 @@ func TestData_HandleOptimal9(t *testing.T) {
 func TestData_HandlePlayoff(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to return the optimal playoff matchup")
 }
 
@@ -137,7 +137,7 @@ func TestData_HandlePlayoff(t *testing.T) {
 func TestData_HandleCalendar(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to return the calendar link")
 }
 
@@ -145,7 +145,7 @@ func TestData_HandleCalendar(t *testing.T) {
 func TestData_HandleBCA(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to generate a response to a BCA mention")
 }
 
@@ -153,6 +153,6 @@ func TestData_HandleBCA(t *testing.T) {
 func TestData_Handle9Ball(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
-	data = data.SetDir()
+	data.SetDir()
 	assertion.NoError(data.Err, "failed to generate a response to a 9ball mention")
 }
