@@ -1,5 +1,6 @@
 import dataframe_image as dfi
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 
@@ -152,3 +153,39 @@ def get_sl_matchup_stats_eight(df, games2win):
     #     plt.ylabel('Average Points')
     #     plt.savefig(imgtitle)
     #     plt.show()
+
+def get_sl_matchup_stats_eight_jason_version(df):
+    total_score_matrix = [ [0]*8 for i in range(8)]
+    matchup_count_matrix = [ [0]*8 for i in range(8)]
+    average_score_matrix = [ [0]*8 for i in range(8)]
+    total_combined_match_points_earned_matrix = [ [0]*8 for i in range(8)]
+    average_combined_match_points_earned_matrix = [ [0]*8 for i in range(8)]
+    favorability_score_matrix = [ [0]*8 for i in range(8)]
+
+    for index, row in df.iterrows():
+        sl_1 = row['Player_1']
+        sl_2 = row['Player_2']
+        points_1 = row['Points_1']
+        points_2 = row['Points_2']
+
+        total_score_matrix[sl_1][sl_2] += points_1
+        total_score_matrix[sl_2][sl_1] += points_2
+        matchup_count_matrix[sl_1][sl_2] += 1
+        matchup_count_matrix[sl_2][sl_1] += 1
+
+        total_match_points_earned = points_1 + points_2
+        total_combined_match_points_earned_matrix[sl_1][sl_2] += total_match_points_earned
+        total_combined_match_points_earned_matrix[sl_2][sl_1] += total_match_points_earned
+    
+    for x in range(2, 8):
+        for y in range(2, 8):
+            if (x == y):
+                favorability_score_matrix[x][y] = 0.5
+            elif (matchup_count_matrix[x][y] != 0):
+                average_score_matrix[x][y] = total_score_matrix[x][y] / matchup_count_matrix[x][y]
+                average_combined_match_points_earned_matrix[x][y] = total_combined_match_points_earned_matrix[x][y] / matchup_count_matrix[x][y]
+                favorability_score_matrix[x][y] = round(average_score_matrix[x][y] / average_combined_match_points_earned_matrix[x][y], 2)
+            else:
+                favorability_score_matrix[x][y] = -1
+
+    print(np.matrix(favorability_score_matrix))

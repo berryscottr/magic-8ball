@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 
@@ -66,3 +67,29 @@ def get_sl_matchup_stats_nine(df, games2win):
     slmatches_average.to_excel(r'../../data/SLMatchupAveragesNine.xlsx', index=True, header=True, sheet_name="Nine")
     print(slmatches_average)
     plt.clf()
+
+def get_sl_matchup_stats_nine_jason_version(df):
+    total_score_matrix = [ [0]*10 for i in range(10)]
+    matchup_count_matrix = [ [0]*10 for i in range(10)]
+    average_score_matrix = [ [0]*10 for i in range(10)]
+    for index, row in df.iterrows():
+        sl_1 = row['Player_1']
+        sl_2 = row['Player_2']
+        points_1 = row['Points_1']
+        points_2 = row['Points_2']
+
+        total_score_matrix[sl_1][sl_2] += points_1
+        total_score_matrix[sl_2][sl_1] += points_2
+        matchup_count_matrix[sl_1][sl_2] += 1
+        matchup_count_matrix[sl_2][sl_1] += 1
+    
+    for x in range(1, 10):
+        for y in range(1, 10):
+            if (matchup_count_matrix[x][y] != 0):
+                average_score_matrix[x][y] = round(
+                    total_score_matrix[x][y] / matchup_count_matrix[x][y],
+                    2)
+            else:
+                average_score_matrix[x][y] = -1
+    
+    print(np.matrix(average_score_matrix))

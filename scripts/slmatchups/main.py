@@ -12,9 +12,13 @@ def main():
     # player_data = workbook2df("data/wookieMistakesPlayerData.xlsx", True, False)
     # game_data = workbook2df("data/wookieMistakesSpring2022Games.xlsx", True, False)
     eight_ball.get_sl_matchup_stats_eight(sl_matchup_data_eight, games_to_win)
+    sl_matchup_data_eight = workbook2df("../../data/SLMatchups.xlsx", True, False)
+    eight_ball.get_sl_matchup_stats_eight_jason_version(sl_matchup_data_eight)
     games_to_win_nine = workbook2df("../../data/GamesToWinNine.xlsx", True, True)
     sl_matchup_data_nine = workbook2df("../../data/SLMatchupsNine.xlsx", True, False)
     nine_ball.get_sl_matchup_stats_nine(sl_matchup_data_nine, games_to_win_nine)
+    # sl_matchup_data_nine_jason = workbook2df("../../data/SLMatchupsNine.xlsx", True, False)
+    # nine_ball.get_sl_matchup_stats_nine_jason_version(sl_matchup_data_nine_jason)
 
 
 if __name__ == '__main__':
