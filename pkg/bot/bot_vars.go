@@ -56,7 +56,7 @@ var (
 		"G Team",
 		"The Unusual Suspects",
 		"Lil's Bunch",
-		"8-Balls of Fire"
+		"8-Balls of Fire",
 	}
 	Division9TeamNames = [8]string{
 		"Shark Shooters - 9",
