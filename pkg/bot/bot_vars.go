@@ -22,22 +22,21 @@ const (
 	SLMatchupModesUrl = "https://raw.githubusercontent.com/berryscottr/magic-8ball/main/data/images/slMatchupModes.png"
 	// InningsFile is the name of the file where the SL innings are stored
 	InningsFile = "/data/InningCounts.xlsx"
-	// ReactionRequest8 is the reaction emoji choices for availability
-	ReactionRequest8 = "React to this message with a 👍 if you are coming, " +
+	// ReactionRequest is the reaction emoji choices for availability
+	ReactionRequest = "React to this message with a 👍 if you are coming, " +
 		"a 👎 if you can't make it, and an ⌛ if you will be late. " +
-		"Any reaction of this type in #game-night-8 " +
-		"until 7pm will update your tracked availability."
-	// ReactionRequest9 is the reaction emoji choices for availability
-	ReactionRequest9 = "React to this message with a 👍 if you are coming, " +
-		"a 👎 if you can't make it, and an ⌛ if you will be late. " +
-		"Any reaction of this type in #game-night-9 " +
-		"until 7pm will update your tracked availability."
+		"Any reaction of this type in a #game-night channel " +
+		"until 7pm will send an update message to the #game-night channels."
 	// DevChannelID is the ID of channel #bot-dev
 	DevChannelID = "955291440643207228"
 	// GameNight8ChannelID is the ID of channel #game-night
 	GameNight8ChannelID = "951345352030691381"
 	// GameNight9ChannelID is the ID of channel #game-night
 	GameNight9ChannelID = "1013889839101399111"
+	// EightBallRoleID is the ID of role 8-Ball
+	EightBallRoleID = "1013886913880522872"
+	// NineBallRoleID is the ID of role 9-Ball
+	NineBallRoleID = "1013887160480436317"
 	// StrategyChannelID is the ID of channel #strategy
 	StrategyChannelID = "951346668912136192"
 	// APACalendarUrl is the URL of the APA calendar
@@ -55,7 +54,7 @@ var (
 		"Jiffyloob",
 		"G Team",
 		"The Unusual Suspects",
-		"Lil's Bunch",
+		"School of Pool",
 		"8-Balls of Fire",
 	}
 	Division9TeamNames = [8]string{
@@ -130,11 +129,9 @@ type Methods interface {
 	// ReactionHandler for interpreting how to respond to reactions
 	ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd)
 	// HandleGameDayReaction8 for interpreting how to respond to reactions
-	HandleGameDayReaction8(s *discordgo.Session, r *discordgo.MessageReactionAdd)
+	HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd)
 	// HandleGameDay8 for posting game day message
 	HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate)
-	// HandleGameDayReaction9 for interpreting how to respond to reactions
-	HandleGameDayReaction9(s *discordgo.Session, r *discordgo.MessageReactionAdd)
 	// HandleGameDay9 for posting game day message
 	HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleLineups for returning eligible lineups from a provided list of players

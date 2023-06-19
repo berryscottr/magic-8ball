@@ -63,22 +63,17 @@ func (bot *Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReact
 		return
 	}
 	if slices.Contains(GameDayReactions, r.MessageReaction.Emoji.Name) &&
-		(r.MessageReaction.ChannelID == GameNight8ChannelID ||
-			r.MessageReaction.ChannelID == DevChannelID) {
-		bot.HandleGameDayReaction8(s, r)
-	} else if slices.Contains(GameDayReactions, r.MessageReaction.Emoji.Name) &&
-		(r.MessageReaction.ChannelID == GameNight9ChannelID ||
-			r.MessageReaction.ChannelID == DevChannelID) {
-		bot.HandleGameDayReaction9(s, r)
+		(r.MessageReaction.ChannelID == GameNight8ChannelID || r.MessageReaction.ChannelID == GameNight9ChannelID || r.MessageReaction.ChannelID == DevChannelID) {
+		bot.HandleGameDayReaction(s, r)
 	}
 }
 
-// HandleGameDayReaction8 for handling the reaction to the game day post
-func (bot *Data) HandleGameDayReaction8(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
+// HandleGameDayReaction for handling the reaction to the game day post
+func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	log.Info().Msg("handling reaction to game day post")
 	date := time.Now()
 	loc, err := time.LoadLocation("America/New_York")
-	if r.ChannelID == GameNight8ChannelID {
+	if r.ChannelID == GameNight8ChannelID || r.ChannelID == GameNight9ChannelID {
 		if err != nil {
 			bot.Err = err
 			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
@@ -118,16 +113,36 @@ func (bot *Data) HandleGameDayReaction8(s *discordgo.Session, r *discordgo.Messa
 		),
 	}
 	if r.MessageReaction.ChannelID == DevChannelID {
+		log.Info().Msgf("%s has roles: %v", name, r.Member.Roles)
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+		if bot.Err != nil {
+			log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", DevChannelID)
+		} else {
+			log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
+				r.MessageReaction.Emoji.Name, name, r.ChannelID, DevChannelID)
+		}
 	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(GameNight8ChannelID, &message)
+		for _, role := range r.Member.Roles {
+			log.Info().Msgf("evaluating role: %s", role)
+			if role == EightBallRoleID {
+				_, bot.Err = s.ChannelMessageSendComplex(GameNight8ChannelID, &message)
+				if bot.Err != nil {
+					log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", GameNight8ChannelID)
+				} else {
+					log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
+						r.MessageReaction.Emoji.Name, name, r.ChannelID, GameNight8ChannelID)
+				}
+			} else if role == NineBallRoleID {
+				_, bot.Err = s.ChannelMessageSendComplex(GameNight9ChannelID, &message)
+				if bot.Err != nil {
+					log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", GameNight9ChannelID)
+				} else {
+					log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
+						r.MessageReaction.Emoji.Name, name, r.ChannelID, GameNight9ChannelID)
+				}
+			}
+		}
 	}
-	if bot.Err != nil {
-		log.Err(bot.Err).Msg("failed to post message")
-		return
-	}
-	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s",
-		r.MessageReaction.Emoji.Name, name, r.ChannelID)
 }
 
 // HandleGameDay8 for posting game day message
@@ -148,8 +163,8 @@ func (bot *Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate
 	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"@everyone It's Game Day! Tonight we play %s.\n"+
-				ReactionRequest8+customMessage, opponentTeam,
+			"@everyone It's Game Day! Tonight Wookie Mistakes plays %s.\n"+
+				ReactionRequest+customMessage, opponentTeam,
 		),
 	}
 	if m.ChannelID == DevChannelID {
@@ -162,63 +177,6 @@ func (bot *Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate
 		return
 	}
 	log.Info().Msgf("game day vs %s posted to Discord channel %s", opponentTeam, m.ChannelID)
-}
-
-// HandleGameDayReaction9 for handling the reaction to the game day post
-func (bot *Data) HandleGameDayReaction9(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
-	log.Info().Msg("handling reaction to game day post")
-	date := time.Now()
-	loc, err := time.LoadLocation("America/New_York")
-	if r.ChannelID == GameNight9ChannelID {
-		if err != nil {
-			bot.Err = err
-			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
-			if date.Weekday() != time.Tuesday {
-				log.Info().Msg("not Tuesday UTC, ignoring reaction")
-				return
-			}
-		} else {
-			date = date.In(loc)
-			if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
-				log.Info().Msg("not Tuesday before 7pm EST, ignoring reaction")
-				return
-			}
-		}
-	}
-	var status string
-	switch r.MessageReaction.Emoji.Name {
-	case "👍":
-		status = "available"
-	case "👎":
-		status = "unavailable"
-	case "⌛":
-		status = "late"
-	case "⏳":
-		status = "late"
-	default:
-		log.Info().Msg("unknown reaction")
-		return
-	}
-	name := r.Member.Nick
-	if name == "" {
-		name = r.Member.User.Username
-	}
-	message := discordgo.MessageSend{
-		Content: fmt.Sprintf(
-			"%s will be %s tonight.", name, status,
-		),
-	}
-	if r.MessageReaction.ChannelID == DevChannelID {
-		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
-	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(GameNight9ChannelID, &message)
-	}
-	if bot.Err != nil {
-		log.Err(bot.Err).Msg("failed to post message")
-		return
-	}
-	log.Info().Msgf("%s reaction from %s to game day announcement posted to Discord channel %s",
-		r.MessageReaction.Emoji.Name, name, r.ChannelID)
 }
 
 // HandleGameDay9 for posting game day message
@@ -239,8 +197,8 @@ func (bot *Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate
 	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"@everyone It's Game Day! Tonight we play %s.\n"+
-				ReactionRequest9+customMessage, opponentTeam,
+			"@everyone It's Game Day! Tonight Safety Dance plays %s.\n"+
+				ReactionRequest+customMessage, opponentTeam,
 		),
 	}
 	if m.ChannelID == DevChannelID {
