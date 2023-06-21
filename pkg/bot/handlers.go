@@ -64,24 +64,24 @@ func (bot *Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReact
 // HandleGameDayReaction for handling the reaction to the game day post
 func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	log.Info().Msg("handling reaction to game day post")
-	date := time.Now()
-	loc, err := time.LoadLocation("America/New_York")
-	if r.ChannelID == GameNight8ChannelID || r.ChannelID == GameNight9ChannelID {
-		if err != nil {
-			bot.Err = err
-			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
-			if date.Weekday() != time.Tuesday {
-				log.Info().Msg("not Tuesday UTC, ignoring reaction")
-				return
-			}
-		} else {
-			date = date.In(loc)
-			if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
-				log.Info().Msg("not Tuesday before 7pm EST, ignoring reaction")
-				return
-			}
-		}
-	}
+	// date := time.Now()
+	// loc, err := time.LoadLocation("America/New_York")
+	// if r.ChannelID == GameNight8ChannelID || r.ChannelID == GameNight9ChannelID {
+	// 	if err != nil {
+	// 		bot.Err = err
+	// 		log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
+	// 		if date.Weekday() != time.Tuesday {
+	// 			log.Info().Msg("not Tuesday UTC, ignoring reaction")
+	// 			return
+	// 		}
+	// 	} else {
+	// 		date = date.In(loc)
+	// 		if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
+	// 			log.Info().Msg("not Tuesday before 7pm EST, ignoring reaction")
+	// 			return
+	// 		}
+	// 	}
+	// }
 	var status string
 	switch r.MessageReaction.Emoji.Name {
 	case "👍":
@@ -142,7 +142,7 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 		log.Err(bot.Err).Msgf("failed to edit message in Discord channel %s", r.MessageReaction.ChannelID)
 	} else {
 		log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated",
-			r.MessageReaction.Emoji.Name, teammate.Name, r.MessageReaction.ChannelID)
+			r.MessageReaction.Emoji.Name, teammate.LastName, r.MessageReaction.ChannelID)
 	}
 	// if r.Member.Nick != "" {
 	// 	teammate.Name = r.Member.Nick
@@ -232,9 +232,34 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	}
 	message.Content += "+----------+-----+------+----+\n```"
 	if m.ChannelID == DevChannelID {
-		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+		if strings.Contains(m.Content, "-schedule") {
+			time.AfterFunc(time.Minute, func() {
+				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+			})
+		}	else {
+			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+		}
 	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+		loc, err := time.LoadLocation("America/New_York")
+		if err != nil {
+			loc = time.UTC
+			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
+		}
+		date := time.Now().In(loc)
+		if date.Weekday() != time.Tuesday {
+			nextTuesday := date.AddDate(0, 0, int((time.Tuesday - date.Weekday() + 7) % 7))
+			scheduleTime := time.Date(date.Year(), date.Month(), nextTuesday.Day(), 9, 0, 0, 0, loc)
+			time.AfterFunc(scheduleTime.Sub(date), func() {
+				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+			})
+		} else if date.Hour() < 9 {
+			scheduleTime := time.Date(date.Year(), date.Month(), date.Day(), 9, 0, 0, 0, loc)
+			time.AfterFunc(scheduleTime.Sub(date), func() {
+				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+			})
+		} else {
+			_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+		}
 	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
