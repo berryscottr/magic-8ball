@@ -114,23 +114,26 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 		log.Err(bot.Err).Msgf("failed to find reaction message in Discord channel %s", r.MessageReaction.ChannelID)
 	}
 	var newMsg string
+	var newLine string
 	msgLines := strings.Split(oldMsg.Content, "\n")
 	for _, line := range msgLines {
 		if strings.Contains(line, teammate.LastName) {
+			log.Info().Msgf("modifying attendance for teammate: %s", teammate.LastName)
 			switch status {
 			case "available":
-				newMsg = strings.Replace(oldMsg.Content, "|     |", "|  X  |", 1)
-				newMsg = strings.Replace(newMsg, "|  X   |", "|      |", 1)
-				newMsg = strings.Replace(newMsg, "| X  |", "|    |", 1)
+				newLine = strings.Replace(line, "|     |", "|  X  |", 1)
+				newLine = strings.Replace(newLine, "|  X   |", "|      |", 1)
+				newLine = strings.Replace(newLine, "| X  |", "|    |", 1)
 			case "unavailable":
-				newMsg = strings.Replace(oldMsg.Content, "|  X  |", "|     |", 1)
-				newMsg = strings.Replace(newMsg, "|  X   |", "|      |", 1)
-				newMsg = strings.Replace(newMsg, "|    |", "| X  |", 1)
+				newLine = strings.Replace(line, "|  X  |", "|     |", 1)
+				newLine = strings.Replace(newLine, "|  X   |", "|      |", 1)
+				newLine = strings.Replace(newLine, "|    |", "| X  |", 1)
 			case "late":
-				newMsg = strings.Replace(oldMsg.Content, "|  X  |", "|     |", 1)
-				newMsg = strings.Replace(newMsg, "|      |", "|  X   |", 1)
-				newMsg = strings.Replace(newMsg, "| X  |", "|    |", 1)
+				newLine = strings.Replace(line, "|  X  |", "|     |", 1)
+				newLine = strings.Replace(newLine, "|      |", "|  X   |", 1)
+				newLine = strings.Replace(newLine, "| X  |", "|    |", 1)
 			}
+			newMsg = strings.Replace(oldMsg.Content, line, newLine, 1)
 			break
 		}
 	}
