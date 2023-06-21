@@ -43,32 +43,53 @@ const (
 	APACalendarUrl = "https://atlanta.apaleagues.com/Uploads/atlanta/APA%20Atlanta%202023.pdf"
 	// TeamCalendarUrl is the URL of the team calendar
 	TeamCalendarUrl = "https://github.com/berryscottr/magic-8ball/blob/main/data/schedules/Spring2023Schedule.csv"
+	// SeniorSkillLevel is the skill level of seniors
+	SeniorSkillLevel = 6
 )
 
+type WookieMistakes struct {
+	// TeamName for the team
+	TeamName string
+	// DivisionTeamNames for the team
+	DivisionTeamNames [8]string
+}
+
+type SafetyDance struct {
+	// TeamName for the team
+	TeamName string
+	// DivisionTeamNames for the team
+	DivisionTeamNames [7]string
+}
+
+
 var (
-	Division8TeamNames = [9]string{
-		"Shark Shooters - 8",
-		"Only A Few Selected",
-		"Wookie Mistakes",
-		"In It 2 Win It",
-		"Jiffyloob",
-		"G Team",
-		"The Unusual Suspects",
-		"School of Pool",
-		"8-Balls of Fire",
+	WookieMistakesTeam = WookieMistakes{
+		TeamName: "Wookie Mistakes",
+		DivisionTeamNames: [8]string{
+			"Shark Shooters - 8",
+			"Only A Few Selected",
+			"In It 2 Win It",
+			"Jiffyloob",
+			"G Team",
+			"The Unusual Suspects",
+			"School of Pool",
+			"8-Balls of Fire",
+		},
 	}
-	Division9TeamNames = [8]string{
-		"Shark Shooters - 9",
-		"Sticks and Stones",
-		"9 Rocks Away",
-		"9 on the Vine",
-		"Rackateers",
-		"Believe It or Not 2",
-		"Fields of Gold 9",
-		"Safety Dance",
+	SafetyDanceTeam = SafetyDance{
+		TeamName: "Safety Dance",
+		DivisionTeamNames: [7]string{
+			"Shark Shooters - 9",
+			"Sticks and Stones",
+			"9 Rocks Away",
+			"9 on the Vine",
+			"Rackateers",
+			"Believe It or Not 2",
+			"Fields of Gold 9",
+		},
 	}
+	// GameDayReactions for the bot to track
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳"}
-	SeniorSkillLevel = 6
 )
 
 // Data for the bot to track along a request

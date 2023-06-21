@@ -149,12 +149,12 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 func (bot *Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling game day post creation")
 	var opponentTeam string
-	for i, name := range Division8TeamNames {
+	for i, name := range WookieMistakesTeam.DivisionTeamNames {
 		for _, junk := range []string{"'", "-", "8"} {
 			name = strings.Replace(name, junk, "", -1)
 		}
 		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
-			opponentTeam = Division8TeamNames[i]
+			opponentTeam = WookieMistakesTeam.DivisionTeamNames[i]
 		}
 	}
 	var customMessage string
@@ -163,8 +163,8 @@ func (bot *Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate
 	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"@everyone It's Game Day! Tonight Wookie Mistakes plays %s.\n"+
-				ReactionRequest+customMessage, opponentTeam,
+			"@everyone It's Game Day! Tonight %s plays %s.\n"+
+				ReactionRequest+customMessage, WookieMistakesTeam.TeamName, opponentTeam,
 		),
 	}
 	if m.ChannelID == DevChannelID {
@@ -183,12 +183,12 @@ func (bot *Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate
 func (bot *Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate) {
 	log.Info().Msg("handling game day post creation")
 	var opponentTeam string
-	for i, name := range Division9TeamNames {
+	for i, name := range SafetyDanceTeam.DivisionTeamNames {
 		for _, junk := range []string{"'", "-", "9"} {
 			name = strings.Replace(name, junk, "", -1)
 		}
 		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
-			opponentTeam = Division9TeamNames[i]
+			opponentTeam = SafetyDanceTeam.DivisionTeamNames[i]
 		}
 	}
 	var customMessage string
@@ -197,8 +197,8 @@ func (bot *Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate
 	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"@everyone It's Game Day! Tonight Safety Dance plays %s.\n"+
-				ReactionRequest+customMessage, opponentTeam,
+			"@everyone It's Game Day! Tonight %s plays %s.\n"+
+				ReactionRequest+customMessage, SafetyDanceTeam.TeamName, opponentTeam,
 		),
 	}
 	if m.ChannelID == DevChannelID {
