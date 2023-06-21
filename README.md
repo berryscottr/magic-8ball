@@ -60,13 +60,17 @@ There is also about 15 seconds of delay until a response.
 
 `!8game Wookie Mistakes "custom message"`
 
-This command returns a game day announcement to the #game-night-8 channel that tracks incoming reactions for attendance.
+This command returns a game day announcement to the #game-night-8 channel that tracks incoming reactions for attendance. If composed prior to Tuesday at 5am, it will schedule to be posted at 8:55am on Tuesday. If composed after Tuesday at 5am, it will post immediately.
+
+A message can always be posted immediately by adding the `--now` keyword to the end of the command. This is useful for posting a game day announcement during the playoffs.
 
 ### Game Day 9-Ball
 
 `!9game Safety Dance "custom message"`
 
-This command returns a game day announcement to the #game-night-8 channel that tracks incoming reactions for attendance.
+This command returns a game day announcement to the #game-night-9 channel that tracks incoming reactions for attendance. If composed prior to Tuesday at 5am, it will schedule to be posted at 8:55am on Tuesday. If composed after Tuesday at 5am, it will post immediately.
+
+A message can always be posted immediately by adding the `--now` keyword to the end of the command. This is useful for posting a game day announcement during the playoffs.
 
 ### Calendar
 

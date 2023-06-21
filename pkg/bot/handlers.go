@@ -232,7 +232,9 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	}
 	message.Content += "+----------+-----+------+----+\n```"
 	if m.ChannelID == DevChannelID {
-		if strings.Contains(m.Content, "-schedule") {
+		if strings.Contains(m.Content, "--now") {
+			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+		} else if strings.Contains(m.Content, "--schedule") {
 			time.AfterFunc(time.Minute, func() {
 				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 			})
@@ -246,14 +248,16 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
 		}
 		date := time.Now().In(loc)
-		if date.Weekday() != time.Tuesday {
+		if strings.Contains(m.Content, "--now") {
+			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+		} else if date.Weekday() != time.Tuesday {
 			nextTuesday := date.AddDate(0, 0, int((time.Tuesday - date.Weekday() + 7) % 7))
-			scheduleTime := time.Date(date.Year(), date.Month(), nextTuesday.Day(), 9, 0, 0, 0, loc)
+			scheduleTime := time.Date(date.Year(), date.Month(), nextTuesday.Day(), 8, 55, 0, 0, loc)
 			time.AfterFunc(scheduleTime.Sub(date), func() {
 				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 			})
-		} else if date.Hour() < 9 {
-			scheduleTime := time.Date(date.Year(), date.Month(), date.Day(), 9, 0, 0, 0, loc)
+		} else if date.Hour() < 5 {
+			scheduleTime := time.Date(date.Year(), date.Month(), date.Day(), 8, 55, 0, 0, loc)
 			time.AfterFunc(scheduleTime.Sub(date), func() {
 				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 			})
@@ -265,7 +269,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("game day %s vs %s posted to Discord channel %s", team.Name, opponentTeam, m.ChannelID)
+	log.Info().Msgf("game day %s vs %s posted or scheduled to Discord channel %s", team.Name, opponentTeam, m.ChannelID)
 }
 
 // HandleLineups for returning eligible lineups from a provided list of players
