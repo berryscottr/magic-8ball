@@ -223,7 +223,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		for _, t := range teammate.Teams {
 			if t.Name == team.Name {
 				numspaces = 9 - len(teammate.LastName)
-				message.Content += fmt.Sprintf("| %s%s|", teammate.LastName, strings.Repeat(" ", numspaces))
+				message.Content += fmt.Sprintf("| %s%s|     |      |    |", teammate.LastName, strings.Repeat(" ", numspaces))
 			}
 		}
 	}
