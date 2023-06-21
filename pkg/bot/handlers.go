@@ -194,9 +194,10 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	}
 	var opponentTeam string
 	for i, name := range team.DivisionTeamNames {
-		for _, junk := range []string{"'", "-", "8", "9", " - "} {
+		for _, junk := range []string{"'", "-", "8", "9"} {
 			name = strings.Replace(name, junk, "", -1)
 		}
+		name = strings.TrimRight(name, " ")
 		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
 			opponentTeam = team.DivisionTeamNames[i]
 		}
