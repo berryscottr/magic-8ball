@@ -47,25 +47,25 @@ const (
 	SeniorSkillLevel = 6
 )
 
-type WookieMistakes struct {
-	// TeamName for the team
-	TeamName string
+type Team struct {
+	// Format for the team
+	Format string
+	// Name for the team
+	Name string
 	// DivisionTeamNames for the team
-	DivisionTeamNames [8]string
+	DivisionTeamNames []string
+	// GameDay for the team
+	GameDay string
+	// GameNightChannelID for the team
+	GameNightChannelID string
 }
-
-type SafetyDance struct {
-	// TeamName for the team
-	TeamName string
-	// DivisionTeamNames for the team
-	DivisionTeamNames [7]string
-}
-
 
 var (
-	WookieMistakesTeam = WookieMistakes{
-		TeamName: "Wookie Mistakes",
-		DivisionTeamNames: [8]string{
+	// WookieMistakes Eight-Ball team
+	WookieMistakes = Team{
+		Format: "8-Ball",
+		Name: "Wookie Mistakes",
+		DivisionTeamNames: []string{
 			"Shark Shooters - 8",
 			"Only A Few Selected",
 			"In It 2 Win It",
@@ -75,10 +75,14 @@ var (
 			"School of Pool",
 			"8-Balls of Fire",
 		},
+		GameDay: "Tuesday",
+		GameNightChannelID: GameNight8ChannelID,
 	}
-	SafetyDanceTeam = SafetyDance{
-		TeamName: "Safety Dance",
-		DivisionTeamNames: [7]string{
+	// SafetyDance Nine-Ball team
+	SafetyDance = Team{
+		Format: "9-Ball",
+		Name: "Safety Dance",
+		DivisionTeamNames: []string{
 			"Shark Shooters - 9",
 			"Sticks and Stones",
 			"9 Rocks Away",
@@ -87,6 +91,8 @@ var (
 			"Believe It or Not 2",
 			"Fields of Gold 9",
 		},
+		GameDay: "Tuesday",
+		GameNightChannelID: GameNight9ChannelID,
 	}
 	// GameDayReactions for the bot to track
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳"}
@@ -151,10 +157,8 @@ type Methods interface {
 	ReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd)
 	// HandleGameDayReaction8 for interpreting how to respond to reactions
 	HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd)
-	// HandleGameDay8 for posting game day message
-	HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate)
-	// HandleGameDay9 for posting game day message
-	HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleGameDay for posting game day message
+	HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate, teamName string)
 	// HandleLineups for returning eligible lineups from a provided list of players
 	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleSLMatchups for returning chart of the best skill level match-ups
@@ -169,8 +173,4 @@ type Methods interface {
 	HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleCalendar for returning the current calendar
 	HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate)
-	// HandleBCA for mentions of BCA play
-	HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate)
-	// Handle9Ball for mentions of 9 ball play
-	Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate)
 }

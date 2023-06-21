@@ -22,10 +22,10 @@ func (bot *Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate
 		return
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!8game") {
-		bot.HandleGameDay8(s, m)
+		bot.HandleGameDay(s, m, WookieMistakes.Name)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!9game") {
-		bot.HandleGameDay9(s, m)
+		bot.HandleGameDay(s, m, SafetyDance.Name)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!line") {
 		bot.HandleLineups(s, m)
@@ -48,13 +48,6 @@ func (bot *Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate
 	if strings.Contains(strings.ToLower(m.Content), "!cal") {
 		bot.HandleCalendar(s, m)
 	}
-	// inactive functions
-	//if strings.Contains(strings.ToLower(m.Content), "bca") {
-	//	bot.HandleBCA(s, m)
-	//}
-	//if containsNineBall(strings.ToLower(m.Content)) {
-	//	bot.Handle9Ball(s, m)
-	//}
 }
 
 // ReactionHandler for interpreting how to respond to reactions
@@ -145,16 +138,26 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	}
 }
 
-// HandleGameDay8 for posting game day message
-func (bot *Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate) {
+// HandleGameDay for posting game day message
+func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate, teamName string) {
 	log.Info().Msg("handling game day post creation")
+	var team Team
+	if teamName == WookieMistakes.Name {
+		team = WookieMistakes
+	} else if teamName == SafetyDance.Name {
+		team = SafetyDance
+	} else {
+		bot.Err = errors.New("invalid team name")
+		log.Err(bot.Err).Msgf("failed to create game day post for team: %s", teamName)
+		return
+	}
 	var opponentTeam string
-	for i, name := range WookieMistakesTeam.DivisionTeamNames {
-		for _, junk := range []string{"'", "-", "8"} {
+	for i, name := range team.DivisionTeamNames {
+		for _, junk := range []string{"'", "-", "8", "9"} {
 			name = strings.Replace(name, junk, "", -1)
 		}
 		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
-			opponentTeam = WookieMistakesTeam.DivisionTeamNames[i]
+			opponentTeam = team.DivisionTeamNames[i]
 		}
 	}
 	var customMessage string
@@ -164,53 +167,19 @@ func (bot *Data) HandleGameDay8(s *discordgo.Session, m *discordgo.MessageCreate
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
 			"@everyone It's Game Day! Tonight %s plays %s.\n"+
-				ReactionRequest+customMessage, WookieMistakesTeam.TeamName, opponentTeam,
+				ReactionRequest+customMessage, team.Name, opponentTeam,
 		),
 	}
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(GameNight8ChannelID, &message)
+		_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
 	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
 	}
-	log.Info().Msgf("game day vs %s posted to Discord channel %s", opponentTeam, m.ChannelID)
-}
-
-// HandleGameDay9 for posting game day message
-func (bot *Data) HandleGameDay9(s *discordgo.Session, m *discordgo.MessageCreate) {
-	log.Info().Msg("handling game day post creation")
-	var opponentTeam string
-	for i, name := range SafetyDanceTeam.DivisionTeamNames {
-		for _, junk := range []string{"'", "-", "9"} {
-			name = strings.Replace(name, junk, "", -1)
-		}
-		if strings.Contains(strings.ToLower(m.Content), strings.ToLower(name)) {
-			opponentTeam = SafetyDanceTeam.DivisionTeamNames[i]
-		}
-	}
-	var customMessage string
-	if strings.Count(m.Content, "\"") == 2 {
-		customMessage = fmt.Sprintf("\n\n\"%s\" - %s", strings.Split(m.Content, "\"")[1], m.Author.Username)
-	}
-	message := discordgo.MessageSend{
-		Content: fmt.Sprintf(
-			"@everyone It's Game Day! Tonight %s plays %s.\n"+
-				ReactionRequest+customMessage, SafetyDanceTeam.TeamName, opponentTeam,
-		),
-	}
-	if m.ChannelID == DevChannelID {
-		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
-	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(GameNight9ChannelID, &message)
-	}
-	if bot.Err != nil {
-		log.Err(bot.Err).Msg("failed to post message")
-		return
-	}
-	log.Info().Msgf("game day vs %s posted to Discord channel %s", opponentTeam, m.ChannelID)
+	log.Info().Msgf("game day %s vs %s posted to Discord channel %s", team.Name, opponentTeam, m.ChannelID)
 }
 
 // HandleLineups for returning eligible lineups from a provided list of players
@@ -985,34 +954,4 @@ func (bot *Data) HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate
 		return
 	}
 	log.Info().Msgf("calendar posted in Discord channel %s", m.ChannelID)
-}
-
-// HandleBCA for mentions of BCA play
-func (bot *Data) HandleBCA(s *discordgo.Session, m *discordgo.MessageCreate) {
-	log.Info().Msg("handling mention of BCA play")
-	message := discordgo.MessageSend{
-		Content: "BCA is for bums.",
-		TTS:     true,
-	}
-	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
-	if bot.Err != nil {
-		log.Err(bot.Err).Msg("failed to post message")
-		return
-	}
-	log.Info().Msgf("bca rebuttal posted to %s in Discord channel %s", m.Member.Nick, m.ChannelID)
-}
-
-// Handle9Ball for mentions of 9-ball play
-func (bot *Data) Handle9Ball(s *discordgo.Session, m *discordgo.MessageCreate) {
-	log.Info().Msg("handling mention of 9-ball play")
-	message := discordgo.MessageSend{
-		Content: "9-Ball is for bums.",
-		TTS:     true,
-	}
-	_, bot.Err = s.ChannelMessageSendComplex(m.ChannelID, &message)
-	if bot.Err != nil {
-		log.Err(bot.Err).Msg("failed to post message")
-		return
-	}
-	log.Info().Msgf("9-ball rebuttal posted to %s in Discord channel %s", m.Member.Nick, m.ChannelID)
 }
