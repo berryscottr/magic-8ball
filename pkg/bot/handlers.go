@@ -100,6 +100,7 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	for _, t := range Teammates {
 		if t.UserID == r.MessageReaction.UserID {
 			teammate = t
+			log.Info().Msgf("tracking reaction from teammate: %s", teammate.Name)
 			break
 		}
 	}
@@ -115,20 +116,20 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	var newMsg string
 	msgLines := strings.Split(oldMsg.Content, "\n")
 	for _, line := range msgLines {
-		if strings.Contains(line, teammate.Name) {
+		if strings.Contains(line, teammate.LastName) {
 			switch status {
 			case "available":
-				newMsg = strings.Replace(oldMsg.Content, "|   |", "| X |", 1)
+				newMsg = strings.Replace(oldMsg.Content, "|     |", "|  X  |", 1)
+				newMsg = strings.Replace(newMsg, "|  X   |", "|      |", 1)
 				newMsg = strings.Replace(newMsg, "| X  |", "|    |", 1)
-				newMsg = strings.Replace(newMsg, "|X |", "|  |", 1)
 			case "unavailable":
-				newMsg = strings.Replace(oldMsg.Content, "| X |", "|   |", 1)
-				newMsg = strings.Replace(newMsg, "| X  |", "|    |", 1)
-				newMsg = strings.Replace(newMsg, "|  |", "|X |", 1)
-			case "late":
-				newMsg = strings.Replace(oldMsg.Content, "| X |", "|   |", 1)
+				newMsg = strings.Replace(oldMsg.Content, "|  X  |", "|     |", 1)
+				newMsg = strings.Replace(newMsg, "|  X   |", "|      |", 1)
 				newMsg = strings.Replace(newMsg, "|    |", "| X  |", 1)
-				newMsg = strings.Replace(newMsg, "|X |", "|  |", 1)
+			case "late":
+				newMsg = strings.Replace(oldMsg.Content, "|  X  |", "|     |", 1)
+				newMsg = strings.Replace(newMsg, "|      |", "|  X   |", 1)
+				newMsg = strings.Replace(newMsg, "| X  |", "|    |", 1)
 			}
 			break
 		}
@@ -136,6 +137,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	_, bot.Err = s.ChannelMessageEdit(r.MessageReaction.ChannelID, r.MessageReaction.MessageID, newMsg)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msgf("failed to edit message in Discord channel %s", r.MessageReaction.ChannelID)
+	} else {
+		log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated",
+			r.MessageReaction.Emoji.Name, teammate.Name, r.MessageReaction.ChannelID)
 	}
 	// if r.Member.Nick != "" {
 	// 	teammate.Name = r.Member.Nick
@@ -213,21 +217,17 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		),
 	}
 	message.Content += "\n```\n"
-	message.Content += "+--Name--+Yes+Late+No+\n"
-	message.Content += "|Berry   |   |    |  |\n"
-	message.Content += "|Liess   |   |    |  |\n"
-	message.Content += "|Bohrer  |   |    |  |\n"
-	message.Content += "|Aquino  |   |    |  |\n"
-	message.Content += "|Burcham |   |    |  |\n"
-	message.Content += "|Thompson|   |    |  |\n"
-	if teamName == WookieMistakes.Name {
-		message.Content += "|Quan    |   |    |  |\n"
-		message.Content += "|Hayward |   |    |  |\n"
-	} else if teamName == SafetyDance.Name {
-		message.Content += "|Davalos |   |    |  |\n"
-		message.Content += "|Warden  |   |    |  |\n"
+	message.Content += "+---Name---+-Yes-+-Late-+-No-+\n"
+	var numspaces int
+	for _, teammate := range Teammates {
+		for _, t := range teammate.Teams {
+			if t.Name == team.Name {
+				numspaces = 9 - len(teammate.LastName)
+				message.Content += fmt.Sprintf("| %s%s|", teammate.LastName, strings.Repeat(" ", numspaces))
+			}
+		}
 	}
-	message.Content += "+--------+---+----+--+\n```"
+	message.Content += "+----------+-----+------+----+\n```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {

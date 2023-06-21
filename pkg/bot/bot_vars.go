@@ -66,6 +66,8 @@ type Teammate struct {
 	UserID string
 	// Name
 	Name string
+	// Teams
+	Teams []Team
 }
 
 var (
@@ -74,42 +76,78 @@ var (
 		{
 			LastName: "Berry",
 			UserID: "341590471317127178",
+			Teams: []Team{
+				WookieMistakes,
+				SafetyDance,
+			},
 		},
 		{
 			LastName: "Liess",
 			UserID: "529730365854580765",
+			Teams: []Team{
+				WookieMistakes,
+				SafetyDance,
+			},
 		},
 		{
 			LastName: "Bohrer",
 			UserID: "186997536844808193",
+			Teams: []Team{
+				WookieMistakes,
+				SafetyDance,
+			},
 		},
 		{
 			LastName: "Aquino",
 			UserID: "547940726114353163",
+			Teams: []Team{
+				WookieMistakes,
+				SafetyDance,
+			},
 		},
 		{
 			LastName: "Burcham",
 			UserID: "1014488206567288894",
+			Teams: []Team{
+				WookieMistakes,
+				SafetyDance,
+			},
 		},
 		{
 			LastName: "Thompson",
 			UserID: "969682397920653342",
+			Teams: []Team{
+				WookieMistakes,
+				SafetyDance,
+			},
 		},
 		{
 			LastName: "Quan",
 			UserID: "795533691828305922",
+			Teams: []Team{
+				WookieMistakes,
+			},
 		},
 		{
 			LastName: "Hayward",
 			UserID: "971791774697783326",
+			Teams: []Team{
+				WookieMistakes,
+			},
 		},
 		{
 			LastName: "Davalos",
 			UserID: "1108221800581709917",
+			Teams: []Team{
+				SafetyDance,
+			},
 		},
 		{
 			LastName: "Warden",
 			UserID: "1014520790873546852",
+			Teams: []Team{
+				SafetyDance,
+			},
 		},
 	}
 	// WookieMistakes Eight-Ball team
