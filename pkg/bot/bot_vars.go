@@ -24,9 +24,7 @@ const (
 	InningsFile = "/data/InningCounts.xlsx"
 	// ReactionRequest is the reaction emoji choices for availability
 	ReactionRequest = "React to this message with a 👍 if you are coming, " +
-		"a 👎 if you can't make it, and an ⌛ if you will be late. " +
-		"Any reaction of this type in a #game-night channel " +
-		"until 7pm will send an update message to the #game-night channels."
+		"a 👎 if you can't make it, and an ⌛ if you will be late."
 	// DevChannelID is the ID of channel #bot-dev
 	DevChannelID = "955291440643207228"
 	// GameNight8ChannelID is the ID of channel #game-night
@@ -60,7 +58,60 @@ type Team struct {
 	GameNightChannelID string
 }
 
+// Teammate Name and ID
+type Teammate struct {
+	// LastName
+	LastName string
+	// UserID
+	UserID string
+	// Name
+	Name string
+}
+
 var (
+	// Teammates on teams
+	Teammates = []Teammate{
+		{
+			LastName: "Berry",
+			UserID: "341590471317127178",
+		},
+		{
+			LastName: "Liess",
+			UserID: "529730365854580765",
+		},
+		{
+			LastName: "Bohrer",
+			UserID: "186997536844808193",
+		},
+		{
+			LastName: "Aquino",
+			UserID: "547940726114353163",
+		},
+		{
+			LastName: "Burcham",
+			UserID: "1014488206567288894",
+		},
+		{
+			LastName: "Thompson",
+			UserID: "969682397920653342",
+		},
+		{
+			LastName: "Quan",
+			UserID: "795533691828305922",
+		},
+		{
+			LastName: "Hayward",
+			UserID: "971791774697783326",
+		},
+		{
+			LastName: "Davalos",
+			UserID: "1108221800581709917",
+		},
+		{
+			LastName: "Warden",
+			UserID: "1014520790873546852",
+		},
+	}
 	// WookieMistakes Eight-Ball team
 	WookieMistakes = Team{
 		Format: "8-Ball",

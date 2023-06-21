@@ -96,46 +96,87 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 		log.Info().Msg("unknown reaction")
 		return
 	}
-	name := r.Member.Nick
-	if name == "" {
-		name = r.Member.User.Username
-	}
-	message := discordgo.MessageSend{
-		Content: fmt.Sprintf(
-			"%s will be %s tonight.", name, status,
-		),
-	}
-	if r.MessageReaction.ChannelID == DevChannelID {
-		log.Info().Msgf("%s has roles: %v", name, r.Member.Roles)
-		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
-		if bot.Err != nil {
-			log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", DevChannelID)
-		} else {
-			log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
-				r.MessageReaction.Emoji.Name, name, r.ChannelID, DevChannelID)
+	var teammate Teammate
+	for _, t := range Teammates {
+		if t.UserID == r.MessageReaction.UserID {
+			teammate = t
+			break
 		}
-	} else {
-		for _, role := range r.Member.Roles {
-			log.Info().Msgf("evaluating role: %s", role)
-			if role == EightBallRoleID {
-				_, bot.Err = s.ChannelMessageSendComplex(GameNight8ChannelID, &message)
-				if bot.Err != nil {
-					log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", GameNight8ChannelID)
-				} else {
-					log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
-						r.MessageReaction.Emoji.Name, name, r.ChannelID, GameNight8ChannelID)
-				}
-			} else if role == NineBallRoleID {
-				_, bot.Err = s.ChannelMessageSendComplex(GameNight9ChannelID, &message)
-				if bot.Err != nil {
-					log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", GameNight9ChannelID)
-				} else {
-					log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
-						r.MessageReaction.Emoji.Name, name, r.ChannelID, GameNight9ChannelID)
-				}
+	}
+	if teammate.UserID == "" {
+		log.Info().Msg("unknown teammate")
+		return
+	}
+	var oldMsg *discordgo.Message
+	oldMsg, bot.Err = s.ChannelMessage(r.MessageReaction.ChannelID, r.MessageReaction.MessageID)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msgf("failed to find reaction message in Discord channel %s", r.MessageReaction.ChannelID)
+	}
+	var newMsg string
+	msgLines := strings.Split(oldMsg.Content, "\n")
+	for _, line := range msgLines {
+		if strings.Contains(line, teammate.Name) {
+			switch status {
+			case "available":
+				newMsg = strings.Replace(oldMsg.Content, "|   |", "| X |", 1)
+				newMsg = strings.Replace(newMsg, "| X  |", "|    |", 1)
+				newMsg = strings.Replace(newMsg, "|X |", "|  |", 1)
+			case "unavailable":
+				newMsg = strings.Replace(oldMsg.Content, "| X |", "|   |", 1)
+				newMsg = strings.Replace(newMsg, "| X  |", "|    |", 1)
+				newMsg = strings.Replace(newMsg, "|  |", "|X |", 1)
+			case "late":
+				newMsg = strings.Replace(oldMsg.Content, "| X |", "|   |", 1)
+				newMsg = strings.Replace(newMsg, "|    |", "| X  |", 1)
+				newMsg = strings.Replace(newMsg, "|X |", "|  |", 1)
 			}
+			break
 		}
 	}
+	_, bot.Err = s.ChannelMessageEdit(r.MessageReaction.ChannelID, r.MessageReaction.MessageID, newMsg)
+	if bot.Err != nil {
+		log.Err(bot.Err).Msgf("failed to edit message in Discord channel %s", r.MessageReaction.ChannelID)
+	}
+	// if r.Member.Nick != "" {
+	// 	teammate.Name = r.Member.Nick
+	// } else {
+	// 	teammate.Name = r.Member.User.Username
+	// }
+	// message := discordgo.MessageSend{
+	// 	Content: fmt.Sprintf(
+	// 		"%s will be %s tonight.", teammate.Name, status,
+	// 	),
+	// }
+	// if r.MessageReaction.ChannelID == DevChannelID {
+	// 	_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+	// 	if bot.Err != nil {
+	// 		log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", DevChannelID)
+	// 	} else {
+	// 		log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
+	// 			r.MessageReaction.Emoji.Name, teammate.Name, r.ChannelID, DevChannelID)
+	// 	}
+	// } else {
+	// 	for _, role := range r.Member.Roles {
+	// 		log.Info().Msgf("evaluating role: %s", role)
+	// 		if role == EightBallRoleID {
+	// 			_, bot.Err = s.ChannelMessageSendComplex(GameNight8ChannelID, &message)
+	// 			if bot.Err != nil {
+	// 				log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", GameNight8ChannelID)
+	// 			} else {
+	// 				log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
+	// 					r.MessageReaction.Emoji.Name, teammate.Name, r.ChannelID, GameNight8ChannelID)
+	// 			}
+	// 		} else if role == NineBallRoleID {
+	// 			_, bot.Err = s.ChannelMessageSendComplex(GameNight9ChannelID, &message)
+	// 			if bot.Err != nil {
+	// 				log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", GameNight9ChannelID)
+	// 			} else {
+	// 				log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
+	// 					r.MessageReaction.Emoji.Name, teammate.Name, r.ChannelID, GameNight9ChannelID)
+	// 			}
+	// 		}
+	// 	}
+	// }
 }
 
 // HandleGameDay for posting game day message
@@ -170,6 +211,22 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 				ReactionRequest+customMessage, team.Name, opponentTeam,
 		),
 	}
+	message.Content += "\n```\n"
+	message.Content += "+--Name--+Yes+Late+No+\n"
+	message.Content += "|Berry   |   |    |  |\n"
+	message.Content += "|Liess   |   |    |  |\n"
+	message.Content += "|Bohrer  |   |    |  |\n"
+	message.Content += "|Aquino  |   |    |  |\n"
+	message.Content += "|Burcham |   |    |  |\n"
+	message.Content += "|Thompson|   |    |  |\n"
+	if teamName == WookieMistakes.Name {
+		message.Content += "|Quan    |   |    |  |\n"
+		message.Content += "|Hayward |   |    |  |\n"
+	} else if teamName == SafetyDance.Name {
+		message.Content += "|Davalos |   |    |  |\n"
+		message.Content += "|Warden  |   |    |  |\n"
+	}
+	message.Content += "+--------+---+----+--+\n```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 	} else {
