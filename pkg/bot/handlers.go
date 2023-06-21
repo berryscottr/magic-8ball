@@ -100,7 +100,7 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	for _, t := range Teammates {
 		if t.UserID == r.MessageReaction.UserID {
 			teammate = t
-			log.Info().Msgf("tracking reaction from teammate: %s", teammate.Name)
+			log.Info().Msgf("tracking reaction from teammate: %s", teammate.LastName)
 			break
 		}
 	}
