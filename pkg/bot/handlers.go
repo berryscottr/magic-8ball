@@ -249,17 +249,17 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		}
 		date := time.Now().In(loc)
 		if strings.Contains(m.Content, "--now") {
-			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+			_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
 		} else if date.Weekday() != time.Tuesday {
 			nextTuesday := date.AddDate(0, 0, int((time.Tuesday - date.Weekday() + 7) % 7))
 			scheduleTime := time.Date(date.Year(), date.Month(), nextTuesday.Day(), 8, 55, 0, 0, loc)
 			time.AfterFunc(scheduleTime.Sub(date), func() {
-				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+				_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
 			})
 		} else if date.Hour() < 5 {
 			scheduleTime := time.Date(date.Year(), date.Month(), date.Day(), 8, 55, 0, 0, loc)
 			time.AfterFunc(scheduleTime.Sub(date), func() {
-				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+				_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
 			})
 		} else {
 			_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
