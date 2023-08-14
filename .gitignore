@@ -19,3 +19,4 @@
 **/__pycache__/
 magic-8ball
 scripts/scrape_apa/geckodriver.log
+/.vscode/
