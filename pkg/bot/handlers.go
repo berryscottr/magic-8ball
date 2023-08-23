@@ -64,24 +64,6 @@ func (bot *Data) ReactionHandler(s *discordgo.Session, r *discordgo.MessageReact
 // HandleGameDayReaction for handling the reaction to the game day post
 func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd) {
 	log.Info().Msg("handling reaction to game day post")
-	// date := time.Now()
-	// loc, err := time.LoadLocation("America/New_York")
-	// if r.ChannelID == GameNight8ChannelID || r.ChannelID == GameNight9ChannelID {
-	// 	if err != nil {
-	// 		bot.Err = err
-	// 		log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
-	// 		if date.Weekday() != time.Tuesday {
-	// 			log.Info().Msg("not Tuesday UTC, ignoring reaction")
-	// 			return
-	// 		}
-	// 	} else {
-	// 		date = date.In(loc)
-	// 		if date.Weekday() != time.Tuesday || date.Hour() >= 19 {
-	// 			log.Info().Msg("not Tuesday before 7pm EST, ignoring reaction")
-	// 			return
-	// 		}
-	// 	}
-	// }
 	var status string
 	switch r.MessageReaction.Emoji.Name {
 	case "👍":
@@ -144,46 +126,6 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 		log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated",
 			r.MessageReaction.Emoji.Name, teammate.LastName, r.MessageReaction.ChannelID)
 	}
-	// if r.Member.Nick != "" {
-	// 	teammate.Name = r.Member.Nick
-	// } else {
-	// 	teammate.Name = r.Member.User.Username
-	// }
-	// message := discordgo.MessageSend{
-	// 	Content: fmt.Sprintf(
-	// 		"%s will be %s tonight.", teammate.Name, status,
-	// 	),
-	// }
-	// if r.MessageReaction.ChannelID == DevChannelID {
-	// 	_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
-	// 	if bot.Err != nil {
-	// 		log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", DevChannelID)
-	// 	} else {
-	// 		log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
-	// 			r.MessageReaction.Emoji.Name, teammate.Name, r.ChannelID, DevChannelID)
-	// 	}
-	// } else {
-	// 	for _, role := range r.Member.Roles {
-	// 		log.Info().Msgf("evaluating role: %s", role)
-	// 		if role == EightBallRoleID {
-	// 			_, bot.Err = s.ChannelMessageSendComplex(GameNight8ChannelID, &message)
-	// 			if bot.Err != nil {
-	// 				log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", GameNight8ChannelID)
-	// 			} else {
-	// 				log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
-	// 					r.MessageReaction.Emoji.Name, teammate.Name, r.ChannelID, GameNight8ChannelID)
-	// 			}
-	// 		} else if role == NineBallRoleID {
-	// 			_, bot.Err = s.ChannelMessageSendComplex(GameNight9ChannelID, &message)
-	// 			if bot.Err != nil {
-	// 				log.Err(bot.Err).Msgf("failed to post message to Discord channel %s", GameNight9ChannelID)
-	// 			} else {
-	// 				log.Info().Msgf("%s reaction from %s to game day announcement posted in Discord channel %s has been updated in Discord channel %s",
-	// 					r.MessageReaction.Emoji.Name, teammate.Name, r.ChannelID, GameNight9ChannelID)
-	// 			}
-	// 		}
-	// 	}
-	// }
 }
 
 // HandleGameDay for posting game day message
@@ -221,11 +163,21 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	}
 	message.Content += "\n```\n"
 	message.Content += "+---Name---+-Yes-+-Late-+-No-+\n"
+	var longestName int
+	for _, teammate := range Teammates {
+		for _, t := range teammate.Teams {
+			if t.Name == team.Name {
+				if len(teammate.LastName) > longestName {
+					longestName = len(teammate.LastName)
+				}
+			}
+		}
+	}
 	var numspaces int
 	for _, teammate := range Teammates {
 		for _, t := range teammate.Teams {
 			if t.Name == team.Name {
-				numspaces = 9 - len(teammate.LastName)
+				numspaces = longestName + 1 - len(teammate.LastName)
 				message.Content += fmt.Sprintf("| %s%s|     |      |    |\n", teammate.LastName, strings.Repeat(" ", numspaces))
 			}
 		}

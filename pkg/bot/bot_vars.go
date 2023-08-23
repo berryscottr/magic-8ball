@@ -101,7 +101,6 @@ var (
 			LastName: "Aquino",
 			UserID: "547940726114353163",
 			Teams: []Team{
-				WookieMistakes,
 				SafetyDance,
 			},
 		},
@@ -149,7 +148,15 @@ var (
 				SafetyDance,
 			},
 		},
+		{
+			LastName: "Gibson",
+			UserID: "696037354892296294",
+			Teams: []Team{
+				WookieMistakes,
+			},
+		},
 	}
+
 	// WookieMistakes Eight-Ball team
 	WookieMistakes = Team{
 		Format: "8-Ball",
