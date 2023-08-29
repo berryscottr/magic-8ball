@@ -98,13 +98,6 @@ var (
 			},
 		},
 		{
-			LastName: "Dodge",
-			UserID: "253692229535793154",
-			Teams: []Team{
-				SafetyDance,
-			},
-		},
-		{
 			LastName: "Burcham",
 			UserID: "1014488206567288894",
 			Teams: []Team{
@@ -153,6 +146,13 @@ var (
 			UserID: "696037354892296294",
 			Teams: []Team{
 				WookieMistakes,
+			},
+		},
+		{
+			LastName: "Dodge",
+			UserID: "253692229535793154",
+			Teams: []Team{
+				SafetyDance,
 			},
 		},
 	}
