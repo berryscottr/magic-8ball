@@ -98,13 +98,6 @@ var (
 			},
 		},
 		{
-			LastName: "Dodge",
-			UserID: "253692229535793154",
-			Teams: []Team{
-				SafetyDance,
-			},
-		},
-		{
 			LastName: "Burcham",
 			UserID: "1014488206567288894",
 			Teams: []Team{
@@ -155,6 +148,13 @@ var (
 				WookieMistakes,
 			},
 		},
+		{
+			LastName: "Dodge",
+			UserID: "253692229535793154",
+			Teams: []Team{
+				SafetyDance,
+			},
+		},
 	}
 
 	// WookieMistakes Eight-Ball team
@@ -170,6 +170,7 @@ var (
 			"The Unusual Suspects",
 			"School of Pool",
 			"8-Balls of Fire",
+			"The Dean's List",
 		},
 		GameDay: "Tuesday",
 		GameNightChannelID: GameNight8ChannelID,
@@ -186,6 +187,8 @@ var (
 			"Rackateers",
 			"Believe It or Not 2",
 			"Fields of Gold 9",
+			"9 Won Won",
+			"Push to Start-9",
 		},
 		GameDay: "Tuesday",
 		GameNightChannelID: GameNight9ChannelID,
