@@ -23,8 +23,7 @@ const (
 	// InningsFile is the name of the file where the SL innings are stored
 	InningsFile = "/data/InningCounts.xlsx"
 	// ReactionRequest is the reaction emoji choices for availability
-	ReactionRequest = "React to this message with a 👍 if you are coming, " +
-		"a 👎 if you can't make it, and an ⌛ if you will be late."
+	ReactionRequest = "React to this message with the following choices\n👍Available\n👎 Unavailable\n⌛ Late\n❓ Unsure"
 	// DevChannelID is the ID of channel #bot-dev
 	DevChannelID = "955291440643207228"
 	// GameNight8ChannelID is the ID of channel #game-night
@@ -68,6 +67,16 @@ type Teammate struct {
 	Name string
 	// Teams
 	Teams []Team
+	// Skill Level
+	SkillLevel Skill
+}
+
+// Skill Level
+type Skill struct {
+	// 8-Ball
+	Eight int
+	// 9-Ball
+	Nine int
 }
 
 var (
@@ -80,6 +89,10 @@ var (
 				WookieMistakes,
 				SafetyDance,
 			},
+			SkillLevel: Skill{
+				Eight: 5,
+				Nine: 5,
+			},
 		},
 		{
 			LastName: "Liess",
@@ -87,6 +100,10 @@ var (
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
+			},
+			SkillLevel: Skill{
+				Eight: 4,
+				Nine: 4,
 			},
 		},
 		{
@@ -96,6 +113,10 @@ var (
 				WookieMistakes,
 				SafetyDance,
 			},
+			SkillLevel: Skill{
+				Eight: 3,
+				Nine: 3,
+			},
 		},
 		{
 			LastName: "Burcham",
@@ -103,6 +124,10 @@ var (
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
+			},
+			SkillLevel: Skill{
+				Eight: 3,
+				Nine: 4,
 			},
 		},
 		{
@@ -112,12 +137,19 @@ var (
 				WookieMistakes,
 				SafetyDance,
 			},
+			SkillLevel: Skill{
+				Eight: 3,
+				Nine: 3,
+			},
 		},
 		{
 			LastName: "Quan",
 			UserID: "795533691828305922",
 			Teams: []Team{
 				WookieMistakes,
+			},
+			SkillLevel: Skill{
+				Eight: 5,
 			},
 		},
 		{
@@ -126,12 +158,19 @@ var (
 			Teams: []Team{
 				WookieMistakes,
 			},
+			SkillLevel: Skill{
+				Eight: 7,
+				Nine: 7,
+			},
 		},
 		{
 			LastName: "Davalos",
 			UserID: "1108221800581709917",
 			Teams: []Team{
 				SafetyDance,
+			},
+			SkillLevel: Skill{
+				Nine: 1,
 			},
 		},
 		{
@@ -140,6 +179,10 @@ var (
 			Teams: []Team{
 				SafetyDance,
 			},
+			SkillLevel: Skill{
+				Eight: 7,
+				Nine: 9,
+			},
 		},
 		{
 			LastName: "Gibson",
@@ -147,12 +190,18 @@ var (
 			Teams: []Team{
 				WookieMistakes,
 			},
+			SkillLevel: Skill{
+				Eight: 3,
+			},
 		},
 		{
 			LastName: "Dodge",
 			UserID: "253692229535793154",
 			Teams: []Team{
 				SafetyDance,
+			},
+			SkillLevel: Skill{
+				Nine: 1,
 			},
 		},
 	}
@@ -195,7 +244,7 @@ var (
 		GameNightChannelID: GameNight9ChannelID,
 	}
 	// GameDayReactions for the bot to track
-	GameDayReactions = []string{"👍", "👎", "⌛", "⏳"}
+	GameDayReactions = []string{"👍", "👎", "⌛", "⏳", "❓"}
 )
 
 // Data for the bot to track along a request
