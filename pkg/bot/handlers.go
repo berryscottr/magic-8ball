@@ -109,9 +109,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			switch status {
 			case "available":
 				newLine = fmt.Sprintf("|%s|✅|⬛|⬛|⬛|", nameBox)
-			case "unavailable":
-				newLine = fmt.Sprintf("|%s|⬛|✅|⬛|⬛|", nameBox)
 			case "late":
+				newLine = fmt.Sprintf("|%s|⬛|✅|⬛|⬛|", nameBox)
+			case "unavailable":
 				newLine = fmt.Sprintf("|%s|⬛|⬛|✅|⬛|", nameBox)
 			case "unknown":
 				newLine = fmt.Sprintf("|%s|⬛|⬛|⬛|✅|", nameBox)
