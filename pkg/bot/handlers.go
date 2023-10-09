@@ -107,25 +107,25 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			log.Info().Msgf("modifying attendance for teammate: %s", teammate.LastName)
 			switch status {
 			case "available":
-				newLine = strings.Replace(line, "|     |", "|  ✅  |", 1) // Yes
-				newLine = strings.Replace(newLine, "|  ✅   |", "|      |", 1) // Late
-				newLine = strings.Replace(newLine, "| ✅  |", "|    |", 1) // No
-				newLine = strings.Replace(newLine, "| ✅ |", "|   |", 1) // Unknown
+				newLine = strings.Replace(line, "|     |", "| ✅  |", 1) // Yes
+				newLine = strings.Replace(newLine, "|  ✅  |", "|      |", 1) // Late
+				newLine = strings.Replace(newLine, "| ✅ |", "|    |", 1) // No
+				newLine = strings.Replace(newLine, "|✅ |", "|   |", 1) // Unknown
 			case "unavailable":
-				newLine = strings.Replace(line, "|  ✅  |", "|     |", 1)
-				newLine = strings.Replace(newLine, "|  ✅   |", "|      |", 1)
-				newLine = strings.Replace(newLine, "|    |", "| ✅  |", 1)
-				newLine = strings.Replace(newLine, "| ✅ |", "|   |", 1)
+				newLine = strings.Replace(line, "| ✅  |", "|     |", 1)
+				newLine = strings.Replace(newLine, "|  ✅  |", "|      |", 1)
+				newLine = strings.Replace(newLine, "|    |", "| ✅ |", 1)
+				newLine = strings.Replace(newLine, "|✅ |", "|   |", 1)
 			case "late":
-				newLine = strings.Replace(line, "|  ✅  |", "|     |", 1)
-				newLine = strings.Replace(newLine, "|      |", "|  ✅   |", 1)
-				newLine = strings.Replace(newLine, "| ✅  |", "|    |", 1)
-				newLine = strings.Replace(newLine, "| ✅ |", "|   |", 1)
+				newLine = strings.Replace(line, "| ✅  |", "|     |", 1)
+				newLine = strings.Replace(newLine, "|      |", "|  ✅  |", 1)
+				newLine = strings.Replace(newLine, "| ✅ |", "|    |", 1)
+				newLine = strings.Replace(newLine, "|✅ |", "|   |", 1)
 			case "unknown":
-				newLine = strings.Replace(line, "|  ✅  |", "|     |", 1)
-				newLine = strings.Replace(newLine, "|  ✅   |", "|      |", 1)
-				newLine = strings.Replace(newLine, "| ✅  |", "|    |", 1)
-				newLine = strings.Replace(newLine, "|   |", "| ✅ |", 1)
+				newLine = strings.Replace(line, "| ✅  |", "|     |", 1)
+				newLine = strings.Replace(newLine, "|  ✅  |", "|      |", 1)
+				newLine = strings.Replace(newLine, "| ✅ |", "|    |", 1)
+				newLine = strings.Replace(newLine, "|   |", "|✅ |", 1)
 			}
 			newMsg = strings.Replace(oldMsg.Content, line, newLine, 1)
 			break
@@ -174,7 +174,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		),
 	}
 	message.Content += "\n```\n"
-	message.Content += "+---Name---+-Yes-+-Late-+-No-+-❓-+\n"
+	message.Content += "+---Name---+-Yes-+-Late-+-No-+-?-+\n"
 	var longestName int
 	for _, teammate := range Teammates {
 		for _, t := range teammate.Teams {
