@@ -23,7 +23,7 @@ const (
 	// InningsFile is the name of the file where the SL innings are stored
 	InningsFile = "/data/InningCounts.xlsx"
 	// ReactionRequest is the reaction emoji choices for availability
-	ReactionRequest = "React to this message with the following choices:\n👍Available\n👎 Unavailable\n⌛ Late\n❓ Unsure"
+	ReactionRequest = "React to this message with the following choices:\n👍 Available  👎 Unavailable\n⌛ Late       ❓ Unsure"
 	// DevChannelID is the ID of channel #bot-dev
 	DevChannelID = "955291440643207228"
 	// GameNight8ChannelID is the ID of channel #game-night

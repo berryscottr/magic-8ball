@@ -174,7 +174,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		),
 	}
 	message.Content += "\n```\n"
-	message.Content += "+---Name---+-Yes-+-Late-+-No-+-?-+\n"
+	message.Content += "+---Name---+-👍--+--⏳--+-👎-+❓-+\n"
 	var longestName int
 	for _, teammate := range Teammates {
 		for _, t := range teammate.Teams {
