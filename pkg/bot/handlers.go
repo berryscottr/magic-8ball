@@ -105,27 +105,16 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	for _, line := range msgLines {
 		if strings.Contains(line, teammate.LastName) {
 			log.Info().Msgf("modifying attendance for teammate: %s", teammate.LastName)
+			nameBox := strings.Split(line, "|")[0]
 			switch status {
 			case "available":
-				newLine = strings.Replace(line, "|     |", "| ✅  |", 1) // Yes
-				newLine = strings.Replace(newLine, "|  ✅  |", "|      |", 1) // Late
-				newLine = strings.Replace(newLine, "| ✅ |", "|    |", 1) // No
-				newLine = strings.Replace(newLine, "|✅ |", "|   |", 1) // Unknown
+				newLine = fmt.Sprintf("%s|✅|  |  |  |", nameBox)
 			case "unavailable":
-				newLine = strings.Replace(line, "| ✅  |", "|     |", 1)
-				newLine = strings.Replace(newLine, "|  ✅  |", "|      |", 1)
-				newLine = strings.Replace(newLine, "|    |", "| ✅ |", 1)
-				newLine = strings.Replace(newLine, "|✅ |", "|   |", 1)
+				newLine = fmt.Sprintf("%s|  |✅|  |  |", nameBox)
 			case "late":
-				newLine = strings.Replace(line, "| ✅  |", "|     |", 1)
-				newLine = strings.Replace(newLine, "|      |", "|  ✅  |", 1)
-				newLine = strings.Replace(newLine, "| ✅ |", "|    |", 1)
-				newLine = strings.Replace(newLine, "|✅ |", "|   |", 1)
+				newLine = fmt.Sprintf("%s|  |  |✅|  |", nameBox)
 			case "unknown":
-				newLine = strings.Replace(line, "| ✅  |", "|     |", 1)
-				newLine = strings.Replace(newLine, "|  ✅  |", "|      |", 1)
-				newLine = strings.Replace(newLine, "| ✅ |", "|    |", 1)
-				newLine = strings.Replace(newLine, "|   |", "|✅ |", 1)
+				newLine = fmt.Sprintf("%s|  |  |  |✅|", nameBox)
 			}
 			newMsg = strings.Replace(oldMsg.Content, line, newLine, 1)
 			break
@@ -174,7 +163,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		),
 	}
 	message.Content += "\n```\n"
-	message.Content += "+---Name---+-👍--+--⏳--+-👎-+❓-+\n"
+	message.Content += "+---Name---+👍+⏳+👎+❓+\n"
 	var longestName int
 	for _, teammate := range Teammates {
 		for _, t := range teammate.Teams {
@@ -190,11 +179,11 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		for _, t := range teammate.Teams {
 			if t.Name == team.Name {
 				numspaces = longestName + 1 - len(teammate.LastName)
-				message.Content += fmt.Sprintf("| %s%s|     |      |    |   |\n", teammate.LastName, strings.Repeat(" ", numspaces))
+				message.Content += fmt.Sprintf("| %s%s|  |  |  |  |\n", teammate.LastName, strings.Repeat(" ", numspaces))
 			}
 		}
 	}
-	message.Content += "+----------+-----+------+----+---+\n```"
+	message.Content += "+----------+--+--+--+--+\n```"
 	if m.ChannelID == DevChannelID {
 		if strings.Contains(m.Content, "--now") {
 			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
