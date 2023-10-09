@@ -183,7 +183,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 			}
 		}
 	}
-	message.Content += "+----------+--+--+--+--+\n```"
+	message.Content += "+----------+➖+➖+➖+➖+\n```"
 	if m.ChannelID == DevChannelID {
 		if strings.Contains(m.Content, "--now") {
 			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
