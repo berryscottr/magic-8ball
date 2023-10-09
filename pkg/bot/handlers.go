@@ -105,16 +105,16 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	for _, line := range msgLines {
 		if strings.Contains(line, teammate.LastName) {
 			log.Info().Msgf("modifying attendance for teammate: %s", teammate.LastName)
-			nameBox := strings.Split(line, "|")[0]
+			nameBox := strings.Split(line, "|")[1]
 			switch status {
 			case "available":
-				newLine = fmt.Sprintf("%s|✅|  |  |  |", nameBox)
+				newLine = fmt.Sprintf("%s|✅|⬛|⬛|⬛|", nameBox)
 			case "unavailable":
-				newLine = fmt.Sprintf("%s|  |✅|  |  |", nameBox)
+				newLine = fmt.Sprintf("%s|⬛|✅|⬛|⬛|", nameBox)
 			case "late":
-				newLine = fmt.Sprintf("%s|  |  |✅|  |", nameBox)
+				newLine = fmt.Sprintf("%s|⬛|⬛|✅|⬛|", nameBox)
 			case "unknown":
-				newLine = fmt.Sprintf("%s|  |  |  |✅|", nameBox)
+				newLine = fmt.Sprintf("%s|⬛|⬛|⬛|✅|", nameBox)
 			}
 			newMsg = strings.Replace(oldMsg.Content, line, newLine, 1)
 			break
@@ -179,7 +179,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		for _, t := range teammate.Teams {
 			if t.Name == team.Name {
 				numspaces = longestName + 1 - len(teammate.LastName)
-				message.Content += fmt.Sprintf("| %s%s|  |  |  |  |\n", teammate.LastName, strings.Repeat(" ", numspaces))
+				message.Content += fmt.Sprintf("| %s%s|⬛|⬛|⬛|⬛|\n", teammate.LastName, strings.Repeat(" ", numspaces))
 			}
 		}
 	}
