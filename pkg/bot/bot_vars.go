@@ -191,7 +191,7 @@ var (
 				WookieMistakes,
 			},
 			SkillLevel: Skill{
-				Eight: 3,
+				Eight: 2,
 			},
 		},
 		{
@@ -201,7 +201,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Nine: 1,
+				Nine: 2,
 			},
 		},
 	}
