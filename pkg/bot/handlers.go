@@ -158,7 +158,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"@everyone It's Game Day! Tonight %s plays %s.\n"+
+			"@everyone Attendance time! This week %s plays %s.\n"+
 				ReactionRequest+customMessage, team.Name, opponentTeam,
 		),
 	}
