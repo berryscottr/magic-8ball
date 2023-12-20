@@ -84,67 +84,67 @@ var (
 	Teammates = []Teammate{
 		{
 			LastName: "Berry",
-			UserID: "341590471317127178",
+			UserID:   "341590471317127178",
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 5,
-				Nine: 5,
+				Nine:  6,
 			},
 		},
 		{
 			LastName: "Liess",
-			UserID: "529730365854580765",
+			UserID:   "529730365854580765",
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 4,
-				Nine: 4,
+				Eight: 5,
+				Nine:  4,
 			},
 		},
 		{
 			LastName: "Bohrer",
-			UserID: "186997536844808193",
+			UserID:   "186997536844808193",
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
-				Nine: 3,
+				Nine:  3,
 			},
 		},
 		{
 			LastName: "Burcham",
-			UserID: "1014488206567288894",
+			UserID:   "1014488206567288894",
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
-				Nine: 4,
+				Nine:  4,
 			},
 		},
 		{
 			LastName: "Thompson",
-			UserID: "969682397920653342",
+			UserID:   "969682397920653342",
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
-				Nine: 3,
+				Nine:  3,
 			},
 		},
 		{
 			LastName: "Quan",
-			UserID: "795533691828305922",
+			UserID:   "795533691828305922",
 			Teams: []Team{
 				WookieMistakes,
 			},
@@ -154,18 +154,18 @@ var (
 		},
 		{
 			LastName: "Hayward",
-			UserID: "971791774697783326",
+			UserID:   "971791774697783326",
 			Teams: []Team{
 				WookieMistakes,
 			},
 			SkillLevel: Skill{
 				Eight: 7,
-				Nine: 7,
+				Nine:  7,
 			},
 		},
 		{
 			LastName: "Davalos",
-			UserID: "1108221800581709917",
+			UserID:   "1108221800581709917",
 			Teams: []Team{
 				SafetyDance,
 			},
@@ -175,28 +175,28 @@ var (
 		},
 		{
 			LastName: "Warden",
-			UserID: "1014520790873546852",
+			UserID:   "1014520790873546852",
 			Teams: []Team{
 				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 7,
-				Nine: 9,
+				Nine:  9,
 			},
 		},
 		{
 			LastName: "Gibson",
-			UserID: "696037354892296294",
+			UserID:   "696037354892296294",
 			Teams: []Team{
 				WookieMistakes,
 			},
 			SkillLevel: Skill{
-				Eight: 2,
+				Eight: 3,
 			},
 		},
 		{
 			LastName: "Dodge",
-			UserID: "253692229535793154",
+			UserID:   "253692229535793154",
 			Teams: []Team{
 				SafetyDance,
 			},
@@ -209,7 +209,7 @@ var (
 	// WookieMistakes Eight-Ball team
 	WookieMistakes = Team{
 		Format: "8-Ball",
-		Name: "Wookie Mistakes",
+		Name:   "Wookie Mistakes",
 		DivisionTeamNames: []string{
 			"Shark Shooters - 8",
 			"Only A Few Selected",
@@ -221,13 +221,13 @@ var (
 			"8-Balls of Fire",
 			"The Deans List",
 		},
-		GameDay: "Tuesday",
+		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight8ChannelID,
 	}
 	// SafetyDance Nine-Ball team
 	SafetyDance = Team{
 		Format: "9-Ball",
-		Name: "Safety Dance",
+		Name:   "Safety Dance",
 		DivisionTeamNames: []string{
 			"Shark Shooters - 9",
 			"Sticks and Stones",
@@ -240,7 +240,7 @@ var (
 			"Push to Start-9",
 			"Book Sea",
 		},
-		GameDay: "Tuesday",
+		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight9ChannelID,
 	}
 	// GameDayReactions for the bot to track
