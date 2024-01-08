@@ -190,6 +190,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 3,
+				Nine: 9,
 			},
 		},
 		{
@@ -200,7 +201,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 2,
+				Eight: 3,
 				Nine: 2,
 			},
 		},
@@ -244,9 +245,9 @@ var (
 			"Sticks and Stones",
 			"9 Rocks Away",
 			"9 on the Vine",
-			"Rackateers",
+			"In The Pocket-9",
 			"Believe It or Not 2",
-			"Fields of Gold 9",
+			"All in the Follow Through",
 			"9 Won Won",
 			"Push to Start-9",
 			"Book Sea",
