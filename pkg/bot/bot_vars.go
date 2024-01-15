@@ -110,6 +110,7 @@ var (
 			LastName: "Bohrer",
 			UserID:   "186997536844808193",
 			Teams: []Team{
+				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
@@ -187,6 +188,7 @@ var (
 			UserID:   "696037354892296294",
 			Teams: []Team{
 				WookieMistakes,
+				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
