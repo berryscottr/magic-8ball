@@ -109,10 +109,7 @@ var (
 		{
 			LastName: "Bohrer",
 			UserID:   "186997536844808193",
-			Teams: []Team{
-				WookieMistakes,
-				SafetyDance,
-			},
+			Teams:    []Team{},
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine:  3,
@@ -167,8 +164,7 @@ var (
 		{
 			LastName: "Davalos",
 			UserID:   "1108221800581709917",
-			Teams: []Team{
-			},
+			Teams:    []Team{},
 			SkillLevel: Skill{
 				Nine: 1,
 			},
@@ -176,8 +172,7 @@ var (
 		{
 			LastName: "Warden",
 			UserID:   "1014520790873546852",
-			Teams: []Team{
-			},
+			Teams:    []Team{},
 			SkillLevel: Skill{
 				Eight: 7,
 				Nine:  9,
@@ -192,7 +187,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 3,
-				Nine: 9,
+				Nine:  2,
 			},
 		},
 		{
@@ -204,7 +199,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 3,
-				Nine: 2,
+				Nine:  2,
 			},
 		},
 		{
@@ -215,7 +210,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 6,
-				Nine: 6,
+				Nine:  6,
 			},
 		},
 	}
