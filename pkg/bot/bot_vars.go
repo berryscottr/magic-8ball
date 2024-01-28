@@ -26,6 +26,8 @@ const (
 	ReactionRequest = "React to this message with the following choices:\n👍 Available \t👎 Unavailable\n⌛ Late      \t\t❓ Unsure"
 	// DevChannelID is the ID of channel #bot-dev
 	DevChannelID = "955291440643207228"
+	// TestChannelID is the ID of channel #bot-testing
+	TestChannelID = "1201198112564318288"
 	// GameNight8ChannelID is the ID of channel #game-night
 	GameNight8ChannelID = "951345352030691381"
 	// GameNight9ChannelID is the ID of channel #game-night

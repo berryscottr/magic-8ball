@@ -279,6 +279,8 @@ func (bot *Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	message.Content = "Eligible Lineups:\n```" + message.Content + "```"
 	if m.ChannelID == DevChannelID {
 		_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+	} else if m.ChannelID == TestChannelID {
+		_, bot.Err = s.ChannelMessageSendComplex(TestChannelID, &message)
 	} else {
 		_, bot.Err = s.ChannelMessageSendComplex(StrategyChannelID, &message)
 	}

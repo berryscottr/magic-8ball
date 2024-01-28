@@ -1,10 +1,13 @@
 package bot
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/stretchr/testify/assert"
 )
+
 
 // TestData_SetDir confirms ability to set the bot directory
 func TestData_SetDir(t *testing.T) {
@@ -76,6 +79,14 @@ func TestData_HandleLineups(t *testing.T) {
 	assertion := assert.New(t)
 	data := Data{Token: os.Getenv("BOT_TOKEN")}
 	data.SetDir()
+	session := &discordgo.Session{}
+	message := &discordgo.MessageCreate{
+		Message: &discordgo.Message{
+			Content:   "!line 76644322",
+		},
+	}
+	message.ChannelID = TestChannelID
+	data.HandleLineups(session, message)
 	assertion.NoError(data.Err, "failed to generate valid lineups")
 }
 
