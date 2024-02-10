@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/bwmarrin/discordgo"
 	"github.com/stretchr/testify/assert"
 )
 
