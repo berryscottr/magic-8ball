@@ -22,6 +22,6 @@ jobs:
 
       - name: Deploy to Railway
         run: |
-          RAILWAY_TOKEN=$RAILWAY_TOKEN railway down
+          railway down
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
