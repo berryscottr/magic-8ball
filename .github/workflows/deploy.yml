@@ -6,7 +6,7 @@ on:
     - cron: "0 7 * * 1"
 
 jobs:
-  undeploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,6 +22,6 @@ jobs:
 
       - name: Deploy to Railway
         run: |
-          railway up
+          RAILWAY_TOKEN=$RAILWAY_TOKEN railway down
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
