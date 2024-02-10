@@ -15,7 +15,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
       - name: Install dependencies
         working-directory: ./scripts/slmatchups
         run: |
@@ -42,9 +42,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v5
         with:
           go-version-file: ./go.mod
       - name: Build
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update, test]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Login to Github Package Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${{ github.repository }} --password-stdin
       - name: Build the Docker image
