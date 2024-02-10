@@ -22,6 +22,6 @@ jobs:
 
       - name: Deploy to Railway
         run: |
-          railway down
+          railway down --service magic-8ball
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
