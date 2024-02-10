@@ -1,14 +1,11 @@
-name: Deploy to Railway
-
-on:
-  # schedule:
-  #   - cron: "0 */6 * * *"
-  # workflow_dispatch:
+name: Undeploy 
+on: 
+  schedule:
+    - cron: "0 3 * * 3"
 
 jobs:
-  deploy:
+  undeploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2

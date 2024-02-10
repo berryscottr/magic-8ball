@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine
+FROM golang:1.21-alpine
 
 ARG BOT_TOKEN
 ENV BOT_TOKEN=$BOT_TOKEN
