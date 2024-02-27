@@ -99,6 +99,15 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	if bot.Err != nil {
 		log.Err(bot.Err).Msgf("failed to find reaction message in Discord channel %s", r.MessageReaction.ChannelID)
 	}
+	var team Team
+	if strings.Contains(oldMsg.Content, "Wookie Mistakes") {
+		team = WookieMistakes
+	} else if strings.Contains(oldMsg.Content, "Safety Dance") {
+		team = SafetyDance
+	} else {
+		bot.Err = errors.New("invalid team name")
+		log.Err(bot.Err).Msg("failed to find team name")
+	}
 	var newMsg string
 	var newLine string
 	msgLines := strings.Split(oldMsg.Content, "\n")
@@ -120,7 +129,61 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			break
 		}
 	}
-	_, bot.Err = s.ChannelMessageEdit(r.MessageReaction.ChannelID, r.MessageReaction.MessageID, newMsg)
+	availablePlayerSkills := make([]int, 0)
+	for _, line := range msgLines {
+		if strings.Contains(line, "|✅|⬛|⬛|⬛|") {
+			for _, teammate := range Teammates {
+				if strings.Contains(line, teammate.LastName) {
+					if team.Name == "Wookie Mistakes" {
+						availablePlayerSkills = append(availablePlayerSkills, teammate.SkillLevel.Eight)
+					} else if team.Name == "Safety Dance" {
+						availablePlayerSkills = append(availablePlayerSkills, teammate.SkillLevel.Nine)
+					} else {
+						bot.Err = errors.New("invalid team name")
+						log.Err(bot.Err).Msg("failed to find team name")
+					}
+				}
+			}
+		}
+	}
+	var lineupsMsg string
+	if len(availablePlayerSkills) < 5 {
+		lineupsMsg = "None found"
+	} else if len(availablePlayerSkills) >= 5 {
+		sort.Sort(sort.Reverse(sort.IntSlice(availablePlayerSkills)))
+		var lineups [][]int
+		log.Info().Msgf("generating possible lineups of %v", availablePlayerSkills)
+		gen := combin.NewPermutationGenerator(len(availablePlayerSkills), 5)
+		var i int
+		for gen.Next() {
+			permutationIndices := gen.Permutation(nil)
+			var lineup []int
+			for _, permutationIndex := range permutationIndices {
+				lineup = append(lineup, availablePlayerSkills[permutationIndex])
+			}
+			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
+			if validLineup(lineup) && !containsSlice(lineups, lineup) {
+				lineups = append(lineups, lineup)
+			}
+			i++
+		}
+		var teamLineups []TeamLineup
+		for _, lineup := range lineups {
+			teamLineups = append(teamLineups, TeamLineup{Lineup: lineup, Sum: sum(lineup)})
+		}
+		sort.Slice(teamLineups[:], func(i, j int) bool {
+			return teamLineups[i].Sum > teamLineups[j].Sum
+		})
+		for _, teamLineup := range teamLineups {
+			lineupsMsg += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
+		}
+		if len(teamLineups) == 0 {
+			lineupsMsg = "None found"
+		}
+		lineupsMsg = "```" + lineupsMsg + "```"
+	}
+	fullMsg := strings.Split(newMsg, "Eligible Lineups:")[0] + "Eligible Lineups:\n" + lineupsMsg
+	_, bot.Err = s.ChannelMessageEdit(r.MessageReaction.ChannelID, r.MessageReaction.MessageID, fullMsg)
 	if bot.Err != nil {
 		log.Err(bot.Err).Msgf("failed to edit message in Discord channel %s", r.MessageReaction.ChannelID)
 	} else {
@@ -184,6 +247,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		}
 	}
 	message.Content += "+----------+➖+➖+➖+➖+\n```"
+	message.Content += "Eligible Lineups:"
 	if m.ChannelID == DevChannelID {
 		if strings.Contains(m.Content, "--now") {
 			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
