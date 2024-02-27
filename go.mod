@@ -1,6 +1,6 @@
 module magic-8ball
 
-go 1.21
+go 1.22
 
 require (
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1
