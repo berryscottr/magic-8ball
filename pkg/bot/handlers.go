@@ -129,9 +129,10 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			break
 		}
 	}
+	newMsgLines := strings.Split(newMsg, "\n")
 	availablePlayerSkills := make([]int, 0)
-	for _, line := range msgLines {
-		if strings.Contains(line, "|✅|⬛|⬛|⬛|") {
+	for _, line := range newMsgLines {
+		if strings.Contains(line, "|✅|⬛|⬛|⬛|") || strings.Contains(line, "|⬛|✅|⬛|⬛|") {
 			for _, teammate := range Teammates {
 				if strings.Contains(line, teammate.LastName) {
 					if team.Name == "Wookie Mistakes" {
