@@ -201,7 +201,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 4,
-				Nine:  2,
+				Nine:  3,
 			},
 		},
 		{
