@@ -25,4 +25,7 @@ RUN go build main.go
 
 EXPOSE 8080
 
+HEALTHCHECK --interval=30s --timeout=10s \
+  CMD curl --fail http://localhost:8080/healthz || exit 1
+
 CMD [ "./main" ]
