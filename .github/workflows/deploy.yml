@@ -58,7 +58,6 @@ jobs:
       - name: Configure Docker CLI
         run: |
           echo "${{ secrets.GCP_SA_KEY_ESCAPED_QUOTES }}" > /tmp/gcp-key.json
-          cat /tmp/gcp-key.json
           gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
           gcloud auth configure-docker
       - name: Build the Docker image
@@ -83,4 +82,4 @@ jobs:
           image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/magic-8ball:latest
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           secrets: |
-            BOT_TOKEN=magic-8ball:latest
+            BOT_TOKEN=magic-8ball-token:latest
