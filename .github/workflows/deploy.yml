@@ -35,8 +35,8 @@ jobs:
           go-version-file: ./go.mod
       - name: Build
         run: go build -v ./...
-      # - name: Test
-      #   run: go test -v ./...
+      - name: Test
+        run: go test -v ./...
   publish-github:
     runs-on: ubuntu-latest
     needs: [ py-test, go-test ]
