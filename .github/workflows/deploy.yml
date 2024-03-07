@@ -4,6 +4,8 @@ on:
     branches:
       - main
   workflow_dispatch:
+env:
+  BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
 jobs:
   py-test:
     runs-on: ubuntu-latest
@@ -25,8 +27,6 @@ jobs:
           pytest test_main.py
   go-test:
     runs-on: ubuntu-latest
-    env:
-      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Go
