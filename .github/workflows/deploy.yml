@@ -57,7 +57,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Configure Docker CLI
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" | sed 's/"/\\"/g' > /tmp/gcp-key.json
+          echo "${{ secrets.GCP_SA_KEY }}" | sed 's/"/\"/g' > /tmp/gcp-key.json
           gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
           gcloud auth configure-docker
       - name: Build the Docker image
