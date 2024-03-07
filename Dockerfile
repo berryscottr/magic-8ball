@@ -23,7 +23,6 @@ WORKDIR /app
 
 RUN go build main.go
 
-ENV HOST 0.0.0.0
 EXPOSE 8080
 
 CMD [ "./main" ]
