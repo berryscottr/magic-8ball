@@ -3,11 +3,17 @@ package bot
 import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/rs/zerolog/log"
+	"os"
 	"path/filepath"
 )
 
 // SetDir for setting the directory for the bot
 func (bot *Data) SetDir() {
+	if bot.Err = os.Chdir("/app"); bot.Err != nil {
+		log.Err(bot.Err).Msg("failed to change directory to /app")
+		bot.Dir = "/"
+		return
+	}
 	if bot.Dir, bot.Err = filepath.Abs("."); bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to set magic-8ball directory")
 	}
