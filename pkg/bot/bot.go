@@ -10,21 +10,21 @@ import (
 
 // SetDir for setting the directory for the bot
 func (bot *Data) SetDir() {
-	if _, bot.Err = os.Stat("/app"); bot.Err != nil && os.IsNotExist(bot.Err) {
-			bot.Dir, bot.Err = os.Getwd()
-			if bot.Err != nil {
-					log.Err(bot.Err).Msg("failed to get current directory")
-					return
-			}
-			return
-	}
-	if bot.Err = os.Chdir("/app"); bot.Err != nil {
-			log.Err(bot.Err).Msg("failed to change directory to /app")
-			bot.Dir = "/"
-			return
-	}
+	// if _, bot.Err = os.Stat("/app"); bot.Err != nil && os.IsNotExist(bot.Err) {
+	// 	bot.Dir, bot.Err = os.Getwd()
+	// 	if bot.Err != nil {
+	// 		log.Err(bot.Err).Msg("failed to get current directory")
+	// 		return
+	// 	}
+	// 	return
+	// }
+	// if bot.Err = os.Chdir("/app"); bot.Err != nil {
+	// 	log.Err(bot.Err).Msg("failed to change directory to /app")
+	// 	bot.Dir = "/"
+	// 	return
+	// }
 	if bot.Dir, bot.Err = filepath.Abs("."); bot.Err != nil {
-			log.Err(bot.Err).Msg("failed to set magic-8ball directory")
+		log.Err(bot.Err).Msg("failed to set magic-8ball directory")
 	}
 }
 
