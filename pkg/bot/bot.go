@@ -1,7 +1,6 @@
 package bot
 
 import (
-	"os"
 	"path/filepath"
 
 	"github.com/bwmarrin/discordgo"
