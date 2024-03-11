@@ -180,10 +180,13 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			for _, teamLineup := range teamLineups {
 				lineupsMsg += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
 			}
+			var playbackNote string
 			if len(teamLineups) == 0 {
 				lineupsMsg = "None found"
+			} else {
+				playbackNote = "(eligible with playback)"
 			}
-			lineupsMsg = "```" + lineupsMsg + "```(eligible with playback)"
+			lineupsMsg = "```" + lineupsMsg + "```"	+ playbackNote
 		} else {
 			lineupsMsg = "None found"
 		}
