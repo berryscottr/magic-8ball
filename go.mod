@@ -7,7 +7,7 @@ require (
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/rs/zerolog v1.32.0
 	github.com/stretchr/testify v1.7.5
-	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225
+	golang.org/x/exp v0.0.0-20240314144324-c7f7c6466f7f
 	gonum.org/v1/gonum v0.14.0
 )
 
