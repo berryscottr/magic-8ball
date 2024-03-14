@@ -147,143 +147,25 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			}
 		}
 	}
-	// Generate all possible lineups
-	// This will ensure that a playback lineup does make us post an illegal lineup
-	var teamSkillLevels []int
-	for _, teammate := range Teammates {
-		for _, teammateTeam := range teammate.Teams {
-			if teammateTeam.Name == team.Name {
-				if teammateTeam.Format == "8-Ball" {
-					teamSkillLevels = append(teamSkillLevels, teammate.SkillLevel.Eight)
-				} else if teammateTeam.Format == "9-Ball" {
-					teamSkillLevels = append(teamSkillLevels, teammate.SkillLevel.Nine)
-				}
-				break
-			}
-		}
-	}
 	var lineupsMsg string
 	var noPlaybacksAllowed bool
 	var isPlayback bool
 	if len(availablePlayerSkills) < 5 {
 		if len(availablePlayerSkills) == 4 && !noPlaybacksAllowed {
-			// check for playback player
-			var lineups [][]int
-			var teamLineups []TeamLineup
-			for i := range(4) {
-				playbackPlayerSkills := append(availablePlayerSkills, availablePlayerSkills[i])
-				sort.Sort(sort.Reverse(sort.IntSlice(playbackPlayerSkills)))
-				log.Info().Msgf("generating possible lineups of %v", playbackPlayerSkills)
-				gen := combin.NewPermutationGenerator(len(playbackPlayerSkills), 5)
-				var i int
-				for gen.Next() {
-					permutationIndices := gen.Permutation(nil)
-					var lineup []int
-					for _, permutationIndex := range permutationIndices {
-						lineup = append(lineup, playbackPlayerSkills[permutationIndex])
-					}
-					sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-					if validLineup(lineup) && !containsSlice(lineups, lineup) {
-						lineups = append(lineups, lineup)
-					}
-					i++
-				}
-				for _, lineup := range lineups {
-					teamLineups = append(teamLineups, TeamLineup{Lineup: lineup, Sum: sum(lineup)})
-				}
-			}
-			sort.Slice(teamLineups[:], func(i, j int) bool {
-				return teamLineups[i].Sum > teamLineups[j].Sum
-			})
-			for _, teamLineup := range teamLineups {
-				lineupsMsg += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
-			}
-			var playbackNote string
-			if len(teamLineups) == 0 {
-				lineupsMsg = "None found"
-			} else {
-				isPlayback = true
-				playbackNote = "(eligible with playback)"
-			}
-			lineupsMsg = "```" + lineupsMsg + "```"	+ playbackNote
+			isPlayback = true
+			teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
+			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
 		} else {
 			lineupsMsg = "None found"
 		}
 	} else if len(availablePlayerSkills) >= 5 {
-		// generate full lineups
-		sort.Sort(sort.Reverse(sort.IntSlice(availablePlayerSkills)))
-		var lineups [][]int
-		log.Info().Msgf("generating possible lineups of %v", availablePlayerSkills)
-		gen := combin.NewPermutationGenerator(len(availablePlayerSkills), 5)
-		var i int
-		for gen.Next() {
-			permutationIndices := gen.Permutation(nil)
-			var lineup []int
-			for _, permutationIndex := range permutationIndices {
-				lineup = append(lineup, availablePlayerSkills[permutationIndex])
-			}
-			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if validLineup(lineup) && !containsSlice(lineups, lineup) {
-				lineups = append(lineups, lineup)
-			}
-			i++
-		}
-		var teamLineups []TeamLineup
-		for _, lineup := range lineups {
-			teamLineups = append(teamLineups, TeamLineup{Lineup: lineup, Sum: sum(lineup)})
-		}
-		sort.Slice(teamLineups[:], func(i, j int) bool {
-			return teamLineups[i].Sum > teamLineups[j].Sum
-		})
-		for _, teamLineup := range teamLineups {
-			lineupsMsg += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
-		}
+		teamLineups := generateLineups(availablePlayerSkills, isPlayback,team)
 		if len(teamLineups) == 0 && !noPlaybacksAllowed {
-			// check for playback player
-			var lineups [][]int
-			var teamLineups []TeamLineup
-			for i := range(4) {
-				playbackPlayerSkills := append(availablePlayerSkills, availablePlayerSkills[i])
-				sort.Sort(sort.Reverse(sort.IntSlice(playbackPlayerSkills)))
-				log.Info().Msgf("generating possible lineups of %v", playbackPlayerSkills)
-				gen := combin.NewPermutationGenerator(len(playbackPlayerSkills), 5)
-				var i int
-				for gen.Next() {
-					permutationIndices := gen.Permutation(nil)
-					var lineup []int
-					for _, permutationIndex := range permutationIndices {
-						lineup = append(lineup, playbackPlayerSkills[permutationIndex])
-					}
-					sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-					if validLineup(lineup) && !containsSlice(lineups, lineup) {
-						lineups = append(lineups, lineup)
-					}
-					i++
-				}
-				for _, lineup := range lineups {
-					teamLineups = append(teamLineups, TeamLineup{Lineup: lineup, Sum: sum(lineup)})
-				}
-			}
-			sort.Slice(teamLineups[:], func(i, j int) bool {
-				return teamLineups[i].Sum > teamLineups[j].Sum
-			})
-			for _, teamLineup := range teamLineups {
-				lineupsMsg += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
-			}
-			var playbackNote string
-			if len(teamLineups) == 0 {
-				lineupsMsg = "None found"
-			} else {
-				isPlayback = true
-				playbackNote = "(eligible with playback)"
-			}
-			lineupsMsg = "```" + lineupsMsg + "```"	+ playbackNote
-		}
-		if len(teamLineups) == 0 {
-			lineupsMsg = "None found"
-		}
-		if !isPlayback {
-			lineupsMsg = "```" + lineupsMsg + "```"
+			isPlayback = true
+			teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
+			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
+		} else {
+			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
 		}
 	}
 	fullMsg := strings.Split(newMsg, "Eligible Lineups:")[0] + "Eligible Lineups:\n" + lineupsMsg
@@ -423,7 +305,7 @@ func (bot *Data) HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 				lineup = append(lineup, skillLevels[permutationIndex])
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if validLineup(lineup) && !containsSlice(lineups, lineup) {
+			if validLineup(lineup, false, Team{}) && !containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
 			i++
@@ -638,7 +520,7 @@ func (bot *Data) HandleOptimal8(s *discordgo.Session, m *discordgo.MessageCreate
 				lineup = append(lineup, teamSkillLevels[permutationIndex])
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if validLineup(lineup) && !containsSlice(lineups, lineup) {
+			if validLineup(lineup, false, Team{}) && !containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
 			i++
@@ -814,7 +696,7 @@ func (bot *Data) HandleOptimal9(s *discordgo.Session, m *discordgo.MessageCreate
 				lineup = append(lineup, teamSkillLevels[permutationIndex])
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if validLineup(lineup) && !containsSlice(lineups, lineup) {
+			if validLineup(lineup, false, Team{}) && !containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
 			i++
@@ -993,7 +875,7 @@ func (bot *Data) HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate)
 				lineup = append(lineup, teamSkillLevels[permutationIndex])
 			}
 			sort.Sort(sort.Reverse(sort.IntSlice(lineup)))
-			if validLineup(lineup) && !containsSlice(lineups, lineup) {
+			if validLineup(lineup, false, Team{}) && !containsSlice(lineups, lineup) {
 				lineups = append(lineups, lineup)
 			}
 			i++

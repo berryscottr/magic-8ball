@@ -81,6 +81,14 @@ type Skill struct {
 	Nine int
 }
 
+// TeammateSkill for a teammate and their skill level
+type TeammateSkill struct {
+	// Teammate
+	Lastname string
+	// Skill
+	SkillLevel int
+}
+
 var (
 	// Teammates on teams
 	Teammates = []Teammate{
