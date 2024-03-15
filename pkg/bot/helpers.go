@@ -48,7 +48,7 @@ func validLineup(lineup []int, isPlayback bool, team Team) bool {
 		if sum(lineup) < 10 || sum(lineup) > 23 {
 			return false
 		}
-	} else if team.Format == "9-Ball" {
+	} else {
 		if sum(lineup) < 5 || sum(lineup) > 23 {
 			return false
 		}
