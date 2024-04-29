@@ -215,12 +215,20 @@ var (
 		{
 			LastName: "Ackler",
 			UserID:   "969934577768484944",
+			Teams: []Team{},
+			SkillLevel: Skill{
+				Eight: 6,
+				Nine:  6,
+			},
+		},
+		{
+			LastName: "Newbie",
+			UserID:   "",
 			Teams: []Team{
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 6,
-				Nine:  6,
+				Nine: 3,
 			},
 		},
 	}
@@ -237,8 +245,7 @@ var (
 			"G Team",
 			"The Unusual Suspects",
 			"School of Pool",
-			"8-Balls of Fire",
-			"The Deans List",
+			"The Dean's List",
 		},
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight8ChannelID,
