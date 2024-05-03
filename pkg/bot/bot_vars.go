@@ -156,7 +156,7 @@ var (
 				WookieMistakes,
 			},
 			SkillLevel: Skill{
-				Eight: 6,
+				Eight: 5,
 			},
 		},
 		{
@@ -222,7 +222,7 @@ var (
 			},
 		},
 		{
-			LastName: "Newbie",
+			LastName: "Johnson",
 			UserID:   "",
 			Teams: []Team{
 				SafetyDance,
