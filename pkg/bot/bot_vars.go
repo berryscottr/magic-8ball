@@ -223,7 +223,7 @@ var (
 		},
 		{
 			LastName: "Johnson",
-			UserID:   "",
+			UserID:   "1236395641215651850",
 			Teams: []Team{
 				SafetyDance,
 			},
