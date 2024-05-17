@@ -133,7 +133,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 3,
+				Eight: 4,
 				Nine:  4,
 			},
 		},
@@ -208,7 +208,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 3,
+				Eight: 4,
 				Nine:  3,
 			},
 		},
