@@ -64,6 +64,31 @@ func validLineup(lineup []int, isPlayback bool, team Team) bool {
 	return true
 }
 
+func lineupsMsgLogic(availablePlayerSkills []int, team Team) string {
+	var lineupsMsg string
+	var noPlaybacksAllowed bool
+	var isPlayback bool
+	if len(availablePlayerSkills) < 5 {
+		if len(availablePlayerSkills) == 4 && !noPlaybacksAllowed {
+			isPlayback = true
+			teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
+			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
+		} else {
+			lineupsMsg = "None found"
+		}
+	} else if len(availablePlayerSkills) >= 5 {
+		teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
+		if len(teamLineups) == 0 && !noPlaybacksAllowed {
+			isPlayback = true
+			teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
+			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
+		} else {
+			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
+		}
+	}
+	return lineupsMsg
+}
+
 // generateLineups returns a slice of TeamLineup structs
 func generateLineups(skills []int, isPlayback bool, team Team) []TeamLineup {
 	var lineups [][]int
@@ -112,7 +137,7 @@ func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {
 		lineupsMsg += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
 	}
 	if isPlayback {
-		lineupsMsg = "```" + lineupsMsg + "```"	+ "(eligible with playback)"
+		lineupsMsg = "```" + lineupsMsg + "```" + "(eligible with playback)"
 	} else {
 		lineupsMsg = "```" + lineupsMsg + "```"
 	}

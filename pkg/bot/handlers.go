@@ -147,27 +147,7 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			}
 		}
 	}
-	var lineupsMsg string
-	var noPlaybacksAllowed bool
-	var isPlayback bool
-	if len(availablePlayerSkills) < 5 {
-		if len(availablePlayerSkills) == 4 && !noPlaybacksAllowed {
-			isPlayback = true
-			teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
-			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
-		} else {
-			lineupsMsg = "None found"
-		}
-	} else if len(availablePlayerSkills) >= 5 {
-		teamLineups := generateLineups(availablePlayerSkills, isPlayback,team)
-		if len(teamLineups) == 0 && !noPlaybacksAllowed {
-			isPlayback = true
-			teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
-			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
-		} else {
-			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
-		}
-	}
+	lineupsMsg := lineupsMsgLogic(availablePlayerSkills, team)
 	fullMsg := strings.Split(newMsg, "Eligible Lineups:")[0] + "Eligible Lineups:\n" + lineupsMsg
 	_, bot.Err = s.ChannelMessageEdit(r.MessageReaction.ChannelID, r.MessageReaction.MessageID, fullMsg)
 	if bot.Err != nil {
