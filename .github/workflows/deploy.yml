@@ -50,21 +50,21 @@ jobs:
         run: docker tag magic-8ball:latest docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
       - name: Push the Docker image
         run: docker push docker.pkg.github.com/berryscottr/magic-8ball/magic-8ball:latest
-  publish-gcr:
-    runs-on: ubuntu-latest
-    needs: [ py-test, go-test ]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Configure Docker CLI
-        run: |
-          echo "${{ secrets.GCP_SA_KEY_ESCAPED_QUOTES }}" > /tmp/gcp-key.json
-          gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
-          gcloud auth configure-docker
-      - name: Build the Docker image
-        run: |
-          docker build . --file Dockerfile --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/magic-8ball:latest --build-arg BOT_TOKEN=${{ secrets.BOT_TOKEN }}
-      - name: Push the Docker image
-        run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/magic-8ball:latest
+  # publish-gcr:
+  #   runs-on: ubuntu-latest
+  #   needs: [ py-test, go-test ]
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Configure Docker CLI
+  #       run: |
+  #         echo "${{ secrets.GCP_SA_KEY_ESCAPED_QUOTES }}" > /tmp/gcp-key.json
+  #         gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
+  #         gcloud auth configure-docker
+  #     - name: Build the Docker image
+  #       run: |
+  #         docker build . --file Dockerfile --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/magic-8ball:latest --build-arg BOT_TOKEN=${{ secrets.BOT_TOKEN }}
+  #     - name: Push the Docker image
+  #       run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/magic-8ball:latest
   # deploy-cloud-run:
   #   runs-on: ubuntu-latest
   #   needs: [ publish-gcr ]
