@@ -1,4 +1,4 @@
-// package selenium
+package selenium
 
 // var (
 // 	webDriver          *agouti.WebDriver

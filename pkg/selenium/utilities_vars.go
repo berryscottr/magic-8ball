@@ -1,4 +1,4 @@
-// package selenium
+package selenium
 
 // // Utilities struct defines the utility methods and properties
 // type Utilities struct {
