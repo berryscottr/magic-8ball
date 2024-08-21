@@ -110,9 +110,11 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	}
 	var newMsg string
 	var newLine string
+	var nameFound bool
 	msgLines := strings.Split(oldMsg.Content, "\n")
 	for _, line := range msgLines {
 		if strings.Contains(line, teammate.LastName) {
+			nameFound = true
 			log.Info().Msgf("modifying attendance for teammate: %s", teammate.LastName)
 			nameBox := strings.Split(line, "|")[1]
 			switch status {
@@ -128,6 +130,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			newMsg = strings.Replace(oldMsg.Content, line, newLine, 1)
 			break
 		}
+	}
+	if !nameFound {
+		return
 	}
 	newMsgLines := strings.Split(newMsg, "\n")
 	availablePlayerSkills := make([]int, 0)
