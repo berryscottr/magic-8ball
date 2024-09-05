@@ -119,12 +119,31 @@ func generateLineups(skills []int, isPlayback bool, team Team) []TeamLineup {
 		for i := range len(skills) {
 			playbackPlayerSkills := append(skills, skills[i])
 			generate(playbackPlayerSkills)
+			// removeDuplicateLineups(teamLineups)
 		}
 	} else {
 		generate(skills)
 	}
 	return teamLineups
 }
+
+// // removeDuplicateLineups removes duplicate lineups due to playback generation logic
+// func removeDuplicateLineups(teamLineups []TeamLineup) []TeamLineup {
+// 	log.Info().Msgf("teamLineups: %v", teamLineups)
+// 	uniqueLineups := make(map[string]struct{})
+// 	var filteredTeamLineups []TeamLineup
+// 	for _, lineup := range teamLineups {
+// 		lineupKey := fmt.Sprint(lineup.Lineup)
+// 		if _, exists := uniqueLineups[lineupKey]; !exists {
+// 			uniqueLineups[lineupKey] = struct{}{}
+// 			filteredTeamLineups = append(filteredTeamLineups, lineup)
+// 		}
+// 	}
+// 	sort.Slice(filteredTeamLineups, func(i, j int) bool {
+// 		return filteredTeamLineups[i].Sum > filteredTeamLineups[j].Sum
+// 	})
+// 	return filteredTeamLineups
+// }
 
 // generateLineupsMsg returns a string of lineups and a string of playbackNote
 func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {

@@ -230,28 +230,29 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 		}
 	} else {
-		loc, err := time.LoadLocation("America/New_York")
-		if err != nil {
-			loc = time.UTC
-			log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
-		}
-		date := time.Now().In(loc)
-		if strings.Contains(m.Content, "--now") {
-			_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
-		} else if date.Weekday() != time.Tuesday {
-			nextTuesday := date.AddDate(0, 0, int((time.Tuesday - date.Weekday() + 7) % 7))
-			scheduleTime := time.Date(date.Year(), date.Month(), nextTuesday.Day(), 8, 55, 0, 0, loc)
-			time.AfterFunc(scheduleTime.Sub(date), func() {
-				_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
-			})
-		} else if date.Hour() < 5 {
-			scheduleTime := time.Date(date.Year(), date.Month(), date.Day(), 8, 55, 0, 0, loc)
-			time.AfterFunc(scheduleTime.Sub(date), func() {
-				_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
-			})
-		} else {
-			_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
-		}
+		_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+		// loc, err := time.LoadLocation("America/New_York")
+		// if err != nil {
+		// 	loc = time.UTC
+		// 	log.Err(bot.Err).Msg("failed to load timezone, using UTC as EST+5")
+		// }
+		// date := time.Now().In(loc)
+		// if strings.Contains(m.Content, "--now") {
+		// 	_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+		// } else if date.Weekday() != time.Tuesday {
+		// 	nextTuesday := date.AddDate(0, 0, int((time.Tuesday - date.Weekday() + 7) % 7))
+		// 	scheduleTime := time.Date(date.Year(), date.Month(), nextTuesday.Day(), 8, 55, 0, 0, loc)
+		// 	time.AfterFunc(scheduleTime.Sub(date), func() {
+		// 		_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+		// 	})
+		// } else if date.Hour() < 5 {
+		// 	scheduleTime := time.Date(date.Year(), date.Month(), date.Day(), 8, 55, 0, 0, loc)
+		// 	time.AfterFunc(scheduleTime.Sub(date), func() {
+		// 		_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+		// 	})
+		// } else {
+		// 	_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+		// }
 	}
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
