@@ -259,7 +259,7 @@ var (
 			"9 on the Vine",
 			"In The Pocket-9",
 			"Believe It or Not 2",
-			"All in the Follow Through",
+			"Salted Coffee",
 			"Smooth Strokes-9",
 		},
 		GameDay:            "Tuesday",
