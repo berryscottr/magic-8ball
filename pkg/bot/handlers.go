@@ -116,16 +116,27 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 		if strings.Contains(line, teammate.LastName) {
 			nameFound = true
 			log.Info().Msgf("modifying attendance for teammate: %s", teammate.LastName)
-			nameBox := strings.Split(line, "|")[1]
+			var skillLevelEmoji string
+			switch team.Name {
+			case WookieMistakes.Name:
+				skillLevelEmoji = intToEmoji(teammate.SkillLevel.Eight)
+			case SafetyDance.Name:
+				skillLevelEmoji = intToEmoji(teammate.SkillLevel.Nine)
+			default:
+				bot.Err = errors.New("invalid team name")
+				log.Err(bot.Err).Msgf("failed to create game day post for team: %s", team.Name)
+				return
+			}
+			nameBox := strings.Split(line, "|")[2]
 			switch status {
 			case "available":
-				newLine = fmt.Sprintf("|%s|✅|⬛|⬛|⬛|", nameBox)
+				newLine = fmt.Sprintf("|%s|%s|✅|⬛|⬛|⬛|", skillLevelEmoji, nameBox)
 			case "late":
-				newLine = fmt.Sprintf("|%s|⬛|✅|⬛|⬛|", nameBox)
+				newLine = fmt.Sprintf("|%s|%s|⬛|✅|⬛|⬛|", skillLevelEmoji, nameBox)
 			case "unavailable":
-				newLine = fmt.Sprintf("|%s|⬛|⬛|✅|⬛|", nameBox)
+				newLine = fmt.Sprintf("|%s|%s|⬛|⬛|✅|⬛|", skillLevelEmoji, nameBox)
 			case "unknown":
-				newLine = fmt.Sprintf("|%s|⬛|⬛|⬛|✅|", nameBox)
+				newLine = fmt.Sprintf("|%s|%s|⬛|⬛|⬛|✅|", skillLevelEmoji, nameBox)
 			}
 			newMsg = strings.Replace(oldMsg.Content, line, newLine, 1)
 			break
