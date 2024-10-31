@@ -152,8 +152,14 @@ func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {
 		lineupsMsg = "None found"
 		return lineupsMsg
 	}
+	seenLineups := make(map[string]bool)
 	for _, teamLineup := range teamLineups {
-		lineupsMsg += fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
+		lineupEntry := fmt.Sprintf("%v %v\n", teamLineup.Lineup, teamLineup.Sum)
+		if seenLineups[lineupEntry] {
+			continue
+		}
+		lineupsMsg += lineupEntry
+		seenLineups[lineupEntry] = true
 	}
 	if isPlayback {
 		lineupsMsg = "```" + lineupsMsg + "```" + "(eligible with playback)"
@@ -193,3 +199,12 @@ func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {
 // 	}
 // 	return illegalPlayback
 // }
+
+
+// intToEmoji converts an integer to its Emoji
+func intToEmoji(num int) string {
+	if emoji, exists := NumToEmojiMap[num]; exists {
+		return emoji
+	}
+	return fmt.Sprintf("%d", num)
+}

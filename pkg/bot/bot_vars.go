@@ -267,6 +267,19 @@ var (
 	}
 	// GameDayReactions for the bot to track
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳", "❓", "❔"}
+	// numToEmojiMap is a map for converting numbers to emojis
+	NumToEmojiMap = map[int]string{
+		1: "1️⃣",
+		2: "2️⃣",
+		3: "3️⃣",
+		4: "4️⃣",
+		5: "5️⃣",
+		6: "6️⃣",
+		7: "7️⃣",
+		8: "8️⃣",
+		9: "9️⃣",
+	}
+	EightBallEmoji = "🎱"
 )
 
 // Data for the bot to track along a request

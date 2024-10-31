@@ -44,9 +44,10 @@ data_points = [
     1.69, 4.60, 1.14, 1.52, 0.96, 1.75, 1.68, 0.42, 1.60, 2.19,
     3.54, 2.19, 2.19, 2.19, 2.30, 3.54, 2.75, 3.24, 2.62, 2.89,
     3.31, 2.75, 3.44, 1.59, 2.26, 2.33, 2.62, 2.89, 1.82, 3.67,
-    1.60, 1.79
+    1.60, 1.79, 1.63, 1.86
 ]
 
 # Create an instance of RollingAveragePlotter
 plotter = RollingAveragePlotter(data_points)
 plotter.plot()
+print("Current Avg: {:.2f} BPI".format(plotter.rolling_average[-1]))
