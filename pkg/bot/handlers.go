@@ -197,7 +197,6 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 		),
 	}
 	message.Content += "\n```\n"
-	message.Content += "+🎱+--Name--+👍+⏳+👎+❓+\n"
 	var longestName int
 	for _, teammate := range Teammates {
 		for _, t := range teammate.Teams {
@@ -208,11 +207,12 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 			}
 		}
 	}
+	message.Content += "+🎱+---Name---+👍+⏳+👎+❓+\n"
 	var numspaces int
 	for _, teammate := range Teammates {
 		for _, t := range teammate.Teams {
 			if t.Name == team.Name {
-				numspaces = longestName - len(teammate.LastName)
+				numspaces = longestName + 1 - len(teammate.LastName)
 				var skillLevel int
 				switch teamName {
 				case WookieMistakes.Name:
@@ -224,11 +224,11 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 					log.Err(bot.Err).Msgf("failed to create game day post for team: %s", teamName)
 					return
 				}
-				message.Content += fmt.Sprintf("|%s|%s%s|⬛|⬛|⬛|⬛|\n", intToEmoji(skillLevel), teammate.LastName, strings.Repeat(" ", numspaces))
+				message.Content += fmt.Sprintf("|%s| %s%s|⬛|⬛|⬛|⬛|\n", intToEmoji(skillLevel), teammate.LastName, strings.Repeat(" ", numspaces))
 			}
 		}
 	}
-	message.Content += fmt.Sprintf("+➖+%s+➖+➖+➖+➖+\n```", strings.Repeat("-", longestName))
+	message.Content += fmt.Sprintf("+➖+%s+➖+➖+➖+➖+\n```", strings.Repeat("-", longestName+2))
 	message.Content += "Eligible Lineups:"
 	if m.ChannelID == DevChannelID {
 		if strings.Contains(m.Content, "--now") {
