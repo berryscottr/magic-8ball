@@ -73,7 +73,7 @@ func lineupsMsgLogic(availablePlayerSkills []int, team Team, noPlaybacksAllowed 
 			teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
 			lineupsMsg = generateLineupsMsg(teamLineups, isPlayback)
 		} else {
-			lineupsMsg = "None found"
+			lineupsMsg = "None found <:goose_alert:1324459015148797992>"
 		}
 	} else if len(availablePlayerSkills) >= 5 {
 		teamLineups := generateLineups(availablePlayerSkills, isPlayback, team)
