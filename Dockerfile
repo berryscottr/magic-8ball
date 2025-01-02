@@ -1,12 +1,12 @@
-# Stage 1: Builder
-FROM golang:1.23-alpine as builder
+# Combined Dockerfile
+FROM golang:1.23-alpine
 
 # Set build arguments and environment variables
 ARG BOT_TOKEN
 ENV BOT_TOKEN=$BOT_TOKEN
 
 # Install dependencies
-RUN apk add --no-cache git
+RUN apk add --no-cache git ca-certificates
 
 WORKDIR /app
 
@@ -19,17 +19,6 @@ COPY . ./
 
 # Build the Go application
 RUN go build -o magic-8ball ./main.go
-
-# Stage 2: Runtime
-FROM alpine:latest as runtime
-
-# Install minimal dependencies for runtime
-RUN apk add --no-cache ca-certificates
-
-WORKDIR /app
-
-# Copy the built application from the builder stage
-COPY --from=builder /app/magic-8ball .
 
 # Expose the application port
 EXPOSE 8080
