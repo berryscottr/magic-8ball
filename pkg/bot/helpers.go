@@ -64,9 +64,8 @@ func validLineup(lineup []int, isPlayback bool, team Team) bool {
 	return true
 }
 
-func lineupsMsgLogic(availablePlayerSkills []int, team Team) string {
+func lineupsMsgLogic(availablePlayerSkills []int, team Team, noPlaybacksAllowed bool) string {
 	var lineupsMsg string
-	var noPlaybacksAllowed bool
 	var isPlayback bool
 	if len(availablePlayerSkills) < 5 {
 		if len(availablePlayerSkills) == 4 && !noPlaybacksAllowed {
@@ -149,7 +148,7 @@ func generateLineups(skills []int, isPlayback bool, team Team) []TeamLineup {
 func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {
 	var lineupsMsg string
 	if len(teamLineups) == 0 {
-		lineupsMsg = "None found"
+		lineupsMsg = "None found <:goose_alert:1324459015148797992>"
 		return lineupsMsg
 	}
 	seenLineups := make(map[string]bool)
@@ -162,7 +161,7 @@ func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {
 		seenLineups[lineupEntry] = true
 	}
 	if isPlayback {
-		lineupsMsg = "```" + lineupsMsg + "```" + "(eligible obly with playback) <:goose_alert:1324459015148797992>"
+		lineupsMsg = "```" + lineupsMsg + "```" + "(eligible only with playback) <:goose_alert:1324459015148797992>"
 	} else {
 		lineupsMsg = "```" + lineupsMsg + "```"
 	}

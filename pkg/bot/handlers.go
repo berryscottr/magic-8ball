@@ -163,7 +163,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			}
 		}
 	}
-	lineupsMsg := lineupsMsgLogic(availablePlayerSkills, team)
+	lineupsMsg := lineupsMsgLogic(
+		availablePlayerSkills, team, strings.Contains(oldMsg.Content, "no playbacks"),
+	)
 	fullMsg := strings.Split(newMsg, "Eligible Lineups:")[0] + "Eligible Lineups:\n" + lineupsMsg
 	_, bot.Err = s.ChannelMessageEdit(r.MessageReaction.ChannelID, r.MessageReaction.MessageID, fullMsg)
 	if bot.Err != nil {
@@ -201,10 +203,14 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	if strings.Count(m.Content, "\"") == 2 {
 		customMessage = fmt.Sprintf("\n\n\"%s\" - %s", strings.Split(m.Content, "\"")[1], m.Author.Username)
 	}
+	var playbacksMessage string
+	if strings.Contains(m.Content, "--no-pb") {
+		playbacksMessage = " with no playbacks"
+	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"@everyone Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s <a:Toothless:1324460455623655535>\n"+
-				ReactionRequest+customMessage, team.Name, opponentTeam,
+			"@everyone Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s%s <a:Toothless:1324460455623655535>\n"+
+				ReactionRequest+customMessage, team.Name, opponentTeam, playbacksMessage,
 		),
 	}
 	message.Content += "\n```\n"
