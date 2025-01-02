@@ -203,7 +203,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"@everyone Attendance time! This week %s plays %s.\n"+
+			"@everyone Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s <a:Toothless:1324460455623655535>\n"+
 				ReactionRequest+customMessage, team.Name, opponentTeam,
 		),
 	}
