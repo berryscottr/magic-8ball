@@ -240,7 +240,6 @@ var (
 		Name:   "Wookie Mistakes",
 		DivisionTeamNames: []string{
 			"Shark Shooters - 8",
-			"Only A Few Selected",
 			"Jiffyloob",
 			"The Unusual Suspects",
 			"School of Pool",
