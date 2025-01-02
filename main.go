@@ -2,7 +2,11 @@ package main
 
 import (
 	"magic-8ball/pkg/bot"
+	"magic-8ball/pkg/healthz"
 	"os"
+	"os/signal"
+	"syscall"
+	"github.com/rs/zerolog/log"
 )
 
 func main() {
@@ -12,5 +16,13 @@ func main() {
 	}
 	gobot.SetDir()
 	gobot.Start()
-	<-make(chan struct{})
+	health := healthz.HealthCheckServer{}
+	health.Start()
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	<-sigs
+
+	log.Info().Msg("shutting down magic-8ball bot")
+	gobot.Stop()
+	health.Close()
 }

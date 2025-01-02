@@ -45,3 +45,15 @@ func (bot *Data) Start() {
 	}
 	log.Info().Msg("magic-8ball listening")
 }
+
+// Stop the Discord bot listener
+func (bot *Data) Stop() {
+	if bot.GoBot != nil {
+		log.Info().Msg("shutting down magic-8ball bot")
+		if err := bot.GoBot.Close(); err != nil {
+			log.Err(err).Msg("failed to close magic-8ball bot")
+		} else {
+			log.Info().Msg("magic-8ball bot stopped successfully")
+		}
+	}
+}

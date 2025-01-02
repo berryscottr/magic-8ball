@@ -334,6 +334,8 @@ type Methods interface {
 	SetDir()
 	// Start the Discord bot listener
 	Start()
+	// Stop the Discord bot listener
+	Stop()
 	// MessageHandler for interpreting which function to launch from message contents
 	MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate)
 	// ReactionHandler for interpreting how to respond to reactions
