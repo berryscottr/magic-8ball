@@ -162,7 +162,7 @@ func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {
 		seenLineups[lineupEntry] = true
 	}
 	if isPlayback {
-		lineupsMsg = "```" + lineupsMsg + "```" + "(eligible with playback)"
+		lineupsMsg = "```" + lineupsMsg + "```" + "(eligible obly with playback) <:goose_alert:1324459015148797992>"
 	} else {
 		lineupsMsg = "```" + lineupsMsg + "```"
 	}
