@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine
+FROM golang:1.23-alpine as builder
 
 ARG BOT_TOKEN
 ENV BOT_TOKEN=$BOT_TOKEN
@@ -22,6 +22,12 @@ COPY pkg/bot/*.go ./
 WORKDIR /app
 
 RUN go build main.go
+
+FROM alpine:latest as runtime
+
+WORKDIR /app
+
+COPY --from=builder /app/main /app/main
 
 EXPOSE 8080
 

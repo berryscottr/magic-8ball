@@ -2,8 +2,8 @@ name: Undeploy
 on: 
   workflow_dispatch:
   workflow_call:
-  schedule:
-    - cron: "0 8 * * 3"
+  # schedule:
+  #   - cron: "0 8 * * 3"
 
 jobs:
   undeploy:
