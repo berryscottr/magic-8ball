@@ -247,18 +247,19 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	}
 	message.Content += fmt.Sprintf("+➖+%s+➖+➖+➖+➖+\n```", strings.Repeat("-", longestName+2))
 	message.Content += "Eligible Lineups:"
+	var postedMessage *discordgo.Message
 	if m.ChannelID == DevChannelID {
 		if strings.Contains(m.Content, "--now") {
-			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+			postedMessage, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 		} else if strings.Contains(m.Content, "--schedule") {
 			time.AfterFunc(time.Minute, func() {
-				_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+				postedMessage, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 			})
-		}	else {
-			_, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
+		} else {
+			postedMessage, bot.Err = s.ChannelMessageSendComplex(DevChannelID, &message)
 		}
 	} else {
-		_, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+		postedMessage, bot.Err = s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
 		// loc, err := time.LoadLocation("America/New_York")
 		// if err != nil {
 		// 	loc = time.UTC
@@ -285,6 +286,13 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	if bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to post message")
 		return
+	}
+	emotes := []string{"👍", "⏳", "👎", "❓"}
+	for _, emote := range emotes {
+		err := s.MessageReactionAdd(postedMessage.ChannelID, postedMessage.ID, emote)
+		if err != nil {
+			log.Err(err).Msgf("failed to add reaction %s to message %s", emote, postedMessage.ID)
+		}
 	}
 	log.Info().Msgf("game day %s vs %s posted or scheduled to Discord channel %s", team.Name, opponentTeam, m.ChannelID)
 }
