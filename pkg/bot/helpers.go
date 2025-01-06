@@ -168,7 +168,7 @@ func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {
 	return lineupsMsg
 }
 
-// Check if playback is legal
+// // Check if playback is legal
 // func illegalPlayback(lineup []int, team Team) bool {
 // 	var illegalPlayback bool
 // 	var teammates []TeammateSkill
@@ -198,6 +198,67 @@ func generateLineupsMsg(teamLineups []TeamLineup, isPlayback bool) string {
 // 	}
 // 	return illegalPlayback
 // }
+
+
+// Check if playback is legal
+func illegalPlayback(lineup []int, team Team) bool {
+	var illegalPlayback bool
+	var teammates []TeammateSkill
+	
+	// Collect teammate skill levels
+	for _, teammate := range Teammates {
+			for _, teammateTeam := range teammate.Teams {
+					if teammateTeam.Name == team.Name {
+							if teammateTeam.Format == "8-Ball" {
+									teammates = append(teammates, TeammateSkill{Lastname: teammate.LastName, SkillLevel: teammate.SkillLevel.Eight})
+							} else if teammateTeam.Format == "9-Ball" {
+									teammates = append(teammates, TeammateSkill{Lastname: teammate.LastName, SkillLevel: teammate.SkillLevel.Nine})
+							}
+							break
+					}
+			}
+	}
+	
+	// Get all player skill levels
+	var allPlayerSkills []int
+	for _, teammate := range teammates {
+			allPlayerSkills = append(allPlayerSkills, teammate.SkillLevel)
+	}
+	
+	// Generate legal lineups (considering the sum constraint for the team)
+	allLegalTeamLineups := generateLineups(allPlayerSkills, false, team)
+	var allLegalLineups [][]int
+	for _, legalTeamLineup := range allLegalTeamLineups {
+			allLegalLineups = append(allLegalLineups, legalTeamLineup.Lineup)
+	}
+	
+	// Check if the lineup with the playback is legal
+	if !containsSlice(allLegalLineups, lineup) {
+			// Check if removing the playback player still forms a legal lineup
+			for _, playbackIndex := range findPlaybackIndexes(lineup) {
+					// Remove the playback player from the lineup and check if it's valid
+					modifiedLineup := removePlayerFromLineup(lineup, playbackIndex)
+					if !containsSlice(allLegalLineups, modifiedLineup) {
+							illegalPlayback = true
+							break
+					}
+			}
+	}
+	return illegalPlayback
+}
+
+// Helper function to remove a player from the lineup by index
+func removePlayerFromLineup(lineup []int, index int) []int {
+	return append(lineup[:index], lineup[index+1:]...)
+}
+
+// Helper function to find playback player(s) in the lineup
+func findPlaybackIndexes(lineup []int) []int {
+	var indexes []int
+	// Logic to find indices of players in the lineup who are used as a playback (i.e., their skill level is repeated)
+	// This would depend on your specific definition of playback in terms of skill levels or player identification
+	return indexes
+}
 
 
 // intToEmoji converts an integer to its Emoji
