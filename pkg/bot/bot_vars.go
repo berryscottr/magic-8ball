@@ -71,10 +71,20 @@ type Teammate struct {
 	Teams []Team
 	// Skill Level
 	SkillLevel Skill
+	// Roster Number
+	RosterNum Roster
 }
 
 // Skill Level
 type Skill struct {
+	// 8-Ball
+	Eight int
+	// 9-Ball
+	Nine int
+}
+
+// Roster number
+type Roster struct {
 	// 8-Ball
 	Eight int
 	// 9-Ball
@@ -103,6 +113,10 @@ var (
 				Eight: 6,
 				Nine:  7,
 			},
+			RosterNum: Roster{
+				Eight: 1,
+				Nine:  1,
+			},
 		},
 		{
 			LastName: "Liess",
@@ -114,6 +128,10 @@ var (
 			SkillLevel: Skill{
 				Eight: 5,
 				Nine:  4,
+			},
+			RosterNum: Roster{
+				Eight: 2,
+				Nine:  2,
 			},
 		},
 		{
@@ -136,6 +154,10 @@ var (
 				Eight: 5,
 				Nine:  4,
 			},
+			RosterNum: Roster{
+				Eight: 3,
+				Nine:  3,
+			},
 		},
 		{
 			LastName: "Thompson",
@@ -148,6 +170,10 @@ var (
 				Eight: 3,
 				Nine:  3,
 			},
+			RosterNum: Roster{
+				Eight: 4,
+				Nine:  4,
+			},
 		},
 		{
 			LastName: "Quan",
@@ -156,6 +182,9 @@ var (
 				WookieMistakes,
 			},
 			SkillLevel: Skill{
+				Eight: 5,
+			},
+			RosterNum: Roster{
 				Eight: 5,
 			},
 		},
@@ -169,6 +198,10 @@ var (
 			SkillLevel: Skill{
 				Eight: 7,
 				Nine:  7,
+			},
+			RosterNum: Roster{
+				Eight: 6,
+				Nine:  5,
 			},
 		},
 		{
@@ -199,6 +232,10 @@ var (
 				Eight: 3,
 				Nine:  3,
 			},
+			RosterNum: Roster{
+				Eight: 7,
+				Nine:  6,
+			},
 		},
 		{
 			LastName: "Dodge",
@@ -210,6 +247,10 @@ var (
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine:  4,
+			},
+			RosterNum: Roster{
+				Eight: 8,
+				Nine:  7,
 			},
 		},
 		{
@@ -230,6 +271,9 @@ var (
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine:  4,
+			},
+			RosterNum: Roster{
+				Nine:  8,
 			},
 		},
 	}
@@ -265,7 +309,7 @@ var (
 		GameNightChannelID: GameNight9ChannelID,
 	}
 	// GameDayReactions for the bot to track
-	GameDayReactions = []string{"👍", "👎", "⌛", "⏳", "❓", "❔"}
+	GameDayReactions = []string{"👍", "👎", "⌛", "⏳", "❓", "❔", NumToEmojiMap[1], NumToEmojiMap[2], NumToEmojiMap[3], NumToEmojiMap[4], NumToEmojiMap[5], NumToEmojiMap[6], NumToEmojiMap[7], NumToEmojiMap[8]}
 	// numToEmojiMap is a map for converting numbers to emojis
 	NumToEmojiMap = map[int]string{
 		1: "1️⃣",
