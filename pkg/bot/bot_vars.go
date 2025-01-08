@@ -63,6 +63,8 @@ type Team struct {
 type Teammate struct {
 	// LastName
 	LastName string
+	// FirstName
+	FirstName string
 	// UserID
 	UserID string
 	// Name
@@ -104,6 +106,7 @@ var (
 	Teammates = []Teammate{
 		{
 			LastName: "Berry",
+			FirstName: "Scott",
 			UserID:   "341590471317127178",
 			Teams: []Team{
 				WookieMistakes,
@@ -120,6 +123,7 @@ var (
 		},
 		{
 			LastName: "Liess",
+			FirstName: "Jason",
 			UserID:   "529730365854580765",
 			Teams: []Team{
 				WookieMistakes,
@@ -145,6 +149,7 @@ var (
 		},
 		{
 			LastName: "Burcham",
+			FirstName: "Daniel",
 			UserID:   "1014488206567288894",
 			Teams: []Team{
 				WookieMistakes,
@@ -161,6 +166,7 @@ var (
 		},
 		{
 			LastName: "Thompson",
+			FirstName: "Laura",
 			UserID:   "969682397920653342",
 			Teams: []Team{
 				WookieMistakes,
@@ -177,6 +183,7 @@ var (
 		},
 		{
 			LastName: "Quan",
+			FirstName: "Kim",
 			UserID:   "795533691828305922",
 			Teams: []Team{
 				WookieMistakes,
@@ -190,6 +197,7 @@ var (
 		},
 		{
 			LastName: "Hayward",
+			FirstName: "Leo",
 			UserID:   "971791774697783326",
 			Teams: []Team{
 				WookieMistakes,
@@ -223,6 +231,7 @@ var (
 		},
 		{
 			LastName: "Gibson",
+			FirstName: "Alex",
 			UserID:   "696037354892296294",
 			Teams: []Team{
 				WookieMistakes,
@@ -239,6 +248,7 @@ var (
 		},
 		{
 			LastName: "Dodge",
+			FirstName: "Dylan",
 			UserID:   "253692229535793154",
 			Teams: []Team{
 				WookieMistakes,
@@ -265,16 +275,12 @@ var (
 		{
 			LastName: "Johnson",
 			UserID:   "1236395641215651850",
-			Teams: []Team{
-				SafetyDance,
-			},
+			Teams: []Team{},
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine:  4,
 			},
-			RosterNum: Roster{
-				Nine:  8,
-			},
+			RosterNum: Roster{},
 		},
 	}
 
