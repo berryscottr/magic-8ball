@@ -78,9 +78,8 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 					if matchDate.Before(time.Now()) {
 							continue
 					}
-					// TODO: revert to -1 and 9
-					// Schedule the post for the day before the match at 9am EST
-					postTime := matchDate.AddDate(0, 0, -2).Add(20 * time.Hour)
+					// Schedule the post for the day before the match at 9am EST (14:00 UTC)
+					postTime := matchDate.AddDate(0, 0, -2).Add(20 * time.Hour).Add(15 * time.Minute)
 					loc, err := time.LoadLocation("America/New_York")
 					if err != nil {
 							loc = time.UTC
@@ -170,7 +169,7 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 											log.Err(err).Msgf("failed to add reaction %s to message %s", emote, postedMessage.ID)
 									}
 							}
-							log.Info().Msgf("game day %s vs %s posted or scheduled to Discord channel %s", team.Name, match.Opponent, m.ChannelID)
+							log.Info().Msgf("game day %s vs %s posted or scheduled to Discord channel %s", team.Name, match.Opponent, postedMessage.ChannelID)
 					})
 			}
 	}
