@@ -79,7 +79,7 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 							continue
 					}
 					// Schedule the post for the day before the match at 9am EST (14:00 UTC)
-					postTime := matchDate.AddDate(0, 0, -2).Add(20 * time.Hour).Add(22 * time.Minute)
+					postTime := matchDate.AddDate(0, 0, -1).Add(14 * time.Hour).Add(0 * time.Minute)
 					loc, err := time.LoadLocation("America/New_York")
 					if err != nil {
 							loc = time.UTC
@@ -155,8 +155,7 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 							}
 							message.Content += fmt.Sprintf("+➖+%s+➖+➖+➖+➖+\n```", strings.Repeat("-", longestName+2))
 							message.Content += "Eligible Lineups:"
-							// TODO: revert to team.GameNightChannelID
-							postedMessage, err := s.ChannelMessageSendComplex(DevChannelID, &message)
+							postedMessage, err := s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
 							if err != nil {
 									bot.Err = err
 									log.Err(bot.Err).Msg("failed to post message")
