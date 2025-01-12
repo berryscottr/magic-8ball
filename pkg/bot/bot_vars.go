@@ -394,6 +394,8 @@ type Methods interface {
 	HandleGameDayReaction(s *discordgo.Session, r *discordgo.MessageReactionAdd)
 	// HandleGameDay for posting game day message
 	HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate, teamName string)
+	// ScheduleGameDay for posting game day message
+	ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreate, teamName string)
 	// HandleLineups for returning eligible lineups from a provided list of players
 	HandleLineups(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleSLMatchups for returning chart of the best skill level match-ups
@@ -409,3 +411,4 @@ type Methods interface {
 	// HandleCalendar for returning the current calendar
 	HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate)
 }
+

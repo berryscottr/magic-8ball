@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 	"github.com/rs/zerolog/log"
+	"github.com/bwmarrin/discordgo"
 )
 
 func main() {
@@ -20,6 +21,13 @@ func main() {
 	health.Start()
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	session, err := discordgo.New("Bot " + gobot.Token)
+	if err != nil {
+			log.Fatal().Err(err).Msg("failed to create Discord session")
+	}
+	gobot.ScheduleGameDay(session, nil, "Wookie Mistakes")
+	gobot.ScheduleGameDay(session, nil, "Safety Dance")
+
 	<-sigs
 
 	log.Info().Msg("shutting down magic-8ball bot")
