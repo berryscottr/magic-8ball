@@ -281,7 +281,21 @@ var (
 				Nine:  4,
 			},
 			RosterNum: Roster{},
-		},
+		},,
+		{
+			LastName: "Gunning",
+			FirstName: "Matt",
+			UserID:   "360240801353302016",
+			Teams: []Team{
+				SafetyDance,
+			},
+			SkillLevel: Skill{
+				Nine: 3,
+			},
+			RosterNum: Roster{
+				Nine: 8,
+			},
+		}
 	}
 
 	// WookieMistakes Eight-Ball team
