@@ -281,7 +281,7 @@ var (
 				Nine:  4,
 			},
 			RosterNum: Roster{},
-		},,
+		},
 		{
 			LastName: "Gunning",
 			FirstName: "Matt",
@@ -295,7 +295,7 @@ var (
 			RosterNum: Roster{
 				Nine: 8,
 			},
-		}
+		},
 	}
 
 	// WookieMistakes Eight-Ball team
