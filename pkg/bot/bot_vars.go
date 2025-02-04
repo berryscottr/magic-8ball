@@ -114,7 +114,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 6,
-				Nine:  7,
+				Nine:  6,
 			},
 			RosterNum: Roster{
 				Eight: 1,
@@ -238,7 +238,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 3,
+				Eight: 4,
 				Nine:  3,
 			},
 			RosterNum: Roster{
@@ -281,6 +281,20 @@ var (
 				Nine:  4,
 			},
 			RosterNum: Roster{},
+		},
+		{
+			LastName: "Gunning",
+			FirstName: "Matt",
+			UserID:   "360240801353302016",
+			Teams: []Team{
+				SafetyDance,
+			},
+			SkillLevel: Skill{
+				Nine: 3,
+			},
+			RosterNum: Roster{
+				Nine: 8,
+			},
 		},
 	}
 
