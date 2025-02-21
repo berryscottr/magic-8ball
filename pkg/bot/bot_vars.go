@@ -205,7 +205,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 7,
-				Nine:  8,
+				Nine:  7,
 			},
 			RosterNum: Roster{
 				Eight: 6,
@@ -290,7 +290,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Nine: 3,
+				Nine: 2,
 			},
 			RosterNum: Roster{
 				Nine: 8,
