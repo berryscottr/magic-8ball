@@ -22,3 +22,4 @@ scripts/scrape_apa/geckodriver.log
 /.vscode/
 **/**.terraform.lock.hcl
 **/**terraform.tfstate*
+scripts/scrape_apa/.env
