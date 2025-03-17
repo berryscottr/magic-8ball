@@ -79,7 +79,7 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 							continue
 					}
 					// Schedule the post for the day before the match at 9am EST (14:00 UTC)
-					postTime := matchDate.AddDate(0, 0, -1).Add(14 * time.Hour).Add(0 * time.Minute)
+					postTime := matchDate.AddDate(0, 0, -1).Add(13 * time.Hour).Add(0 * time.Minute)
 					loc, err := time.LoadLocation("America/New_York")
 					if err != nil {
 							loc = time.UTC
