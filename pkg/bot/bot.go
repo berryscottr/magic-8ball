@@ -29,7 +29,7 @@ func (bot *Data) SetDir() {
 
 // Start the Discord bot listener
 func (bot *Data) Start() {
-	if bot.GoBot, bot.Err = discordgo.New("Bot " + bot.Token); bot.Err != nil {
+	if bot.GoBot, bot.Err = discordgo.New("Bot " + bot.Token.Discord); bot.Err != nil {
 		log.Err(bot.Err).Msg("failed to instantiate magic-8ball bot")
 		return
 	}

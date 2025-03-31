@@ -59,14 +59,26 @@ type Team struct {
 	GameNightChannelID string
 }
 
+// TeammateID User IDs
+type TeammateID struct {
+	// Discord User ID
+	Discord string
+	// Member User ID (first)
+	Member int
+	// Player User ID (second)
+	Player int
+	// Number
+	Number string
+}
+
 // Teammate Name and ID
 type Teammate struct {
 	// LastName
 	LastName string
 	// FirstName
 	FirstName string
-	// UserID
-	UserID string
+	// ID
+	ID TeammateID
 	// Name
 	Name string
 	// Teams
@@ -107,7 +119,12 @@ var (
 		{
 			LastName: "Berry",
 			FirstName: "Scott",
-			UserID:   "341590471317127178",
+			ID: TeammateID{
+				Discord: "341590471317127178",
+				Member: 3077485,
+				Player: 2772810,
+				Number: "30300024",
+			},
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
@@ -124,7 +141,12 @@ var (
 		{
 			LastName: "Liess",
 			FirstName: "Jason",
-			UserID:   "529730365854580765",
+			ID: TeammateID{
+				Discord: "529730365854580765",
+				Member: 3214214,
+				Player: 2983366,
+				Number: "30329468",
+			},
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
@@ -140,7 +162,9 @@ var (
 		},
 		{
 			LastName: "Bohrer",
-			UserID:   "186997536844808193",
+			ID: TeammateID{
+				Discord: "186997536844808193",
+			},
 			Teams:    []Team{},
 			SkillLevel: Skill{
 				Eight: 3,
@@ -150,7 +174,12 @@ var (
 		{
 			LastName: "Burcham",
 			FirstName: "Daniel",
-			UserID:   "1014488206567288894",
+			ID: TeammateID{
+				Discord: "1014488206567288894",
+				Member: 3209407,
+				Player: 2977648,
+				Number: "30329419",
+			},
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
@@ -167,7 +196,12 @@ var (
 		{
 			LastName: "Thompson",
 			FirstName: "Laura",
-			UserID:   "969682397920653342",
+			ID: TeammateID{
+				Discord: "969682397920653342",
+				Member: 3226787,
+				Player: 2998517,
+				Number: "30329649",
+			},
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
@@ -184,7 +218,12 @@ var (
 		{
 			LastName: "Quan",
 			FirstName: "Kim",
-			UserID:   "795533691828305922",
+			ID: TeammateID{
+				Discord: "795533691828305922",
+				Member: 2910532,
+				Player: 2532784,
+				Number: "30326441",
+			},
 			Teams: []Team{
 				WookieMistakes,
 			},
@@ -198,7 +237,12 @@ var (
 		{
 			LastName: "Hayward",
 			FirstName: "Leo",
-			UserID:   "971791774697783326",
+			ID: TeammateID{
+				Discord: "971791774697783326",
+				Member: 2775877,
+				Player: 2354220,
+				Number: "30325125",
+			},
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
@@ -214,7 +258,9 @@ var (
 		},
 		{
 			LastName: "Davalos",
-			UserID:   "1108221800581709917",
+			ID: TeammateID{
+				Discord: "1108221800581709917",
+			},
 			Teams:    []Team{},
 			SkillLevel: Skill{
 				Nine: 1,
@@ -222,7 +268,9 @@ var (
 		},
 		{
 			LastName: "Warden",
-			UserID:   "1014520790873546852",
+			ID: TeammateID{
+				Discord: "1014520790873546852",
+			},
 			Teams:    []Team{},
 			SkillLevel: Skill{
 				Eight: 7,
@@ -232,7 +280,12 @@ var (
 		{
 			LastName: "Gibson",
 			FirstName: "Alex",
-			UserID:   "696037354892296294",
+			ID: TeammateID{
+				Discord: "696037354892296294",
+				Member: 3308303,
+				Player: 3124964,
+				Number: "30330030",
+			},
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
@@ -249,7 +302,12 @@ var (
 		{
 			LastName: "Dodge",
 			FirstName: "Dylan",
-			UserID:   "253692229535793154",
+			ID: TeammateID{
+				Discord: "253692229535793154",
+				Member: 3308528,
+				Player: 3125263,
+				Number: "30330091",
+			},
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
@@ -265,7 +323,9 @@ var (
 		},
 		{
 			LastName: "Ackler",
-			UserID:   "969934577768484944",
+			ID: TeammateID{
+				Discord: "969934577768484944",
+			},
 			Teams: []Team{},
 			SkillLevel: Skill{
 				Eight: 6,
@@ -274,7 +334,9 @@ var (
 		},
 		{
 			LastName: "Johnson",
-			UserID:   "1236395641215651850",
+			ID: TeammateID{
+				Discord: "1236395641215651850",
+			},
 			Teams: []Team{},
 			SkillLevel: Skill{
 				Eight: 3,
@@ -285,7 +347,12 @@ var (
 		{
 			LastName: "Gunning",
 			FirstName: "Matt",
-			UserID:   "360240801353302016",
+			ID: TeammateID{
+				Discord: "360240801353302016",
+				Member: 3401578,
+				Player: 3265998,
+				Number: "30331107",
+			},
 			Teams: []Team{
 				SafetyDance,
 			},
@@ -354,13 +421,21 @@ type Data struct {
 	// GoBot for the bot to track
 	GoBot *discordgo.Session
 	// Token for the bot to track
-	Token string
+	Token Token
 	// Excel for the bot to track
 	Excel *excelize.File
 	// ExcelRows for the bot to track
 	ExcelRows [][]string
 	// Dir for the bot to track
 	Dir string
+}
+
+// Token for access
+type Token struct {
+	// Discord token
+	Discord string
+	// APA token
+	APA string
 }
 
 // TeamLineup data
@@ -424,5 +499,7 @@ type Methods interface {
 	HandlePlayoff(s *discordgo.Session, m *discordgo.MessageCreate)
 	// HandleCalendar for returning the current calendar
 	HandleCalendar(s *discordgo.Session, m *discordgo.MessageCreate)
+	// HandleScrape for scraping player data from APA
+	HandleScrape(s *discordgo.Session, m *discordgo.MessageCreate)
 }
 

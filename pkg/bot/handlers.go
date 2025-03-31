@@ -48,6 +48,9 @@ func (bot *Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate
 	if strings.Contains(strings.ToLower(m.Content), "!cal") {
 		bot.HandleCalendar(s, m)
 	}
+	if strings.Contains(strings.ToLower(m.Content), "!scrape") {
+		bot.HandleCalendar(s, m)
+	}
 }
 
 // ReactionHandler for interpreting how to respond to reactions
@@ -100,13 +103,13 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	}
 	var teammate Teammate
 	for _, t := range Teammates {
-		if t.UserID == r.MessageReaction.UserID {
+		if t.ID.Discord == r.MessageReaction.UserID {
 			teammate = t
 			log.Info().Msgf("tracking reaction from teammate: %s", teammate.LastName)
 			break
 		}
 	}
-	if teammate.UserID == "" {
+	if teammate.ID.Discord == "" {
 		log.Info().Msg("unknown teammate")
 		return
 	}

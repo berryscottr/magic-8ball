@@ -21,10 +21,10 @@ func TestScheduleGameDay(t *testing.T) {
     if botToken == "" {
         t.Fatal("BOT_TOKEN not set")
     }
-    data := Data{Token: botToken}
+    data := Data{Token: Token{Discord: botToken}}
     data.SetDir()
 
-    session, err := discordgo.New("Bot " + data.Token)
+    session, err := discordgo.New("Bot " + data.Token.Discord)
     assertion.NoError(err, "failed to create Discord session")
 
     // Open a websocket connection to Discord

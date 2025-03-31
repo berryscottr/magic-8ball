@@ -11,8 +11,8 @@ import (
 )
 
 func main() {
-	gobot := bot.Data{Token: os.Getenv("BOT_TOKEN")}
-	if gobot.Token == "" {
+	gobot := bot.Data{Token: bot.Token{Discord: os.Getenv("BOT_TOKEN")}}
+	if gobot.Token.Discord == "" {
 		panic("BOT_TOKEN not set")
 	}
 	gobot.SetDir()
@@ -21,7 +21,7 @@ func main() {
 	health.Start()
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	session, err := discordgo.New("Bot " + gobot.Token)
+	session, err := discordgo.New("Bot " + gobot.Token.Discord)
 	if err != nil {
 			log.Fatal().Err(err).Msg("failed to create Discord session")
 	}
