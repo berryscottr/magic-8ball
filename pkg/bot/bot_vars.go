@@ -244,7 +244,6 @@ var (
 				Number: "30325125",
 			},
 			Teams: []Team{
-				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
@@ -252,7 +251,6 @@ var (
 				Nine:  7,
 			},
 			RosterNum: Roster{
-				Eight: 6,
 				Nine:  5,
 			},
 		},
@@ -295,7 +293,7 @@ var (
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 7,
+				Eight: 6,
 				Nine:  6,
 			},
 		},
@@ -317,7 +315,7 @@ var (
 				Nine:  4,
 			},
 			RosterNum: Roster{
-				Eight: 8,
+				Eight: 7,
 				Nine:  7,
 			},
 		},
@@ -354,12 +352,15 @@ var (
 				Number: "30331107",
 			},
 			Teams: []Team{
+				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
+				Eight: 2,
 				Nine: 1,
 			},
 			RosterNum: Roster{
+				Eight: 8,
 				Nine: 8,
 			},
 		},

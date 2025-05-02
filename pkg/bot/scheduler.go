@@ -56,7 +56,7 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 	log.Info().Msg("handling game day post creation")
 
 	var schedules Schedules
-	err := LoadSchedules(&schedules, "data/schedules/Spring2025Schedule.json")
+	err := LoadSchedules(&schedules, "data/schedules/Summer2025Schedule.json")
 	if err != nil {
 			bot.Err = err
 			log.Err(bot.Err).Msg("failed to load schedules")
