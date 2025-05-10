@@ -356,7 +356,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 2,
+				Eight: 3,
 				Nine: 1,
 			},
 			RosterNum: Roster{
@@ -387,11 +387,12 @@ var (
 		DivisionTeamNames: []string{
 			"Shark Shooters - 9",
 			"9 Rocks Away",
-			"9 on the Vine",
 			"In The Pocket-9",
 			"Believe It or Not 2",
 			"Salted Coffee",
 			"Smooth Strokes-9",
+			"Lett's Run Out 9",
+			"Cue Crew 9",
 		},
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight9ChannelID,

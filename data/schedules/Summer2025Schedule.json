@@ -5,7 +5,67 @@
       "Schedule": [
         {
           "Date": "05/06/2025",
-          "Opponent": ""
+          "Opponent": "The Unusual Suspects"
+        },
+        {
+          "Date": "05/13/2025",
+          "Opponent": "Jiffyloob"
+        },
+        {
+          "Date": "05/20/2025",
+          "Opponent": "School of Pool"
+        },
+        {
+          "Date": "05/27/2025",
+          "Opponent": "ExCues US"
+        },
+        {
+          "Date": "06/03/2025",
+          "Opponent": "Shark Shooters - 8"
+        },
+        {
+          "Date": "06/10/2025",
+          "Opponent": "The Unusual Suspects"
+        },
+        {
+          "Date": "06/17/2025",
+          "Opponent": "Jiffyloob"
+        },
+        {
+          "Date": "06/24/2025",
+          "Opponent": "School of Pool"
+        },
+        {
+          "Date": "07/01/2025",
+          "Opponent": "ExCues US"
+        },
+        {
+          "Date": "07/08/2025",
+          "Opponent": "Shark Shooters - 8"
+        },
+        {
+          "Date": "07/15/2025",
+          "Opponent": "The Unusual Suspects"
+        },
+        {
+          "Date": "07/22/2025",
+          "Opponent": "Jiffyloob"
+        },
+        {
+          "Date": "07/29/2025",
+          "Opponent": "School of Pool"
+        },
+        {
+          "Date": "08/05/2025",
+          "Opponent": "ExCues US"
+        },
+        {
+          "Date": "08/12/2025",
+          "Opponent": "Shark Shooters - 8"
+        },
+        {
+          "Date": "08/19/2025",
+          "Opponent": "The Unusual Suspects"
         }
       ]
     },
@@ -13,8 +73,60 @@
       "Team": "Safety Dance",
       "Schedule": [
         {
-          "Date": "05/06/2025",
-          "Opponent": ""
+          "Date": "05/13/2025",
+          "Opponent": "Believe It Or Not 2"
+        },
+        {
+          "Date": "05/20/2025",
+          "Opponent": "In The Pocket-9"
+        },
+        {
+          "Date": "05/27/2025",
+          "Opponent": "Shark Shooters - 9"
+        },
+        {
+          "Date": "06/03/2025",
+          "Opponent": "Salted Coffee"
+        },
+        {
+          "Date": "06/10/2025",
+          "Opponent": "Cue Crew 9"
+        },
+        {
+          "Date": "06/17/2025",
+          "Opponent": "Smooth Strokes-9"
+        },
+        {
+          "Date": "06/24/2025",
+          "Opponent": "9 Rocks Away"
+        },
+        {
+          "Date": "07/01/2025",
+          "Opponent": "Lett's Run Out 9"
+        },
+        {
+          "Date": "07/15/2025",
+          "Opponent": "Believe It Or Not 2"
+        },
+        {
+          "Date": "07/22/2025",
+          "Opponent": "In The Pocket-9"
+        },
+        {
+          "Date": "07/29/2025",
+          "Opponent": "Shark Shooters - 9"
+        },
+        {
+          "Date": "08/05/2025",
+          "Opponent": "Salted Coffee"
+        },
+        {
+          "Date": "08/12/2025",
+          "Opponent": "Cue Crew 9"
+        },
+        {
+          "Date": "08/19/2025",
+          "Opponent": "Smooth Strokes-9"
         }
       ]
     }
