@@ -357,7 +357,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 2,
-				Nine: 1,
+				Nine: 2,
 			},
 			RosterNum: Roster{
 				Eight: 8,
