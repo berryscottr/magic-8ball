@@ -112,7 +112,7 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 							var customMessage string
 
 							var playbacksMessage string
-							if  matchIndex >= len(teamSchedule.Schedule)-2 {
+							if  matchIndex >= len(teamSchedule.Schedule)-1 {
 								playbacksMessage = " with no playbacks"
 						}
 							message := discordgo.MessageSend{
