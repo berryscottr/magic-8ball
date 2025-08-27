@@ -161,32 +161,21 @@ var (
 			},
 		},
 		{
-			LastName: "Bohrer",
+			LastName: "LaBier",
+			FirstName: "Noah",
 			ID: TeammateID{
-				Discord: "186997536844808193",
-			},
-			Teams:    []Team{},
-			SkillLevel: Skill{
-				Eight: 3,
-				Nine:  3,
-			},
-		},
-		{
-			LastName: "Burcham",
-			FirstName: "Daniel",
-			ID: TeammateID{
-				Discord: "1014488206567288894",
-				Member: 3209407,
-				Player: 2977648,
-				Number: "30329419",
+				Discord: "273232380108603393",
+				Member: 3429033,
+				Player: 3309561,
+				Number: "30331318",
 			},
 			Teams: []Team{
 				WookieMistakes,
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 4,
-				Nine:  4,
+				Eight: 3,
+				Nine:  3,
 			},
 			RosterNum: Roster{
 				Eight: 3,
@@ -235,44 +224,23 @@ var (
 			},
 		},
 		{
-			LastName: "Hayward",
-			FirstName: "Leo",
+			LastName: "Beaver",
+			FirstName: "Keith",
 			ID: TeammateID{
-				Discord: "971791774697783326",
-				Member: 2775877,
-				Player: 2354220,
-				Number: "30325125",
+				Discord: "",
+				Member: 3230802,
+				Player: 3003379,
+				Number: "30329673",
 			},
 			Teams: []Team{
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 7,
-				Nine:  7,
+				Eight: 2,
+				Nine:  2,
 			},
 			RosterNum: Roster{
 				Nine:  5,
-			},
-		},
-		{
-			LastName: "Davalos",
-			ID: TeammateID{
-				Discord: "1108221800581709917",
-			},
-			Teams:    []Team{},
-			SkillLevel: Skill{
-				Nine: 1,
-			},
-		},
-		{
-			LastName: "Warden",
-			ID: TeammateID{
-				Discord: "1014520790873546852",
-			},
-			Teams:    []Team{},
-			SkillLevel: Skill{
-				Eight: 7,
-				Nine:  9,
 			},
 		},
 		{
@@ -318,29 +286,6 @@ var (
 				Eight: 7,
 				Nine:  7,
 			},
-		},
-		{
-			LastName: "Ackler",
-			ID: TeammateID{
-				Discord: "969934577768484944",
-			},
-			Teams: []Team{},
-			SkillLevel: Skill{
-				Eight: 6,
-				Nine:  6,
-			},
-		},
-		{
-			LastName: "Johnson",
-			ID: TeammateID{
-				Discord: "1236395641215651850",
-			},
-			Teams: []Team{},
-			SkillLevel: Skill{
-				Eight: 3,
-				Nine:  4,
-			},
-			RosterNum: Roster{},
 		},
 		{
 			LastName: "Gunning",
