@@ -227,7 +227,7 @@ var (
 			LastName: "Beaver",
 			FirstName: "Keith",
 			ID: TeammateID{
-				Discord: "",
+				Discord: "1410664371436257290",
 				Member: 3230802,
 				Player: 3003379,
 				Number: "30329673",
