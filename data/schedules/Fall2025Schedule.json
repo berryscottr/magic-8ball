@@ -5,7 +5,63 @@
       "Schedule": [
         {
           "Date": "09/02/2025",
-          "Opponent": ""
+          "Opponent": "Miscellaneous"
+        },
+        {
+          "Date": "09/09/2025",
+          "Opponent":"8-Balls of Fire"
+        },
+        {
+          "Date": "09/16/2025",
+          "Opponent":"Cueaholics 8"
+        },
+        {
+          "Date": "09/23/2025",
+          "Opponent":"Scratch-A-Lots"
+        },
+        {
+          "Date": "09/30/2025",
+          "Opponent":"The Unusual Suspects"
+        },
+        {
+          "Date": "10/07/2025",
+          "Opponent":"Miscellaneous"
+        },
+        {
+          "Date": "10/14/2025",
+          "Opponent":"8-Balls of Fire"
+        },
+        {
+          "Date": "10/21/2025",
+          "Opponent":"Cueaholics 8"
+        },
+        {
+          "Date": "10/28/2025",
+          "Opponent":"Scratch-A-Lots"
+        },
+        {
+          "Date": "11/04/2025",
+          "Opponent":"The Unusual Suspects"
+        },
+        {
+          "Date": "11/11/2025",
+          "Opponent":"Miscellaneous"
+        },
+        {
+          "Date": "11/18/2025",
+          "Opponent":"8-Balls of Fire"
+        },
+        {
+          "Date": "11/25/2025",
+          "Opponent":"Cueaholics 8"
+        },
+        {
+          "Date": "12/02/2025",
+          "Opponent":"Scratch-A-Lots"
+        },
+        {
+          "Date": "12/09/2025",
+          "Opponent":"The Unusual Suspects"
         }
       ]
     },
@@ -14,7 +70,63 @@
       "Schedule": [
         {
           "Date": "09/02/2025",
-          "Opponent": ""
+          "Opponent": "Smooth Strokes-9"
+        },
+        {
+          "Date": "09/09/2025",
+          "Opponent":"In The Pocket-9"
+        },
+        {
+          "Date": "09/16/2025",
+          "Opponent":"9 Rocks Away"
+        },
+        {
+          "Date": "09/23/2025",
+          "Opponent":"Shark Shooters - 9"
+        },
+        {
+          "Date": "09/30/2025",
+          "Opponent":"Cueaholics 9"
+        },
+        {
+          "Date": "10/07/2025",
+          "Opponent":"Lett's Run Out 9"
+        },
+        {
+          "Date": "10/14/2025",
+          "Opponent":"Salted Coffee"
+        },
+        {
+          "Date": "10/21/2025",
+          "Opponent":"Smooth Strokes-9"
+        },
+        {
+          "Date": "10/28/2025",
+          "Opponent":"In The Pocket-9"
+        },
+        {
+          "Date": "11/04/2025",
+          "Opponent":"9 Rocks Away"
+        },
+        {
+          "Date": "11/11/2025",
+          "Opponent":"Shark Shooters - 9"
+        },
+        {
+          "Date": "11/18/2025",
+          "Opponent":"Cueaholics 9"
+        },
+        {
+          "Date": "11/25/2025",
+          "Opponent":"Lett's Run Out 9"
+        },
+        {
+          "Date": "12/02/2025",
+          "Opponent":"Salted Coffee"
+        },
+        {
+          "Date": "12/09/2025",
+          "Opponent":"Smooth Strokes-9"
         }
       ]
     }
