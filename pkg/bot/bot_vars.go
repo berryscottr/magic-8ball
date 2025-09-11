@@ -279,7 +279,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 4,
+				Eight: 5,
 				Nine:  4,
 			},
 			RosterNum: Roster{
@@ -334,9 +334,11 @@ var (
 			"9 Rocks Away",
 			"In The Pocket-9",
 			"Cueaholics 9",
-			"Salted Coffee",
+			"Coup De Grace",
 			"Smooth Strokes-9",
 			"Lett's Run Out 9",
+			"Chalking Chit",
+			"Jiffylube 9",
 		},
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight9ChannelID,
