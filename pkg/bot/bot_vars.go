@@ -174,7 +174,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Eight: 2,
+				Eight: 3,
 				Nine:  3,
 			},
 			RosterNum: Roster{
