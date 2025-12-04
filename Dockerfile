@@ -31,7 +31,7 @@ FROM ubuntu:24.04
 RUN apt-get update && apt-get install -y \
     python3 python3-venv python3-pip chromium-browser chromium-chromedriver \
     libnss3 libx11-xcb1 libxcomposite1 libxdamage1 \
-    libxrandr2 libasound2 --no-install-recommends && \
+    libxrandr2 libasound2t64 --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy Go binary and Python virtual environment from builder
