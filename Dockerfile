@@ -1,23 +1,19 @@
 # ===== Builder stage =====
-FROM golang:1.25 as builder
+FROM golang:1.25-ubuntu
 
-# Install system dependencies for Python + Playwright + Chromium
+# Install Go build deps + Python + Playwright dependencies
 RUN apt-get update && apt-get install -y \
     git wget curl python3 python3-venv python3-pip \
-    chromium-browser chromium-chromedriver \
-    libnss3 libx11-xcb1 libxcomposite1 libxdamage1 \
-    libxrandr2 libasound2 --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+    libnss3 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libasound2t64 \
+    --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# Set up Python virtual environment for Playwright
+# Set up Python virtual environment
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN pip install --upgrade pip
-RUN pip install playwright
-RUN playwright install --with-deps chromium
+# Install Playwright
+RUN pip install --upgrade pip && pip install playwright && playwright install
 
-# Build Go app
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
@@ -27,16 +23,15 @@ RUN go build -o magic-8ball ./main.go
 # ===== Runtime stage =====
 FROM ubuntu:24.04
 
-# Install runtime dependencies for Python + Chromium
+# Install minimal Python + dependencies for Playwright
 RUN apt-get update && apt-get install -y \
-    python3 python3-venv python3-pip chromium-browser chromium-chromedriver \
-    libnss3 libx11-xcb1 libxcomposite1 libxdamage1 \
-    libxrandr2 libasound2t64 --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+    python3 python3-venv python3-pip \
+    libnss3 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libasound2t64 \
+    --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# Copy Go binary and Python virtual environment from builder
-COPY --from=builder /app/magic-8ball /app/magic-8ball
-COPY --from=builder /opt/venv /opt/venv
+# Copy Python venv + Go binary from builder
+COPY --from=0 /opt/venv /opt/venv
+COPY --from=0 /app/magic-8ball /app/magic-8ball
 
 ENV PATH="/opt/venv/bin:$PATH"
 WORKDIR /app
