@@ -4,8 +4,12 @@ RUN apk add --no-cache \
   git ca-certificates wget \
   python3 py3-pip
 
-RUN pip3 install playwright
-RUN playwright install
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --upgrade pip && \
+  pip install playwright && \
+  playwright install
 
 WORKDIR /app
 
