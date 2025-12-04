@@ -1,12 +1,5 @@
 FROM golang:1.25-alpine
 
-ARG BOT_TOKEN
-ENV BOT_TOKEN=$BOT_TOKEN
-ARG APA_EMAIL
-ENV APA_EMAIL=$APA_EMAIL
-ARG APA_PASSWORD
-ENV APA_PASSWORD=$APA_PASSWORD
-
 RUN apk add --no-cache \
   git ca-certificates wget \
   python3 py3-pip
