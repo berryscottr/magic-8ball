@@ -49,7 +49,7 @@ func (bot *Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate
 		bot.HandleCalendar(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!scrape") {
-		bot.HandleCalendar(s, m)
+		bot.HandleScrape(s, m)
 	}
 }
 

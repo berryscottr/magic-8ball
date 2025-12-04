@@ -1,0 +1,59 @@
+name: Scrapaer
+
+on:
+  workflow_dispatch:
+    inputs:
+      accesstoken:
+        description: 'Access Token'
+        required: true
+        type: string
+      teamIDs:
+        description: 'Team IDs (comma-separated)'
+        required: false
+        default: '12727094,12727099'
+        type: string
+  workflow_call:
+    inputs:
+      accesstoken:
+        required: true
+        type: string
+      teamIDs:
+        required: false
+        default: '12727094,12727099'
+        type: string
+
+jobs:
+  run-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Build main.go
+        run: go build -o main.exe main.go
+
+      - name: Run main.exe
+        run: |
+          ./main.exe -auth-token=${{ inputs.accesstoken }} -teams=${{ inputs.teamIDs }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pandas 
+
+      - name: Run Equalizer script
+        run: python3 ./scripts/equalizer/main.py
+
+      - name: Run SL Matchups script
+        run: python3 ./scripts/slmatchups/main.py

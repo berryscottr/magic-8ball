@@ -1,8 +1,8 @@
 package main
 
 import (
-	"magic-8ball/pkg/bot"
-	"magic-8ball/pkg/healthz"
+	"github.com/berryscottr/magic-8ball/pkg/bot"
+	"github.com/berryscottr/magic-8ball/pkg/healthz"
 	"os"
 	"os/signal"
 	"syscall"

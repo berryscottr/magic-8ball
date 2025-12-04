@@ -57,6 +57,8 @@ type Team struct {
 	GameDay string
 	// GameNightChannelID for the team
 	GameNightChannelID string
+	// ID for the team
+	ID int
 }
 
 // TeammateID User IDs
@@ -324,6 +326,7 @@ var (
 		},
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight8ChannelID,
+		ID: 12817532,
 	}
 	// SafetyDance Nine-Ball team
 	SafetyDance = Team{
@@ -342,6 +345,7 @@ var (
 		},
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight9ChannelID,
+		ID: 12817549,
 	}
 	// GameDayReactions for the bot to track
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳", "❓", "❔", NumToEmojiMap[1], NumToEmojiMap[2], NumToEmojiMap[3], NumToEmojiMap[4], NumToEmojiMap[5], NumToEmojiMap[6], NumToEmojiMap[7], NumToEmojiMap[8]}
