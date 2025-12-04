@@ -29,7 +29,8 @@ RUN apt-get update && apt-get install -y \
     libnss3 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libasound2t64 \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# Copy Python venv + Go binary from builder
+# Copy Python data + venv + Go binary from builder
+COPY --from=0 /app/data /app/data
 COPY --from=0 /opt/venv /opt/venv
 COPY --from=0 /app/magic-8ball /app/magic-8ball
 
