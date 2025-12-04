@@ -1,5 +1,5 @@
 # Use Debian-slim base for better Python compatibility
-FROM golang:1.25-bullseye as builder
+FROM golang:1.25 as builder
 
 # Install dependencies for Go build and Python/Playwright
 RUN apt-get update && apt-get install -y \
