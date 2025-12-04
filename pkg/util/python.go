@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	pythonExecutable = `C:\ProgramData\Chocolatey\bin\python3.14.exe`
-	// pythonExecutable = "python3"
+	// pythonExecutable = `C:\ProgramData\Chocolatey\bin\python3.14.exe`
+	pythonExecutable = "python3"
 )
 
 // RunPythonScript executes a Python script and returns its stdout as a string.
