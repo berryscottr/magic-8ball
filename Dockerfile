@@ -1,5 +1,5 @@
 # ===== Builder stage =====
-FROM golang:1.25-ubuntu
+FROM golang:1.25
 
 # Install Go build deps + Python + Playwright dependencies
 RUN apt-get update && apt-get install -y \
