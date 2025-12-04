@@ -4,7 +4,7 @@ FROM golang:1.25 as builder
 # Install system dependencies for Python + Playwright + Chromium
 RUN apt-get update && apt-get install -y \
     git wget curl python3 python3-venv python3-pip \
-    chromium chromium-driver \
+    chromium-browser chromium-chromedriver \
     libnss3 libx11-xcb1 libxcomposite1 libxdamage1 \
     libxrandr2 libasound2 --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
@@ -25,11 +25,11 @@ COPY . ./
 RUN go build -o magic-8ball ./main.go
 
 # ===== Runtime stage =====
-FROM debian:slim
+FROM ubuntu:24.04
 
 # Install runtime dependencies for Python + Chromium
 RUN apt-get update && apt-get install -y \
-    python3 python3-venv python3-pip chromium chromium-driver \
+    python3 python3-venv python3-pip chromium-browser chromium-chromedriver \
     libnss3 libx11-xcb1 libxcomposite1 libxdamage1 \
     libxrandr2 libasound2 --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
