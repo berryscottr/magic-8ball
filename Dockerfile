@@ -1,4 +1,5 @@
-FROM golang:1.25
+# --- Go Build Stage ---
+FROM golang:1.25 AS builder
 
 WORKDIR /app
 
@@ -6,22 +7,23 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . ./
-RUN go build -o magic-8ball ./main.go
+RUN CGO_ENABLED=0 go build -o magic-8ball ./main.go
 
+# --- Python Runtime Stage ---
 FROM python:3.13-slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    git wget curl ca-certificates --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git wget curl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install playwright
-RUN playwright install --with-deps
+RUN pip install --no-cache-dir playwright \
+    && playwright install --with-deps
 
-COPY --from=0 /app/magic-8ball /app/magic-8ball
-COPY --from=0 /app/data /app/data
-COPY --from=0 /app/scripts /app/scripts
+COPY --from=builder /app/magic-8ball /app/magic-8ball
+COPY --from=builder /app/data /app/data
+COPY --from=builder /app/scripts /app/scripts
 
 EXPOSE 8080
 
