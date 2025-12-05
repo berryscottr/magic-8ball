@@ -7,11 +7,8 @@ RUN apt-get update && apt-get install -y \
     libnss3 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libasound2t64 \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# Install Playwright system-wide (allowed with --break-system-packages)
-RUN pip install --break-system-packages --upgrade pip
+# Install Playwright system-wide
 RUN pip install --break-system-packages playwright
-
-# Install Playwright browsers
 RUN playwright install
 
 WORKDIR /app
