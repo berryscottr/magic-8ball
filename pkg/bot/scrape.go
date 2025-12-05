@@ -28,10 +28,29 @@ func (bot *Data) HandleScrape(s *discordgo.Session, m *discordgo.MessageCreate) 
 	teamIDs = overrideIntListFlag(m.Content, "-teams", teamIDs)
 	memberIDs = overrideIntListFlag(m.Content, "-members", memberIDs)
 
-	scrapeTeams(bot.Token.APA, teamIDs, memberIDs)
+	playersScraped := scrapeTeams(bot.Token.APA, teamIDs, memberIDs)
 
 	var skillEvals string
-	skillEvals, bot.Err = util.RunPythonScript("scripts/equalizer/main.py")
+    skillEvals, bot.Err = util.RunPythonScript("scripts/equalizer/main.py")
+
+    scrapedNames := make(map[string]struct{})
+    for _, p := range playersScraped {
+        scrapedNames[p] = struct{}{}
+    }
+
+    lines := strings.Split(skillEvals, "\n")
+    var filtered []string
+
+    for _, line := range lines {
+        for name := range scrapedNames {
+            if strings.Contains(line, name) {
+                filtered = append(filtered, line)
+                break
+            }
+        }
+    }
+
+    skillEvals = strings.Join(filtered, "\n")
 
 	message := discordgo.MessageSend{}
 	message.Content = skillEvals
@@ -88,8 +107,7 @@ func overrideIntListFlag(text, flag string, original []int) []int {
 var fileMutex sync.Mutex
 var mu sync.Mutex
 
-func scrapeTeams(authToken string, teamIds []int, memberIds []int) {
-
+func scrapeTeams(authToken string, teamIds []int, memberIds []int) []string {
     headers := map[string]string{
         "user-agent":    "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36",
         "referer":       "https://league.poolplayers.com",
@@ -124,24 +142,31 @@ func scrapeTeams(authToken string, teamIds []int, memberIds []int) {
         }
         wg.Wait()
     }
+    var playersScraped []string
     for _, memberID := range memberIds {
         wg.Add(1)
         go func(memberID int) {
             defer wg.Done()
-            runPlayerReport(api, memberID)
+            playerName := runPlayerReport(api, memberID)
+            if playerName != "" {
+                mu.Lock()
+                playersScraped = append(playersScraped, playerName)
+                mu.Unlock()
+            }
         }(memberID)
     }
 
     wg.Wait()
+    return playersScraped
 }
 
-func runPlayerReport(api *scrapaer.PoolPlayersAPI, memberID int) {
+func runPlayerReport(api *scrapaer.PoolPlayersAPI, memberID int) string {
     var player scrapaer.Player
     player.MemberID = memberID
     memberStatsHeaderResult, err := api.GetMemberStatsHeader(player.MemberID)
     if err != nil {
 				log.Err(err).Msg("Invalid Member")
-        return
+        return ""
     }
     var nonAlphaRegex = regexp.MustCompile("[^a-zA-Z]+")
     player.Name = fmt.Sprintf("%s %s", nonAlphaRegex.ReplaceAllString(memberStatsHeaderResult.Member.FirstName, ""), nonAlphaRegex.ReplaceAllString(memberStatsHeaderResult.Member.LastName, ""))
@@ -149,7 +174,7 @@ func runPlayerReport(api *scrapaer.PoolPlayersAPI, memberID int) {
     playerResult, err := api.GetPlayerTeams(player.PlayerID)
     if err != nil {
         log.Err(err).Msg("Invalid Player")
-        return
+        return ""
     }
     for _, currentTeam := range playerResult.Alias.CurrentTeams {
         if currentTeam.Team.ID != 0 {
@@ -195,7 +220,7 @@ func runPlayerReport(api *scrapaer.PoolPlayersAPI, memberID int) {
                         defer matchWg.Done()
                         matchResult, err := api.GetMatch(teamMatchID)
                         if err != nil {
-														log.Err(err).Msgf("Error fetching match %d", teamMatchID)
+                            log.Err(err).Msgf("Error fetching match %d", teamMatchID)
                             return
                         }
                         if matchResult.Match.Type == "EIGHT" || matchResult.Match.Type == "NINE" {
@@ -221,6 +246,7 @@ func runPlayerReport(api *scrapaer.PoolPlayersAPI, memberID int) {
     if err != nil {
         log.Err(err).Msg("failed to save Matched to JSON")
     }
+    return player.Name
 }
 
 func getPlayerScores(results []scrapaer.MatchResult, teamPlayerID int) []scrapaer.PlayerMatch {
