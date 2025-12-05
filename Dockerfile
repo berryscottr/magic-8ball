@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git wget curl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir playwright \
+RUN pip install --no-cache-dir playwright pandas \
     && playwright install --with-deps
 
 COPY --from=builder /app/magic-8ball /app/magic-8ball
