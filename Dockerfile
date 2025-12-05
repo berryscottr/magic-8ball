@@ -3,9 +3,16 @@ FROM golang:1.25
 
 # Install Go build deps + Python + dependencies for Playwright
 RUN apt-get update && apt-get install -y \
-    git wget curl python3 python3-venv python3-pip \
+    git wget curl python3 python3-pip \
     libnss3 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libasound2t64 \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+# Install Playwright system-wide (allowed with --break-system-packages)
+RUN pip install --break-system-packages --upgrade pip
+RUN pip install --break-system-packages playwright
+
+# Install Playwright browsers
+RUN playwright install
 
 WORKDIR /app
 
@@ -17,35 +24,23 @@ RUN go mod download
 COPY . ./
 RUN go build -o magic-8ball ./main.go
 
-# Create a venv and install Playwright into /opt/pydeps inside the venv
-RUN python3 -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-
-# Install Playwright in a relocatable folder inside venv
-RUN mkdir /opt/pydeps
-RUN pip install --upgrade pip
-RUN pip install --target=/opt/pydeps playwright
-RUN /opt/pydeps/bin/playwright install
-
 # ===== Runtime stage =====
 FROM ubuntu:24.04
 
-# Install minimal Python + dependencies
+# Install minimal Python + Playwright runtime dependencies
 RUN apt-get update && apt-get install -y \
-    python3 python3-venv python3-pip \
+    python3 python3-pip \
     libnss3 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 libasound2t64 \
     wget \
     --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# Copy Go binary + app files + Python deps from builder
+# Copy Go binary + app files + Python site-packages from builder
 COPY --from=0 /app/magic-8ball /app/magic-8ball
 COPY --from=0 /app/data /app/data
 COPY --from=0 /app/scripts /app/scripts
-COPY --from=0 /opt/pydeps /opt/pydeps
-
-# Set environment so Python can find Playwright
-ENV PYTHONPATH=/opt/pydeps:$PYTHONPATH
-ENV PATH=/opt/pydeps/bin:$PATH
+COPY --from=0 /usr/local/lib/python3.*/dist-packages /usr/local/lib/python3.*/dist-packages
+COPY --from=0 /usr/local/bin/playwright /usr/local/bin/playwright
+COPY --from=0 /root/.cache/ms-playwright /root/.cache/ms-playwright
 
 WORKDIR /app
 EXPOSE 8080
