@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Install Playwright system-wide
-RUN python3 -m pip install --break-system-packages --upgrade pip
 RUN python3 -m pip install --break-system-packages playwright
 RUN playwright install --with-deps
 
