@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y \
 
 # Copy Python data + venv + Go binary from builder
 COPY --from=0 /app/data /app/data
+COPY --from=0 /app/scripts /app/scripts
 COPY --from=0 /opt/venv /opt/venv
 COPY --from=0 /app/magic-8ball /app/magic-8ball
 
