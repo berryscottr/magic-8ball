@@ -2,8 +2,8 @@
 
 APA Discord Bot for Wookie Mistakes and Safety Dance Teams
 
-[![Go 1.22](https://img.shields.io/badge/golang-1.22-green.svg)](https://go.dev/dl/)
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![Go 1.25](https://img.shields.io/badge/golang-1.25-green.svg)](https://go.dev/dl/)
+[![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/)
 [![Deploy](https://github.com/berryscottr/magic-8ball/actions/workflows/deploy.yml/badge.svg)](https://github.com/berryscottr/magic-8ball/actions/workflows/deploy.yml)
 
 ![Cat Pool](data/images/cat_pool.gif)
