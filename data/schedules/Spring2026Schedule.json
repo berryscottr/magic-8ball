@@ -1,0 +1,22 @@
+{
+  "Schedules": [
+    {
+      "Team": "Wookie Mistakes",
+      "Schedule": [
+        {
+          "Date": "01/06/2026",
+          "Opponent":""
+        }
+      ]
+    },
+    {
+      "Team": "Safety Dance",
+      "Schedule": [
+        {
+          "Date": "01/06/2026",
+          "Opponent": ""
+        }
+      ]
+    }
+  ]
+}
