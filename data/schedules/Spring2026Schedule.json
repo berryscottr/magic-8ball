@@ -5,7 +5,63 @@
       "Schedule": [
         {
           "Date": "01/06/2026",
-          "Opponent":""
+          "Opponent":"The Unusual Suspects"
+        },
+        {
+          "Date": "01/13/2026",
+          "Opponent":"Cueaholics 8"
+        },
+        {
+          "Date": "01/20/2026",
+          "Opponent":"Miscellaneous"
+        },
+        {
+          "Date": "01/27/2026",
+          "Opponent":"Scratch-A-Lots"
+        },
+        {
+          "Date": "02/03/2026",
+          "Opponent":"What The Pho"
+        },
+        {
+          "Date": "02/10/2026",
+          "Opponent":"8-Balls of Fire"
+        },
+        {
+          "Date": "02/17/2026",
+          "Opponent":"Chalking Chit 8"
+        },
+        {
+          "Date": "02/24/2026",
+          "Opponent":"The Unusual Suspects"
+        },
+        {
+          "Date": "03/03/2026",
+          "Opponent":"Cueaholics 8"
+        },
+        {
+          "Date": "03/10/2026",
+          "Opponent":"Miscellaneous"
+        },
+        {
+          "Date": "03/17/2026",
+          "Opponent":"Scratch-A-Lots"
+        },
+        {
+          "Date": "03/24/2026",
+          "Opponent":"What The Pho"
+        },
+        {
+          "Date": "03/31/2026",
+          "Opponent":"8-Balls of Fire"
+        },
+        {
+          "Date": "04/07/2026",
+          "Opponent":"Chalking Chit 8"
+        },
+        {
+          "Date": "04/14/2026",
+          "Opponent":"The Unusual Suspects"
         }
       ]
     },
@@ -13,8 +69,56 @@
       "Team": "Safety Dance",
       "Schedule": [
         {
-          "Date": "01/06/2026",
-          "Opponent": ""
+          "Date": "01/13/2026",
+          "Opponent":"Chalking Chit 9"
+        },
+        {
+          "Date": "01/20/2026",
+          "Opponent":"Shark Shooters - 9"
+        },
+        {
+          "Date": "01/27/2026",
+          "Opponent":"Lett's Run Out 9"
+        },
+        {
+          "Date": "02/03/2026",
+          "Opponent":"Jiffyloob 9"
+        },
+        {
+          "Date": "02/10/2026",
+          "Opponent":"In The Pocket-9"
+        },
+        {
+          "Date": "02/17/2026",
+          "Opponent":"Coup De Grace"
+        },
+        {
+          "Date": "02/24/2026",
+          "Opponent":"9 Rocks Away"
+        },
+        {
+          "Date": "03/03/2026",
+          "Opponent":"What The Pho"
+        },
+        {
+          "Date": "03/10/2026",
+          "Opponent":"Cueaholics 9"
+        },
+        {
+          "Date": "03/17/2026",
+          "Opponent":"Smooth Strokes-9"
+        },
+        {
+          "Date": "03/31/2026",
+          "Opponent":"Chalking Chit 9"
+        },
+        {
+          "Date": "04/07/2026",
+          "Opponent":"Shark Shooters - 9"
+        },
+        {
+          "Date": "04/14/2026",
+          "Opponent":"Lett's Run Out 9"
         }
       ]
     }
