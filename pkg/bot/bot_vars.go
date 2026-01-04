@@ -300,7 +300,6 @@ var (
 			},
 			Teams: []Team{
 				WookieMistakes,
-				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 2,
@@ -308,6 +307,21 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 8,
+			},
+		},
+		{
+			LastName: "???",
+			FirstName: "Ryan",
+			ID: TeammateID{
+				Discord: "124654071503126533",
+			},
+			Teams: []Team{
+				SafetyDance,
+			},
+			SkillLevel: Skill{
+				Nine: 3,
+			},
+			RosterNum: Roster{
 				Nine: 8,
 			},
 		},
@@ -341,7 +355,6 @@ var (
 			"Cueaholics 9",
 			"Coup De Grace",
 			"Smooth Strokes-9",
-			"Lett's Run Out 9",
 			"Chalking Chit 9",
 			"Jiffylube 9",
 			"What The Pho",
