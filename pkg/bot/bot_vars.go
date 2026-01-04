@@ -310,19 +310,39 @@ var (
 			},
 		},
 		{
-			LastName: "Ryan",
-			FirstName: "Ryan",
+			LastName: "Gunning",
+			FirstName: "Matt",
 			ID: TeammateID{
-				Discord: "124654071503126533",
+				Discord: "360240801353302016",
+				Member: 3401578,
+				Player: 3265998,
+				Number: "30331107",
 			},
 			Teams: []Team{
-				SafetyDance,
+				WookieMistakes,
 			},
 			SkillLevel: Skill{
-				Nine: 3,
+				Eight: 2,
+				Nine: 2,
 			},
 			RosterNum: Roster{
-				Nine: 8,
+				Eight: 8,
+			},
+		},
+		{
+			LastName: "Rachel",
+			FirstName: "Rachel",
+			ID: TeammateID{
+				Discord: "720459210818584582",
+			},
+			Teams: []Team{
+				WookieMistakes,
+			},
+			SkillLevel: Skill{
+				Eight: 3,
+			},
+			RosterNum: Roster{
+				Eight: 8,
 			},
 		},
 	}
