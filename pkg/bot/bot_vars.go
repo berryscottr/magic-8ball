@@ -290,7 +290,7 @@ var (
 			},
 		},
 		{
-			LastName: "Ryan",
+			LastName: "Campbell",
 			FirstName: "Ryan",
 			ID: TeammateID{
 				Discord: "124654071503126533",
@@ -306,7 +306,7 @@ var (
 			},
 		},
 		{
-			LastName: "Rachel",
+			LastName: "Allgaier",
 			FirstName: "Rachel",
 			ID: TeammateID{
 				Discord: "720459210818584582",
