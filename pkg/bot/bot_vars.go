@@ -294,6 +294,9 @@ var (
 			FirstName: "Ryon",
 			ID: TeammateID{
 				Discord: "124654071503126533",
+				Member: 3451494,
+				Player: 3342808,
+				Number: "30331478",
 			},
 			Teams: []Team{
 				SafetyDance,
@@ -310,6 +313,9 @@ var (
 			FirstName: "Rachel",
 			ID: TeammateID{
 				Discord: "720459210818584582",
+				Member: 3450497,
+				Player: 3341592,
+				Number: "30331516",
 			},
 			Teams: []Team{
 				WookieMistakes,
