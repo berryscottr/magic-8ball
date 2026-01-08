@@ -344,7 +344,7 @@ var (
 		},
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight8ChannelID,
-		ID: 12817532,
+		ID: 12884036,
 	}
 	// SafetyDance Nine-Ball team
 	SafetyDance = Team{
@@ -363,7 +363,7 @@ var (
 		},
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight9ChannelID,
-		ID: 12817549,
+		ID: 12884012,
 	}
 	// GameDayReactions for the bot to track
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳", "❓", "❔", NumToEmojiMap[1], NumToEmojiMap[2], NumToEmojiMap[3], NumToEmojiMap[4], NumToEmojiMap[5], NumToEmojiMap[6], NumToEmojiMap[7], NumToEmojiMap[8]}
