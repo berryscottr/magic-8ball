@@ -302,7 +302,7 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Nine: 3,
+				Nine: 2,
 			},
 			RosterNum: Roster{
 				Nine: 8,
@@ -321,7 +321,7 @@ var (
 				WookieMistakes,
 			},
 			SkillLevel: Skill{
-				Eight: 3,
+				Eight: 2,
 			},
 			RosterNum: Roster{
 				Eight: 8,
