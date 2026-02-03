@@ -226,26 +226,6 @@ var (
 			},
 		},
 		{
-			LastName: "Beaver",
-			FirstName: "Keith",
-			ID: TeammateID{
-				Discord: "1410664371436257290",
-				Member: 3230802,
-				Player: 3003379,
-				Number: "30329673",
-			},
-			Teams: []Team{
-				SafetyDance,
-			},
-			SkillLevel: Skill{
-				Eight: 2,
-				Nine:  2,
-			},
-			RosterNum: Roster{
-				Nine:  5,
-			},
-		},
-		{
 			LastName: "Gibson",
 			FirstName: "Alex",
 			ID: TeammateID{
@@ -264,7 +244,7 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 6,
-				Nine:  6,
+				Nine:  5,
 			},
 		},
 		{
@@ -286,7 +266,7 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 7,
-				Nine:  7,
+				Nine:  6,
 			},
 		},
 		{
@@ -302,10 +282,10 @@ var (
 				SafetyDance,
 			},
 			SkillLevel: Skill{
-				Nine: 2,
+				Nine: 1,
 			},
 			RosterNum: Roster{
-				Nine: 8,
+				Nine: 7,
 			},
 		},
 		{
