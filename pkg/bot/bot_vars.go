@@ -219,7 +219,7 @@ var (
 				WookieMistakes,
 			},
 			SkillLevel: Skill{
-				Eight: 6,
+				Eight: 5,
 			},
 			RosterNum: Roster{
 				Eight: 5,
