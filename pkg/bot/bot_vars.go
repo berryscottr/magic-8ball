@@ -331,7 +331,7 @@ var (
 		GameNightChannelID: GameNight9ChannelID,
 		ID: 12884012,
 	}
-	// SafetyDance Nine-Ball team
+	// PoolTurtle Eight-Ball team
 	PoolTurtle = Team{
 		Format: "8-Ball",
 		Name:   "Pool Turtle",
