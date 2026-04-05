@@ -128,16 +128,12 @@ var (
 				Number: "30300024",
 			},
 			Teams: []Team{
-				WookieMistakes,
-				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 6,
 				Nine:  7,
 			},
 			RosterNum: Roster{
-				Eight: 1,
-				Nine:  1,
 			},
 		},
 		{
@@ -150,8 +146,7 @@ var (
 				Number: "30329468",
 			},
 			Teams: []Team{
-				WookieMistakes,
-				SafetyDance,
+				PoolTurtle,
 			},
 			SkillLevel: Skill{
 				Eight: 5,
@@ -159,7 +154,6 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 2,
-				Nine:  2,
 			},
 		},
 		{
@@ -172,16 +166,14 @@ var (
 				Number: "30331318",
 			},
 			Teams: []Team{
-				WookieMistakes,
-				SafetyDance,
+				PoolTurtle,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 3,
-				Nine:  3,
+				Eight: 6,
 			},
 		},
 		{
@@ -194,8 +186,7 @@ var (
 				Number: "30329649",
 			},
 			Teams: []Team{
-				WookieMistakes,
-				SafetyDance,
+				PoolTurtle,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
@@ -203,7 +194,6 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 4,
-				Nine:  4,
 			},
 		},
 		{
@@ -216,13 +206,13 @@ var (
 				Number: "30326441",
 			},
 			Teams: []Team{
-				WookieMistakes,
+				PoolTurtle,
 			},
 			SkillLevel: Skill{
 				Eight: 5,
 			},
 			RosterNum: Roster{
-				Eight: 5,
+				Eight: 3,
 			},
 		},
 		{
@@ -235,16 +225,14 @@ var (
 				Number: "30330030",
 			},
 			Teams: []Team{
-				WookieMistakes,
-				SafetyDance,
+				PoolTurtle,
 			},
 			SkillLevel: Skill{
 				Eight: 4,
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 6,
-				Nine:  5,
+				Eight: 5,
 			},
 		},
 		{
@@ -257,16 +245,14 @@ var (
 				Number: "30330091",
 			},
 			Teams: []Team{
-				WookieMistakes,
-				SafetyDance,
+				PoolTurtle,
 			},
 			SkillLevel: Skill{
 				Eight: 5,
 				Nine:  4,
 			},
 			RosterNum: Roster{
-				Eight: 7,
-				Nine:  6,
+				Eight: 1,
 			},
 		},
 		{
@@ -279,13 +265,13 @@ var (
 				Number: "30331478",
 			},
 			Teams: []Team{
-				SafetyDance,
+				PoolTurtle,
 			},
 			SkillLevel: Skill{
 				Nine: 2,
 			},
 			RosterNum: Roster{
-				Nine: 7,
+				Nine: 8,
 			},
 		},
 		{
@@ -298,13 +284,13 @@ var (
 				Number: "30331516",
 			},
 			Teams: []Team{
-				WookieMistakes,
+				PoolTurtle,
 			},
 			SkillLevel: Skill{
 				Eight: 2,
 			},
 			RosterNum: Roster{
-				Eight: 8,
+				Eight: 7,
 			},
 		},
 	}
@@ -344,6 +330,16 @@ var (
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight9ChannelID,
 		ID: 12884012,
+	}
+	// SafetyDance Nine-Ball team
+	PoolTurtle = Team{
+		Format: "8-Ball",
+		Name:   "Pool Turtle",
+		DivisionTeamNames: []string{
+			"???",
+		},
+		GameDay:            "Monday",
+		GameNightChannelID: GameNight8ChannelID,
 	}
 	// GameDayReactions for the bot to track
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳", "❓", "❔", NumToEmojiMap[1], NumToEmojiMap[2], NumToEmojiMap[3], NumToEmojiMap[4], NumToEmojiMap[5], NumToEmojiMap[6], NumToEmojiMap[7], NumToEmojiMap[8]}

@@ -13,6 +13,8 @@ import (
 	"sync"
 )
 
+const ScheduleJsonPath = "data/schedules/Summer2026Schedule.json"
+
 // Schedule represents a single match in the team's schedule
 type Schedule struct {
 	Date     string `json:"Date"`
@@ -56,7 +58,7 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 	log.Info().Msg("handling game day post creation")
 
 	var schedules Schedules
-	err := LoadSchedules(&schedules, "data/schedules/Spring2026Schedule.json")
+	err := LoadSchedules(&schedules, ScheduleJsonPath)
 	if err != nil {
 			bot.Err = err
 			log.Err(bot.Err).Msg("failed to load schedules")
