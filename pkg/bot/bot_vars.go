@@ -137,6 +137,26 @@ var (
 			},
 		},
 		{
+			LastName: "Dodge",
+			FirstName: "Dylan",
+			ID: TeammateID{
+				Discord: "253692229535793154",
+				Member: 3308528,
+				Player: 3125263,
+				Number: "30330091",
+			},
+			Teams: []Team{
+				WookieMistakes,
+			},
+			SkillLevel: Skill{
+				Eight: 5,
+				Nine:  4,
+			},
+			RosterNum: Roster{
+				Eight: 1,
+			},
+		},
+		{
 			LastName: "Liess",
 			FirstName: "Jason",
 			ID: TeammateID{
@@ -154,26 +174,6 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 2,
-			},
-		},
-		{
-			LastName: "LaBier",
-			FirstName: "Noah",
-			ID: TeammateID{
-				Discord: "273232380108603393",
-				Member: 3429033,
-				Player: 3309561,
-				Number: "30331318",
-			},
-			Teams: []Team{
-				WookieMistakes,
-			},
-			SkillLevel: Skill{
-				Eight: 3,
-				Nine:  3,
-			},
-			RosterNum: Roster{
-				Eight: 6,
 			},
 		},
 		{
@@ -236,23 +236,42 @@ var (
 			},
 		},
 		{
-			LastName: "Dodge",
-			FirstName: "Dylan",
+			LastName: "LaBier",
+			FirstName: "Noah",
 			ID: TeammateID{
-				Discord: "253692229535793154",
-				Member: 3308528,
-				Player: 3125263,
-				Number: "30330091",
+				Discord: "273232380108603393",
+				Member: 3429033,
+				Player: 3309561,
+				Number: "30331318",
 			},
 			Teams: []Team{
 				WookieMistakes,
 			},
 			SkillLevel: Skill{
-				Eight: 5,
-				Nine:  4,
+				Eight: 3,
+				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 1,
+				Eight: 6,
+			},
+		},
+		{
+			LastName: "Allgaier",
+			FirstName: "Rachel",
+			ID: TeammateID{
+				Discord: "720459210818584582",
+				Member: 3450497,
+				Player: 3341592,
+				Number: "30331516",
+			},
+			Teams: []Team{
+				WookieMistakes,
+			},
+			SkillLevel: Skill{
+				Eight: 2,
+			},
+			RosterNum: Roster{
+				Eight: 7,
 			},
 		},
 		{
@@ -273,25 +292,6 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 8,
-			},
-		},
-		{
-			LastName: "Allgaier",
-			FirstName: "Rachel",
-			ID: TeammateID{
-				Discord: "720459210818584582",
-				Member: 3450497,
-				Player: 3341592,
-				Number: "30331516",
-			},
-			Teams: []Team{
-				WookieMistakes,
-			},
-			SkillLevel: Skill{
-				Eight: 2,
-			},
-			RosterNum: Roster{
-				Eight: 7,
 			},
 		},
 	}
