@@ -1,0 +1,78 @@
+{
+  "Schedules": [
+    {
+      "Team": "Wookie Mistakes",
+      "Schedule": [
+        {
+          "Date": "04/28/2026",
+          "Opponent":"8-Balls of Fire"
+        },
+        {
+          "Date": "05/05/2026",
+          "Opponent":"Scratch-A-Lots"
+        },
+        {
+          "Date": "05/12/2026",
+          "Opponent":"Cueaholics 8"
+        },
+        {
+          "Date": "05/19/2026",
+          "Opponent":"The Unusual Suspects"
+        },
+        {
+          "Date": "05/26/2026",
+          "Opponent":"Miscellaneous"
+        },
+        {
+          "Date": "06/02/2026",
+          "Opponent":"8-Balls of Fire"
+        },
+        {
+          "Date": "06/09/2026",
+          "Opponent":"Scratch-A-Lots"
+        },
+        {
+          "Date": "06/16/2026",
+          "Opponent":"Cueaholics 8"
+        },
+        {
+          "Date": "06/23/2026",
+          "Opponent":"The Unusual Suspects"
+        },
+        {
+          "Date": "06/30/2026",
+          "Opponent":"Miscellaneous"
+        },
+        {
+          "Date": "07/07/2026",
+          "Opponent":"8-Balls of Fire"
+        },
+        {
+          "Date": "07/14/2026",
+          "Opponent":"Scratch-A-Lots"
+        },
+        {
+          "Date": "07/21/2026",
+          "Opponent":"Cueaholics 8"
+        },
+        {
+          "Date": "07/28/2026",
+          "Opponent":"The Unusual Suspects"
+        },
+        {
+          "Date": "08/04/2026",
+          "Opponent":"Miscellaneous"
+        },
+        {
+          "Date": "08/11/2026",
+          "Opponent":"8-Balls of Fire"
+        }
+      ]
+    },
+    {
+      "Team": "Safety Dance",
+      "Schedule": [
+      ]
+    }
+  ]
+}

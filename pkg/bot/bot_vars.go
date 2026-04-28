@@ -128,16 +128,12 @@ var (
 				Number: "30300024",
 			},
 			Teams: []Team{
-				WookieMistakes,
-				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 6,
 				Nine:  7,
 			},
 			RosterNum: Roster{
-				Eight: 1,
-				Nine:  1,
 			},
 		},
 		{
@@ -151,7 +147,6 @@ var (
 			},
 			Teams: []Team{
 				WookieMistakes,
-				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 5,
@@ -159,7 +154,6 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 2,
-				Nine:  2,
 			},
 		},
 		{
@@ -173,15 +167,13 @@ var (
 			},
 			Teams: []Team{
 				WookieMistakes,
-				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 3,
-				Nine:  3,
+				Eight: 6,
 			},
 		},
 		{
@@ -195,15 +187,13 @@ var (
 			},
 			Teams: []Team{
 				WookieMistakes,
-				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 4,
-				Nine:  4,
+				Eight: 3,
 			},
 		},
 		{
@@ -222,7 +212,7 @@ var (
 				Eight: 5,
 			},
 			RosterNum: Roster{
-				Eight: 5,
+				Eight: 4,
 			},
 		},
 		{
@@ -236,15 +226,13 @@ var (
 			},
 			Teams: []Team{
 				WookieMistakes,
-				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 4,
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 6,
-				Nine:  5,
+				Eight: 5,
 			},
 		},
 		{
@@ -258,15 +246,13 @@ var (
 			},
 			Teams: []Team{
 				WookieMistakes,
-				SafetyDance,
 			},
 			SkillLevel: Skill{
 				Eight: 5,
 				Nine:  4,
 			},
 			RosterNum: Roster{
-				Eight: 7,
-				Nine:  6,
+				Eight: 1,
 			},
 		},
 		{
@@ -279,13 +265,14 @@ var (
 				Number: "30331478",
 			},
 			Teams: []Team{
-				SafetyDance,
+				WookieMistakes,
 			},
 			SkillLevel: Skill{
+				Eight: 3,
 				Nine: 2,
 			},
 			RosterNum: Roster{
-				Nine: 7,
+				Eight: 8,
 			},
 		},
 		{
@@ -304,7 +291,7 @@ var (
 				Eight: 2,
 			},
 			RosterNum: Roster{
-				Eight: 8,
+				Eight: 7,
 			},
 		},
 	}
@@ -319,8 +306,6 @@ var (
 			"The Unusual Suspects",
 			"Scratch-A-Lots",
 			"8-Balls of Fire",
-			"Chalking Chit 8",
-			"What The Pho",
 		},
 		GameDay:            "Tuesday",
 		GameNightChannelID: GameNight8ChannelID,

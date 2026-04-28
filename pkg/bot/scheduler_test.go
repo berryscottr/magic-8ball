@@ -33,7 +33,7 @@ func TestScheduleGameDay(t *testing.T) {
     defer session.Close()
 
     var schedules Schedules
-    err = LoadSchedules(&schedules, "../../data/schedules/Spring2026Schedule.json")
+    err = LoadSchedules(&schedules, "../../data/schedules/Summer2026Schedule.json")
     assertion.NoError(err, "failed to load schedules")
 
     var wg sync.WaitGroup
