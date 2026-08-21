@@ -13,6 +13,8 @@ import (
 	"sync"
 )
 
+const ScheduleJsonPath = "data/schedules/Fall2026Schedule.json"
+
 // Schedule represents a single match in the team's schedule
 type Schedule struct {
 	Date     string `json:"Date"`
@@ -56,7 +58,7 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 	log.Info().Msg("handling game day post creation")
 
 	var schedules Schedules
-	err := LoadSchedules(&schedules, "data/schedules/Summer2026Schedule.json")
+	err := LoadSchedules(&schedules, ScheduleJsonPath)
 	if err != nil {
 			bot.Err = err
 			log.Err(bot.Err).Msg("failed to load schedules")
@@ -99,10 +101,10 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 					time.AfterFunc(time.Until(postTime), func() {
 							defer wg.Done()
 							var team Team
-							if teamSchedule.Team == WookieMistakes.Name {
-									team = WookieMistakes
-							} else if teamSchedule.Team == SafetyDance.Name {
-									team = SafetyDance
+							if teamSchedule.Team == WookieMistakes8.Name {
+									team = WookieMistakes8
+							} else if teamSchedule.Team == WookieMistakes9.Name {
+									team = WookieMistakes9
 							} else {
 									bot.Err = errors.New("invalid team name")
 									log.Err(bot.Err).Msgf("failed to create game day post for team: %s", teamSchedule.Team)
@@ -140,9 +142,9 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 													numspaces = longestName + 1 - len(teammate.LastName)
 													var skillLevel int
 													switch team.Name {
-													case WookieMistakes.Name:
+													case WookieMistakes8.Name:
 															skillLevel = teammate.SkillLevel.Eight
-													case SafetyDance.Name:
+													case WookieMistakes9.Name:
 															skillLevel = teammate.SkillLevel.Nine
 													default:
 															bot.Err = errors.New("invalid team name")

@@ -10,7 +10,7 @@ on:
       teamIDs:
         description: 'Team IDs (comma-separated)'
         required: false
-        default: '12727094,12727099'
+        default: '13071666,13128339'
         type: string
   workflow_call:
     inputs:
@@ -19,7 +19,7 @@ on:
         type: string
       teamIDs:
         required: false
-        default: '12727094,12727099'
+        default: '13071666,13128339'
         type: string
 
 jobs:
@@ -28,12 +28,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
-          go-version: '1.25'
+          go-version: '1.27'
 
       - name: Build main.go
         run: go build -o main.exe main.go
@@ -43,7 +43,7 @@ jobs:
           ./main.exe -auth-token=${{ inputs.accesstoken }} -teams=${{ inputs.teamIDs }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.14'
       

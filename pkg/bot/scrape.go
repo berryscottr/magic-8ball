@@ -22,7 +22,7 @@ func (bot *Data) HandleScrape(s *discordgo.Session, m *discordgo.MessageCreate) 
 
 	bot.Token.APA, bot.Err = util.RunPythonScript("scripts/scrape/main.py")
     bot.Token.APA = strings.TrimSpace(bot.Token.APA)
-	teamIDs := []int{WookieMistakes.ID, SafetyDance.ID}
+	teamIDs := []int{WookieMistakes8.ID, WookieMistakes9.ID}
 	memberIDs := []int{}
     
 	teamIDs = overrideIntListFlag(m.Content, "-teams", teamIDs)

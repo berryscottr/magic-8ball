@@ -22,10 +22,10 @@ func (bot *Data) MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate
 		return
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!8game") {
-		bot.HandleGameDay(s, m, WookieMistakes.Name)
+		bot.HandleGameDay(s, m, WookieMistakes8.Name)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!9game") {
-		bot.HandleGameDay(s, m, SafetyDance.Name)
+		bot.HandleGameDay(s, m, WookieMistakes9.Name)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "!line") {
 		bot.HandleLineups(s, m)
@@ -120,9 +120,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 	}
 	var team Team
 	if strings.Contains(oldMsg.Content, "Wookie Mistakes") {
-		team = WookieMistakes
+		team = WookieMistakes8
 	} else if strings.Contains(oldMsg.Content, "Safety Dance") {
-		team = SafetyDance
+		team = WookieMistakes9
 	} else {
 		bot.Err = errors.New("invalid team name")
 		log.Err(bot.Err).Msg("failed to find team name")
@@ -146,8 +146,8 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 		for _, t := range Teammates {
 			for _, tTeam := range t.Teams {
 					if tTeam.Name == team.Name {
-							if (team.Name == WookieMistakes.Name && t.RosterNum.Eight == rosterNum) ||
-									(team.Name == SafetyDance.Name && t.RosterNum.Nine == rosterNum) {
+							if (team.Name == WookieMistakes8.Name && t.RosterNum.Eight == rosterNum) ||
+									(team.Name == WookieMistakes9.Name && t.RosterNum.Nine == rosterNum) {
 									teammate = t
 									break
 							}
@@ -173,9 +173,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 						log.Info().Msgf("modifying attendance for teammate: %s", teammate.LastName)
 						var skillLevelEmoji string
 						switch team.Name {
-						case WookieMistakes.Name:
+						case WookieMistakes8.Name:
 							skillLevelEmoji = intToEmoji(teammate.SkillLevel.Eight)
-						case SafetyDance.Name:
+						case WookieMistakes9.Name:
 							skillLevelEmoji = intToEmoji(teammate.SkillLevel.Nine)
 						default:
 							bot.Err = errors.New("invalid team name")
@@ -198,9 +198,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 				log.Info().Msgf("modifying attendance for teammate: %s", teammate.LastName)
 				var skillLevelEmoji string
 				switch team.Name {
-				case WookieMistakes.Name:
+				case WookieMistakes8.Name:
 					skillLevelEmoji = intToEmoji(teammate.SkillLevel.Eight)
-				case SafetyDance.Name:
+				case WookieMistakes9.Name:
 					skillLevelEmoji = intToEmoji(teammate.SkillLevel.Nine)
 				default:
 					bot.Err = errors.New("invalid team name")
@@ -261,10 +261,10 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate, teamName string) {
 	log.Info().Msg("handling game day post creation")
 	var team Team
-	if teamName == WookieMistakes.Name {
-		team = WookieMistakes
-	} else if teamName == SafetyDance.Name {
-		team = SafetyDance
+	if teamName == WookieMistakes8.Name {
+		team = WookieMistakes8
+	} else if teamName == WookieMistakes9.Name {
+		team = WookieMistakes9
 	} else {
 		bot.Err = errors.New("invalid team name")
 		log.Err(bot.Err).Msgf("failed to create game day post for team: %s", teamName)
@@ -313,9 +313,9 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 				numspaces = longestName + 1 - len(teammate.LastName)
 				var skillLevel int
 				switch teamName {
-				case WookieMistakes.Name:
+				case WookieMistakes8.Name:
 					skillLevel = teammate.SkillLevel.Eight
-				case SafetyDance.Name:
+				case WookieMistakes9.Name:
 					skillLevel = teammate.SkillLevel.Nine
 				default:
 					bot.Err = errors.New("invalid team name")

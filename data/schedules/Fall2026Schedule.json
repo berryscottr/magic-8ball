@@ -1,0 +1,22 @@
+{
+  "Schedules": [
+    {
+      "Team": "Wookie Mistakes-8",
+      "Schedule": [
+        {
+          "Date": "08/24/2026",
+          "Opponent":"The Slow Pokes 8"
+        }
+      ]
+    },
+    {
+      "Team": "Wookie Mistakes-9",
+      "Schedule": [
+        {
+          "Date": "08/24/2026",
+          "Opponent":"The Slow Pokes 9"
+        }
+      ]
+    }
+  ]
+}

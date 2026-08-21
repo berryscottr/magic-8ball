@@ -1,5 +1,5 @@
 # --- Go Build Stage ---
-FROM golang:1.25 AS builder
+FROM golang:1.27 AS builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY . ./
 RUN CGO_ENABLED=0 go build -o magic-8ball ./main.go
 
 # --- Python Runtime Stage ---
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 

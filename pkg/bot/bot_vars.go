@@ -128,32 +128,16 @@ var (
 				Number: "30300024",
 			},
 			Teams: []Team{
+				WookieMistakes8,
+				WookieMistakes9,
 			},
 			SkillLevel: Skill{
 				Eight: 6,
 				Nine:  7,
 			},
 			RosterNum: Roster{
-			},
-		},
-		{
-			LastName: "Dodge",
-			FirstName: "Dylan",
-			ID: TeammateID{
-				Discord: "253692229535793154",
-				Member: 3308528,
-				Player: 3125263,
-				Number: "30330091",
-			},
-			Teams: []Team{
-				WookieMistakes,
-			},
-			SkillLevel: Skill{
-				Eight: 5,
-				Nine:  4,
-			},
-			RosterNum: Roster{
-				Eight: 1,
+				Eight: 8,
+				Nine: 8,
 			},
 		},
 		{
@@ -166,73 +150,16 @@ var (
 				Number: "30329468",
 			},
 			Teams: []Team{
-				WookieMistakes,
+				WookieMistakes8,
+				WookieMistakes9,
 			},
 			SkillLevel: Skill{
 				Eight: 5,
 				Nine:  4,
 			},
 			RosterNum: Roster{
-				Eight: 2,
-			},
-		},
-		{
-			LastName: "Thompson",
-			FirstName: "Laura",
-			ID: TeammateID{
-				Discord: "969682397920653342",
-				Member: 3226787,
-				Player: 2998517,
-				Number: "30329649",
-			},
-			Teams: []Team{
-				WookieMistakes,
-			},
-			SkillLevel: Skill{
-				Eight: 3,
-				Nine:  3,
-			},
-			RosterNum: Roster{
-				Eight: 3,
-			},
-		},
-		{
-			LastName: "Quan",
-			FirstName: "Kim",
-			ID: TeammateID{
-				Discord: "795533691828305922",
-				Member: 2910532,
-				Player: 2532784,
-				Number: "30326441",
-			},
-			Teams: []Team{
-				WookieMistakes,
-			},
-			SkillLevel: Skill{
-				Eight: 5,
-			},
-			RosterNum: Roster{
-				Eight: 4,
-			},
-		},
-		{
-			LastName: "Gibson",
-			FirstName: "Alex",
-			ID: TeammateID{
-				Discord: "696037354892296294",
-				Member: 3308303,
-				Player: 3124964,
-				Number: "30330030",
-			},
-			Teams: []Team{
-				WookieMistakes,
-			},
-			SkillLevel: Skill{
-				Eight: 4,
-				Nine:  3,
-			},
-			RosterNum: Roster{
-				Eight: 5,
+				Eight: 1,
+				Nine: 1,
 			},
 		},
 		{
@@ -245,33 +172,100 @@ var (
 				Number: "30331318",
 			},
 			Teams: []Team{
-				WookieMistakes,
+				WookieMistakes8,
+				WookieMistakes9,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 6,
+				Eight: 5,
+				Nine: 5,
 			},
 		},
 		{
-			LastName: "Allgaier",
-			FirstName: "Rachel",
+			LastName: "Thompson",
+			FirstName: "Laura",
 			ID: TeammateID{
-				Discord: "720459210818584582",
-				Member: 3450497,
-				Player: 3341592,
-				Number: "30331516",
+				Discord: "969682397920653342",
+				Member: 3226787,
+				Player: 2998517,
+				Number: "30329649",
 			},
 			Teams: []Team{
-				WookieMistakes,
+				WookieMistakes8,
+				WookieMistakes9,
 			},
 			SkillLevel: Skill{
-				Eight: 2,
+				Eight: 3,
+				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 7,
+				Eight: 3,
+				Nine: 3,
+			},
+		},
+		{
+			LastName: "Quan",
+			FirstName: "Kim",
+			ID: TeammateID{
+				Discord: "795533691828305922",
+				Member: 2910532,
+				Player: 2532784,
+				Number: "30326441",
+			},
+			Teams: []Team{
+				WookieMistakes8,
+				WookieMistakes9,
+			},
+			SkillLevel: Skill{
+				Eight: 5,
+				Nine: 5,
+			},
+			RosterNum: Roster{
+				Eight: 4,
+				Nine: 4,
+			},
+		},
+		{
+			LastName: "Gibson",
+			FirstName: "Alex",
+			ID: TeammateID{
+				Discord: "696037354892296294",
+				Member: 3308303,
+				Player: 3124964,
+				Number: "30330030",
+			},
+			Teams: []Team{
+				WookieMistakes8,
+				WookieMistakes9,
+			},
+			SkillLevel: Skill{
+				Eight: 3,
+				Nine:  3,
+			},
+			RosterNum: Roster{
+				Eight: 2,
+				Nine: 2,
+			},
+		},
+		{
+			LastName: "Dodge",
+			FirstName: "Dylan",
+			ID: TeammateID{
+				Discord: "253692229535793154",
+				Member: 3308528,
+				Player: 3125263,
+				Number: "30330091",
+			},
+			Teams: []Team{
+			},
+			SkillLevel: Skill{
+				Eight: 5,
+				Nine:  4,
+			},
+			RosterNum: Roster{
 			},
 		},
 		{
@@ -284,52 +278,79 @@ var (
 				Number: "30331478",
 			},
 			Teams: []Team{
-				WookieMistakes,
+				WookieMistakes8,
+				WookieMistakes9,
 			},
 			SkillLevel: Skill{
 				Eight: 3,
 				Nine: 2,
 			},
 			RosterNum: Roster{
-				Eight: 8,
+				Eight: 7,
+				Nine: 7,
+			},
+		},
+		{
+			LastName: "Allgaier",
+			FirstName: "Rachel",
+			ID: TeammateID{
+				Discord: "720459210818584582",
+				Member: 3450497,
+				Player: 3341592,
+				Number: "30331516",
+			},
+			Teams: []Team{
+				WookieMistakes8,
+				WookieMistakes9,
+			},
+			SkillLevel: Skill{
+				Eight: 2,
+				Nine: 2,
+			},
+			RosterNum: Roster{
+				Eight: 6,
+				Nine: 6,
 			},
 		},
 	}
 
-	// WookieMistakes Eight-Ball team
-	WookieMistakes = Team{
+	// WookieMistakes8 Eight-Ball team
+	WookieMistakes8 = Team{
 		Format: "8-Ball",
-		Name:   "Wookie Mistakes",
+		Name:   "Wookie Mistakes-8",
 		DivisionTeamNames: []string{
-			"Cueaholics 8",
-			"Miscellaneous",
-			"The Unusual Suspects",
-			"Scratch-A-Lots",
-			"8-Balls of Fire",
+			"Pool Beavers",
+			"Ready2Shoot-8",
+			"Charlie's Angels",
+			"The Slow Pokes 8",
+			"Sticky Triangles 8",
+			"Pool Cooters 8",
+			"Pool Cows",
+			"Peanuts 8",
 		},
-		GameDay:            "Tuesday",
+		GameDay:            "Monday",
 		GameNightChannelID: GameNight8ChannelID,
-		ID: 12884036,
+		ID: 13071666,
 	}
-	// SafetyDance Nine-Ball team
-	SafetyDance = Team{
+	// WookieMistakes9 Nine-Ball team
+	WookieMistakes9 = Team{
 		Format: "9-Ball",
-		Name:   "Safety Dance",
+		Name:   "Wookie Mistakes-9",
 		DivisionTeamNames: []string{
-			"Shark Shooters - 9",
-			"9 Rocks Away",
-			"In The Pocket-9",
-			"Cueaholics 9",
-			"Coup De Grace",
-			"Smooth Strokes-9",
-			"Chalking Chit 9",
-			"Jiffylube 9",
-			"What The Pho",
+			"Pool Bats",
+			"Ready2Shoot-9",
+			"Charlie's 9 Angels",
+			"The Slow Pokes 9",
+			"Sticky Triangles",
+			"Pool Cooters 9",
+			"Pool Red Pandas",
+			"Peanuts 9",
 		},
-		GameDay:            "Tuesday",
+		GameDay:            "Monday",
 		GameNightChannelID: GameNight9ChannelID,
-		ID: 12884012,
+		ID: 13128339,
 	}
+
 	// GameDayReactions for the bot to track
 	GameDayReactions = []string{"👍", "👎", "⌛", "⏳", "❓", "❔", NumToEmojiMap[1], NumToEmojiMap[2], NumToEmojiMap[3], NumToEmojiMap[4], NumToEmojiMap[5], NumToEmojiMap[6], NumToEmojiMap[7], NumToEmojiMap[8]}
 	// numToEmojiMap is a map for converting numbers to emojis

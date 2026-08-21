@@ -33,7 +33,7 @@ func TestScheduleGameDay(t *testing.T) {
     defer session.Close()
 
     var schedules Schedules
-    err = LoadSchedules(&schedules, "../../data/schedules/Summer2026Schedule.json")
+    err = LoadSchedules(&schedules, "../../data/schedules/Fall2026Schedule.json")
     assertion.NoError(err, "failed to load schedules")
 
     var wg sync.WaitGroup
@@ -51,10 +51,10 @@ func TestScheduleGameDay(t *testing.T) {
                 defer wg.Done()
 
                 var team Team
-                if teamSchedule.Team == WookieMistakes.Name {
-                    team = WookieMistakes
-                } else if teamSchedule.Team == SafetyDance.Name {
-                    team = SafetyDance
+                if teamSchedule.Team == WookieMistakes8.Name {
+                    team = WookieMistakes8
+                } else if teamSchedule.Team == WookieMistakes9.Name {
+                    team = WookieMistakes9
                 } else {
                     data.Err = errors.New("invalid team name")
                     t.Errorf("failed to create game day post for team: %s", teamSchedule.Team)
@@ -97,9 +97,9 @@ func TestScheduleGameDay(t *testing.T) {
                             numspaces = longestName + 1 - len(teammate.LastName)
                             var skillLevel int
                             switch team.Name {
-                            case WookieMistakes.Name:
+                            case WookieMistakes8.Name:
                                 skillLevel = teammate.SkillLevel.Eight
-                            case SafetyDance.Name:
+                            case WookieMistakes9.Name:
                                 skillLevel = teammate.SkillLevel.Nine
                             default:
                                 data.Err = errors.New("invalid team name")

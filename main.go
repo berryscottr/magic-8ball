@@ -25,8 +25,8 @@ func main() {
 	if err != nil {
 			log.Fatal().Err(err).Msg("failed to create Discord session")
 	}
-	go gobot.ScheduleGameDay(session, nil, "Wookie Mistakes")
-	// go gobot.ScheduleGameDay(session, nil, "Safety Dance")
+	go gobot.ScheduleGameDay(session, nil, "Wookie Mistakes-8")
+	go gobot.ScheduleGameDay(session, nil, "Wookie Mistakes-9")
 
 	<-sigs
 
