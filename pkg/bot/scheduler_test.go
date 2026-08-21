@@ -39,7 +39,7 @@ func TestScheduleGameDay(t *testing.T) {
     var wg sync.WaitGroup
 
     for _, teamSchedule := range schedules.Schedules {
-        if teamSchedule.Team == "Wookie Mistakes" || teamSchedule.Team == "Safety Dance" {
+        if teamSchedule.Team == "Wookie Mistakes-8" || teamSchedule.Team == "Wookie Mistakes-9" {
             if len(teamSchedule.Schedule) == 0 {
                 t.Logf("no matches found for team: %s", teamSchedule.Team)
                 continue

@@ -1,16 +1,17 @@
 package bot
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
-	"github.com/rs/zerolog/log"
-	"strings"
-	"time"
-	"encoding/json"
 	"io"
 	"os"
+	"strings"
 	"sync"
+	"time"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/rs/zerolog/log"
 )
 
 const ScheduleJsonPath = "data/schedules/Fall2026Schedule.json"
@@ -36,18 +37,18 @@ type Schedules struct {
 func LoadSchedules(schedules *Schedules, path string) error {
 	file, err := os.Open(path)
 	if err != nil {
-			return err
+		return err
 	}
 	defer file.Close()
 
 	bytes, err := io.ReadAll(file)
 	if err != nil {
-			return err
+		return err
 	}
 
 	err = json.Unmarshal(bytes, schedules)
 	if err != nil {
-			return err
+		return err
 	}
 
 	return nil
@@ -60,119 +61,117 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 	var schedules Schedules
 	err := LoadSchedules(&schedules, ScheduleJsonPath)
 	if err != nil {
-			bot.Err = err
-			log.Err(bot.Err).Msg("failed to load schedules")
-			return
+		bot.Err = err
+		log.Err(bot.Err).Msg("failed to load schedules")
+		return
 	}
 
 	var wg sync.WaitGroup
 
 	for _, teamSchedule := range schedules.Schedules {
-			if teamSchedule.Team != teamName {
-					continue
+		if teamSchedule.Team != teamName {
+			continue
+		}
+		for matchIndex, match := range teamSchedule.Schedule {
+			matchDate, err := time.Parse("01/02/2006", match.Date)
+			if err != nil {
+				log.Err(err).Msgf("failed to parse match date: %s", match.Date)
+				continue
 			}
-			for matchIndex, match := range teamSchedule.Schedule {
-					matchDate, err := time.Parse("01/02/2006", match.Date)
-					if err != nil {
-							log.Err(err).Msgf("failed to parse match date: %s", match.Date)
-							continue
-					}
-					if matchDate.Before(time.Now()) {
-							continue
-					}
-					// Schedule the post for the day before the match at 9am EST (14:00 UTC)
-					postTime := matchDate.AddDate(0, 0, -1).Add(13 * time.Hour).Add(0 * time.Minute)
-					loc, err := time.LoadLocation("America/New_York")
-					if err != nil {
-							loc = time.UTC
-							log.Err(err).Msg("failed to load timezone, using UTC as EST+5")
-					}
-					postTime = postTime.In(loc)
-					log.Info().Msgf("postTime: %s, current time: %s, until: %v", postTime, time.Now(), time.Until(postTime))
-					duration := time.Until(postTime)
-					if duration <= 0 {
-							log.Warn().Msgf("Post time %s is in the past or immediate; skipping scheduling", postTime)
-							continue
-					}
+			if matchDate.Before(time.Now()) {
+				continue
+			}
+			// Schedule the post for the day before the match at 9am EST (14:00 UTC)
+			postTime := matchDate.AddDate(0, 0, -1).Add(13 * time.Hour).Add(0 * time.Minute)
+			loc, err := time.LoadLocation("America/New_York")
+			if err != nil {
+				loc = time.UTC
+				log.Err(err).Msg("failed to load timezone, using UTC as EST+5")
+			}
+			postTime = postTime.In(loc)
+			log.Info().Msgf("postTime: %s, current time: %s, until: %v", postTime, time.Now(), time.Until(postTime))
+			duration := time.Until(postTime)
+			if duration <= 0 {
+				log.Warn().Msgf("Post time %s is in the past or immediate; skipping scheduling", postTime)
+				continue
+			}
 
+			wg.Add(1)
+			time.AfterFunc(time.Until(postTime), func() {
+				defer wg.Done()
+				var team Team
+				if teamSchedule.Team == WookieMistakes8.Name {
+					team = WookieMistakes8
+				} else if teamSchedule.Team == WookieMistakes9.Name {
+					team = WookieMistakes9
+				} else {
+					bot.Err = errors.New("invalid team name")
+					log.Err(bot.Err).Msgf("failed to create game day post for team: %s", teamSchedule.Team)
+					return
+				}
 
-					
-					wg.Add(1)
-					time.AfterFunc(time.Until(postTime), func() {
-							defer wg.Done()
-							var team Team
-							if teamSchedule.Team == WookieMistakes8.Name {
-									team = WookieMistakes8
-							} else if teamSchedule.Team == WookieMistakes9.Name {
-									team = WookieMistakes9
-							} else {
-									bot.Err = errors.New("invalid team name")
-									log.Err(bot.Err).Msgf("failed to create game day post for team: %s", teamSchedule.Team)
-									return
+				var customMessage string
+
+				var playbacksMessage string
+				if matchIndex >= len(teamSchedule.Schedule)-1 {
+					playbacksMessage = " with no playbacks"
+				}
+				message := discordgo.MessageSend{
+					Content: fmt.Sprintf(
+						"@everyone Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s%s <a:Toothless:1324460455623655535>\n"+
+							ReactionRequest+customMessage, team.Name, match.Opponent, playbacksMessage,
+					),
+				}
+				message.Content += "\n```\n"
+				var longestName int
+				for _, teammate := range Teammates {
+					for _, t := range teammate.Teams {
+						if t.Name == team.Name {
+							if len(teammate.LastName) > longestName {
+								longestName = len(teammate.LastName)
 							}
-
-							var customMessage string
-
-							var playbacksMessage string
-							if  matchIndex >= len(teamSchedule.Schedule)-1 {
-								playbacksMessage = " with no playbacks"
 						}
-							message := discordgo.MessageSend{
-									Content: fmt.Sprintf(
-											"@everyone Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s%s <a:Toothless:1324460455623655535>\n"+
-													ReactionRequest+customMessage, team.Name, match.Opponent, playbacksMessage,
-									),
+					}
+				}
+				message.Content += "+🎱+---Name---+👍+⏳+👎+❓+\n"
+				var numspaces int
+				for _, teammate := range Teammates {
+					for _, t := range teammate.Teams {
+						if t.Name == team.Name {
+							numspaces = longestName + 1 - len(teammate.LastName)
+							var skillLevel int
+							switch team.Name {
+							case WookieMistakes8.Name:
+								skillLevel = teammate.SkillLevel.Eight
+							case WookieMistakes9.Name:
+								skillLevel = teammate.SkillLevel.Nine
+							default:
+								bot.Err = errors.New("invalid team name")
+								log.Err(bot.Err).Msgf("failed to create game day post for team: %s", team.Name)
+								return
 							}
-							message.Content += "\n```\n"
-							var longestName int
-							for _, teammate := range Teammates {
-									for _, t := range teammate.Teams {
-											if t.Name == team.Name {
-													if len(teammate.LastName) > longestName {
-															longestName = len(teammate.LastName)
-													}
-											}
-									}
-							}
-							message.Content += "+🎱+---Name---+👍+⏳+👎+❓+\n"
-							var numspaces int
-							for _, teammate := range Teammates {
-									for _, t := range teammate.Teams {
-											if t.Name == team.Name {
-													numspaces = longestName + 1 - len(teammate.LastName)
-													var skillLevel int
-													switch team.Name {
-													case WookieMistakes8.Name:
-															skillLevel = teammate.SkillLevel.Eight
-													case WookieMistakes9.Name:
-															skillLevel = teammate.SkillLevel.Nine
-													default:
-															bot.Err = errors.New("invalid team name")
-															log.Err(bot.Err).Msgf("failed to create game day post for team: %s", team.Name)
-															return
-													}
-													message.Content += fmt.Sprintf("|%s| %s%s|⬛|⬛|⬛|⬛|\n", intToEmoji(skillLevel), teammate.LastName, strings.Repeat(" ", numspaces))
-											}
-									}
-							}
-							message.Content += fmt.Sprintf("+➖+%s+➖+➖+➖+➖+\n```", strings.Repeat("-", longestName+2))
-							message.Content += "Eligible Lineups:"
-							postedMessage, err := s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
-							if err != nil {
-									bot.Err = err
-									log.Err(bot.Err).Msg("failed to post message")
-									return
-							}
-							emotes := []string{"👍", "⏳", "👎", "❓"}
-							for _, emote := range emotes {
-									err := s.MessageReactionAdd(postedMessage.ChannelID, postedMessage.ID, emote)
-									if err != nil {
-											log.Err(err).Msgf("failed to add reaction %s to message %s", emote, postedMessage.ID)
-									}
-							}
-							log.Info().Msgf("game day %s vs %s posted or scheduled to Discord channel %s", team.Name, match.Opponent, postedMessage.ChannelID)
-					})
-			}
+							message.Content += fmt.Sprintf("|%s| %s%s|⬛|⬛|⬛|⬛|\n", intToEmoji(skillLevel), teammate.LastName, strings.Repeat(" ", numspaces))
+						}
+					}
+				}
+				message.Content += fmt.Sprintf("+➖+%s+➖+➖+➖+➖+\n```", strings.Repeat("-", longestName+2))
+				message.Content += "Eligible Lineups:"
+				postedMessage, err := s.ChannelMessageSendComplex(team.GameNightChannelID, &message)
+				if err != nil {
+					bot.Err = err
+					log.Err(bot.Err).Msg("failed to post message")
+					return
+				}
+				emotes := []string{"👍", "⏳", "👎", "❓"}
+				for _, emote := range emotes {
+					err := s.MessageReactionAdd(postedMessage.ChannelID, postedMessage.ID, emote)
+					if err != nil {
+						log.Err(err).Msgf("failed to add reaction %s to message %s", emote, postedMessage.ID)
+					}
+				}
+				log.Info().Msgf("game day %s vs %s posted or scheduled to Discord channel %s", team.Name, match.Opponent, postedMessage.ChannelID)
+			})
+		}
 	}
 	wg.Wait()
 }
