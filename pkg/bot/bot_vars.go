@@ -119,28 +119,6 @@ var (
 	// Teammates on teams
 	Teammates = []Teammate{
 		{
-			LastName: "Berry",
-			FirstName: "Scott",
-			ID: TeammateID{
-				Discord: "341590471317127178",
-				Member: 3077485,
-				Player: 2772810,
-				Number: "30300024",
-			},
-			Teams: []Team{
-				WookieMistakes8,
-				WookieMistakes9,
-			},
-			SkillLevel: Skill{
-				Eight: 6,
-				Nine:  7,
-			},
-			RosterNum: Roster{
-				Eight: 8,
-				Nine: 8,
-			},
-		},
-		{
 			LastName: "Liess",
 			FirstName: "Jason",
 			ID: TeammateID{
@@ -163,13 +141,13 @@ var (
 			},
 		},
 		{
-			LastName: "LaBier",
-			FirstName: "Noah",
+			LastName: "Gibson",
+			FirstName: "Alex",
 			ID: TeammateID{
-				Discord: "273232380108603393",
-				Member: 3429033,
-				Player: 3309561,
-				Number: "30331318",
+				Discord: "696037354892296294",
+				Member: 3308303,
+				Player: 3124964,
+				Number: "30330030",
 			},
 			Teams: []Team{
 				WookieMistakes8,
@@ -180,8 +158,8 @@ var (
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 5,
-				Nine: 5,
+				Eight: 2,
+				Nine: 2,
 			},
 		},
 		{
@@ -229,13 +207,13 @@ var (
 			},
 		},
 		{
-			LastName: "Gibson",
-			FirstName: "Alex",
+			LastName: "LaBier",
+			FirstName: "Noah",
 			ID: TeammateID{
-				Discord: "696037354892296294",
-				Member: 3308303,
-				Player: 3124964,
-				Number: "30330030",
+				Discord: "273232380108603393",
+				Member: 3429033,
+				Player: 3309561,
+				Number: "30331318",
 			},
 			Teams: []Team{
 				WookieMistakes8,
@@ -246,26 +224,30 @@ var (
 				Nine:  3,
 			},
 			RosterNum: Roster{
-				Eight: 2,
-				Nine: 2,
+				Eight: 5,
+				Nine: 5,
 			},
 		},
 		{
-			LastName: "Dodge",
-			FirstName: "Dylan",
+			LastName: "Allgaier",
+			FirstName: "Rachel",
 			ID: TeammateID{
-				Discord: "253692229535793154",
-				Member: 3308528,
-				Player: 3125263,
-				Number: "30330091",
+				Discord: "720459210818584582",
+				Member: 3450497,
+				Player: 3341592,
+				Number: "30331516",
 			},
 			Teams: []Team{
+				WookieMistakes8,
+				WookieMistakes9,
 			},
 			SkillLevel: Skill{
-				Eight: 5,
-				Nine:  4,
+				Eight: 2,
+				Nine: 2,
 			},
 			RosterNum: Roster{
+				Eight: 6,
+				Nine: 6,
 			},
 		},
 		{
@@ -291,25 +273,43 @@ var (
 			},
 		},
 		{
-			LastName: "Allgaier",
-			FirstName: "Rachel",
+			LastName: "Berry",
+			FirstName: "Scott",
 			ID: TeammateID{
-				Discord: "720459210818584582",
-				Member: 3450497,
-				Player: 3341592,
-				Number: "30331516",
+				Discord: "341590471317127178",
+				Member: 3077485,
+				Player: 2772810,
+				Number: "30300024",
 			},
 			Teams: []Team{
 				WookieMistakes8,
 				WookieMistakes9,
 			},
 			SkillLevel: Skill{
-				Eight: 2,
-				Nine: 2,
+				Eight: 6,
+				Nine:  7,
 			},
 			RosterNum: Roster{
-				Eight: 6,
-				Nine: 6,
+				Eight: 8,
+				Nine: 8,
+			},
+		},
+		{
+			LastName: "Dodge",
+			FirstName: "Dylan",
+			ID: TeammateID{
+				Discord: "253692229535793154",
+				Member: 3308528,
+				Player: 3125263,
+				Number: "30330091",
+			},
+			Teams: []Team{
+			},
+			SkillLevel: Skill{
+				Eight: 5,
+				Nine:  4,
+			},
+			RosterNum: Roster{
 			},
 		},
 	}
