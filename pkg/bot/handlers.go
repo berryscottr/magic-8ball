@@ -119,9 +119,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 		log.Err(bot.Err).Msgf("failed to find reaction message in Discord channel %s", r.MessageReaction.ChannelID)
 	}
 	var team Team
-	if strings.Contains(oldMsg.Content, "Wookie Mistakes") {
+	if strings.Contains(oldMsg.Content, "Wookie Mistakes-8") {
 		team = WookieMistakes8
-	} else if strings.Contains(oldMsg.Content, "Safety Dance") {
+	} else if strings.Contains(oldMsg.Content, "Wookie Mistakes-9") {
 		team = WookieMistakes9
 	} else {
 		bot.Err = errors.New("invalid team name")
@@ -232,9 +232,9 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 		if strings.Contains(line, "|✅|⬛|⬛|⬛|") || strings.Contains(line, "|⬛|✅|⬛|⬛|") {
 			for _, teammate := range Teammates {
 				if strings.Contains(line, teammate.LastName) {
-					if team.Name == "Wookie Mistakes" {
+					if team.Name == "Wookie Mistakes-8" {
 						availablePlayerSkills = append(availablePlayerSkills, teammate.SkillLevel.Eight)
-					} else if team.Name == "Safety Dance" {
+					} else if team.Name == "Wookie Mistakes-9" {
 						availablePlayerSkills = append(availablePlayerSkills, teammate.SkillLevel.Nine)
 					} else {
 						bot.Err = errors.New("invalid team name")
