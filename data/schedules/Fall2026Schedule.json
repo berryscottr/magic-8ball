@@ -6,6 +6,58 @@
         {
           "Date": "08/24/2026",
           "Opponent":"The Slow Pokes 8"
+        },
+        {
+          "Date": "08/31/2026",
+          "Opponent":"Sticky Triangles 8"
+        },
+        {
+          "Date": "09/14/2026",
+          "Opponent":"Ready2Shoot-8"
+        },
+        {
+          "Date": "09/21/2026",
+          "Opponent":"Pool Beavers"
+        },
+        {
+          "Date": "09/28/2026",
+          "Opponent":"Peanuts 8"
+        },
+        {
+          "Date": "10/05/2026",
+          "Opponent":"Charlie's Angels"
+        },
+        {
+          "Date": "10/12/2026",
+          "Opponent":"Pool Cooters 8"
+        },
+        {
+          "Date": "10/26/2026",
+          "Opponent":"Pool Cows"
+        },
+        {
+          "Date": "11/02/2026",
+          "Opponent":"The Slow Pokes 8"
+        },
+        {
+          "Date": "11/09/2026",
+          "Opponent":"Sticky Triangles 8"
+        },
+        {
+          "Date": "11/16/2026",
+          "Opponent":"Ready2Shoot-8"
+        },
+        {
+          "Date": "11/23/2026",
+          "Opponent":"Pool Beavers"
+        },
+        {
+          "Date": "11/30/2026",
+          "Opponent":"Peanuts 8"
+        },
+        {
+          "Date": "12/07/2026",
+          "Opponent":"Charlie's Angels"
         }
       ]
     },
@@ -15,6 +67,58 @@
         {
           "Date": "08/24/2026",
           "Opponent":"The Slow Pokes 9"
+        },
+        {
+          "Date": "08/31/2026",
+          "Opponent":"Sticky Triangles"
+        },
+        {
+          "Date": "09/14/2026",
+          "Opponent":"Ready2Shoot-9"
+        },
+        {
+          "Date": "09/21/2026",
+          "Opponent":"Pool Bats"
+        },
+        {
+          "Date": "09/28/2026",
+          "Opponent":"Peanuts 9"
+        },
+        {
+          "Date": "10/05/2026",
+          "Opponent":"Charlie's 9 Angels"
+        },
+        {
+          "Date": "10/12/2026",
+          "Opponent":"Pool Cooters 9"
+        },
+        {
+          "Date": "10/26/2026",
+          "Opponent":"Pool Red Pandas"
+        },
+        {
+          "Date": "11/02/2026",
+          "Opponent":"The Slow Pokes 9"
+        },
+        {
+          "Date": "11/09/2026",
+          "Opponent":"Sticky Triangles"
+        },
+        {
+          "Date": "11/16/2026",
+          "Opponent":"Ready2Shoot-9"
+        },
+        {
+          "Date": "11/23/2026",
+          "Opponent":"Pool Bats"
+        },
+        {
+          "Date": "11/30/2026",
+          "Opponent":"Peanuts 9"
+        },
+        {
+          "Date": "12/07/2026",
+          "Opponent":"Charlie's 9 Angels"
         }
       ]
     }
