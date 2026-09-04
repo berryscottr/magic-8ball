@@ -173,7 +173,6 @@ var (
 			},
 			Teams: []Team{
 				WookieMistakes8,
-				WookieMistakes9,
 			},
 			SkillLevel: Skill{
 				Eight: 5,
@@ -181,7 +180,6 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 3,
-				Nine: 3,
 			},
 		},
 		{
@@ -203,7 +201,7 @@ var (
 			},
 			RosterNum: Roster{
 				Eight: 4,
-				Nine: 4,
+				Nine: 3,
 			},
 		},
 		{
@@ -216,7 +214,6 @@ var (
 				Number: "30331516",
 			},
 			Teams: []Team{
-				WookieMistakes8,
 				WookieMistakes9,
 			},
 			SkillLevel: Skill{
@@ -224,8 +221,7 @@ var (
 				Nine: 2,
 			},
 			RosterNum: Roster{
-				Eight: 5,
-				Nine: 5,
+				Nine: 4,
 			},
 		},
 		{
@@ -246,8 +242,8 @@ var (
 				Nine: 2,
 			},
 			RosterNum: Roster{
-				Eight: 6,
-				Nine: 6,
+				Eight: 5,
+				Nine: 5,
 			},
 		},
 		{
@@ -268,8 +264,8 @@ var (
 				Nine:  7,
 			},
 			RosterNum: Roster{
-				Eight: 7,
-				Nine: 7,
+				Eight: 6,
+				Nine: 6,
 			},
 		},
 		{
@@ -288,6 +284,28 @@ var (
 			SkillLevel: Skill{
 				Eight: 4,
 				Nine:  4,
+			},
+			RosterNum: Roster{
+				Eight: 7,
+				Nine: 7,
+			},
+		},
+		{
+			LastName: "Alexander",
+			FirstName: "Johnathan",
+			ID: TeammateID{
+				Discord: "313561478844383232",
+				Member: 3432399,
+				Player: 3313775,
+				Number: "30331333",
+			},
+			Teams: []Team{
+				WookieMistakes8,
+				WookieMistakes9,
+			},
+			SkillLevel: Skill{
+				Eight: 2,
+				Nine:  1,
 			},
 			RosterNum: Roster{
 				Eight: 8,
