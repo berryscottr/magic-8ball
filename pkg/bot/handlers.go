@@ -261,6 +261,7 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate, teamName string) {
 	log.Info().Msg("handling game day post creation")
 	var team Team
+	var role string
 	if teamName == WookieMistakes8.Name {
 		team = WookieMistakes8
 	} else if teamName == WookieMistakes9.Name {
@@ -290,8 +291,8 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 	}
 	message := discordgo.MessageSend{
 		Content: fmt.Sprintf(
-			"@everyone Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s%s <a:Toothless:1324460455623655535>\n"+
-				ReactionRequest+customMessage, team.Name, opponentTeam, playbacksMessage,
+			"<@&%s> Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s%s <a:Toothless:1324460455623655535>\n"+
+				ReactionRequest+customMessage, team.RoleID, team.Name, opponentTeam, playbacksMessage,
 		),
 	}
 	message.Content += "\n```\n"

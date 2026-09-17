@@ -57,6 +57,8 @@ type Team struct {
 	GameDay string
 	// GameNightChannelID for the team
 	GameNightChannelID string
+	// RoleID in Discord for the team
+	RoleID string
 	// ID for the team
 	ID int
 }
@@ -383,6 +385,7 @@ var (
 		},
 		GameDay:            "Monday",
 		GameNightChannelID: GameNight8ChannelID,
+		RoleID: "1013886913880522872",
 		ID: 13071666,
 	}
 	// WookieMistakes9 Nine-Ball team
@@ -401,6 +404,7 @@ var (
 		},
 		GameDay:            "Monday",
 		GameNightChannelID: GameNight9ChannelID,
+		RoleID: "1013887160480436317",
 		ID: 13128339,
 	}
 
