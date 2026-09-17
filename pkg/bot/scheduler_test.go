@@ -74,8 +74,8 @@ func TestScheduleGameDay(t *testing.T) {
 
                 message := discordgo.MessageSend{
                     Content: fmt.Sprintf(
-                        "@everyone Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s <a:Toothless:1324460455623655535>\n"+
-                            ReactionRequest, team.Name, opponentTeam,
+                        "<@&%s> Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s <a:Toothless:1324460455623655535>\n"+
+                            ReactionRequest, team.RoleID, team.Name, opponentTeam,
                     ),
                 }
                 message.Content += "\n```\n"
@@ -89,7 +89,15 @@ func TestScheduleGameDay(t *testing.T) {
                         }
                     }
                 }
-                message.Content += "+🎱+---Name---+👍+⏳+👎+❓+\n"
+				if longestName < 4 {
+					longestName = 4 // minimum length for "Name" header
+				}
+				totalHyphens := longestName - 2
+				leftHyphenCount := totalHyphens / 2
+				rightHyphenCount := totalHyphens - leftHyphenCount
+				leftHyphenString := strings.Repeat("-", leftHyphenCount)
+				rightHyphenString := strings.Repeat("-", rightHyphenCount)
+				message.Content += fmt.Sprintf("+🎱+%sName%s+👍+⏳+👎+❓+\n", leftHyphenString, rightHyphenString)
                 var numspaces int
                 for _, teammate := range Teammates {
                     for _, tt := range teammate.Teams {
