@@ -118,8 +118,8 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 				}
 				message := discordgo.MessageSend{
 					Content: fmt.Sprintf(
-						"@everyone Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s%s <a:Toothless:1324460455623655535>\n"+
-							ReactionRequest+customMessage, team.Name, match.Opponent, playbacksMessage,
+						"<@&%s> Attendance time <a:abongoblob:1324456047661813851> This week %s plays %s%s <a:Toothless:1324460455623655535>\n"+
+							ReactionRequest+customMessage, team.RoleID, team.Name, match.Opponent, playbacksMessage,
 					),
 				}
 				message.Content += "\n```\n"
