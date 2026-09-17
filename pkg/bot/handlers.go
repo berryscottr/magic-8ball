@@ -163,10 +163,10 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 			return
 		}
     for lineIndex, line := range msgLines {
-        if strings.Contains(line, "+🎱+---Name---+👍+⏳+👎+❓+") {
+        if strings.Contains(line, "+🎱+---Name----+👍+⏳+👎+❓+") {
 					boxHeaderLineIndex = lineIndex
 					boxHeaderFound = true
-        } else if strings.Contains(line, "+➖+----------+➖+➖+➖+➖+") {
+        } else if strings.Contains(line, "+➖+-----------+➖+➖+➖+➖+") {
 					break
 				} else if boxHeaderFound {
 					if lineIndex - boxHeaderLineIndex == rosterNum {
@@ -261,7 +261,6 @@ func (bot *Data) HandleGameDayReaction(s *discordgo.Session, r *discordgo.Messag
 func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate, teamName string) {
 	log.Info().Msg("handling game day post creation")
 	var team Team
-	var role string
 	if teamName == WookieMistakes8.Name {
 		team = WookieMistakes8
 	} else if teamName == WookieMistakes9.Name {
@@ -306,7 +305,7 @@ func (bot *Data) HandleGameDay(s *discordgo.Session, m *discordgo.MessageCreate,
 			}
 		}
 	}
-	message.Content += "+🎱+---Name---+👍+⏳+👎+❓+\n"
+	message.Content += "+🎱+---Name----+👍+⏳+👎+❓+\n"
 	var numspaces int
 	for _, teammate := range Teammates {
 		for _, t := range teammate.Teams {

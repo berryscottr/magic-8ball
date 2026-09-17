@@ -133,7 +133,15 @@ func (bot *Data) ScheduleGameDay(s *discordgo.Session, m *discordgo.MessageCreat
 						}
 					}
 				}
-				message.Content += "+🎱+---Name---+👍+⏳+👎+❓+\n"
+				if longestName < 4 {
+					longestName = 4 // minimum length for "Name" header
+				}
+				totalHyphens := longestName - 2
+				leftHyphenCount := totalHyphens / 2
+				rightHyphenCount := totalHyphens - leftHyphenCount
+				leftHyphenString := strings.Repeat("-", leftHyphenCount)
+				rightHyphenString := strings.Repeat("-", rightHyphenCount)
+				message.Content += fmt.Sprintf("+🎱+%sName%s+👍+⏳+👎+❓+\n", leftHyphenString, rightHyphenString)
 				var numspaces int
 				for _, teammate := range Teammates {
 					for _, t := range teammate.Teams {
