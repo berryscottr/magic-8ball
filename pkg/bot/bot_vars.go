@@ -223,7 +223,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 6,
-				Nine:  7,
+				Nine:  6,
 			},
 			RosterNum: Roster{
 				Eight: 5,
@@ -267,7 +267,7 @@ var (
 			},
 			SkillLevel: Skill{
 				Eight: 2,
-				Nine:  1,
+				Nine:  2,
 			},
 			RosterNum: Roster{
 				Eight: 7,
